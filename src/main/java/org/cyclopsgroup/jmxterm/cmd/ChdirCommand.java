@@ -5,7 +5,7 @@ import java.util.List;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
-public class CDCommand
+public class ChdirCommand
     implements Command
 {
 

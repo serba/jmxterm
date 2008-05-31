@@ -8,10 +8,10 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
 
-public class DisConnectCommand
+public class CloseCommand
     implements Command
 {
-    private static final Log LOG = LogFactory.getLog( DisConnectCommand.class );
+    private static final Log LOG = LogFactory.getLog( CloseCommand.class );
 
     /**
      * @inheritDoc

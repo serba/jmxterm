@@ -16,6 +16,8 @@
 			<outputFileNameMapping>
 				${artifact.artifactId}.jar
 			</outputFileNameMapping>
+			<scope>compile</scope>
+			<useTransitiveDependencies>false</useTransitiveDependencies>
 			<includes>
 				<include>*:*</include>
 			</includes>

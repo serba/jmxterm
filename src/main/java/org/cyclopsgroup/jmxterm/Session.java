@@ -83,7 +83,6 @@ public class Session
 
     public void unsetConnection()
     {
-        requireConnector();
         if ( domain != null )
         {
             unsetDomain();

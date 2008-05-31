@@ -8,16 +8,17 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
 
-public class ConnectCommand
+public class OpenCommand
     implements Command
 {
-    private static final Log LOG = LogFactory.getLog( ConnectCommand.class );
+    private static final Log LOG = LogFactory.getLog( OpenCommand.class );
 
     private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
 
@@ -41,6 +42,7 @@ public class ConnectCommand
             }
             return;
         }
+        Validate.isTrue( session.getConnection() == null );
         String url = args.get( 0 );
         JMXServiceURL u;
         if ( PATTERN_HOST_PORT.matcher( url ).find() )

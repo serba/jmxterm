@@ -1,10 +1,11 @@
-
 package org.cyclopsgroup.jmxterm;
 
 import java.util.List;
 
 public interface Command
 {
+    String NULL = "null";
+
     /**
      * Executable command
      * 

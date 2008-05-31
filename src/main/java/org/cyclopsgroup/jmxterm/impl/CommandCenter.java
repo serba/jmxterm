@@ -67,6 +67,7 @@ public class CommandCenter
         }
         commands.put( "help", new HelpCommand( this ) );
         this.commands = Collections.unmodifiableMap( commands );
+        output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
     }
 
     public void execute( String command )
@@ -108,28 +109,31 @@ public class CommandCenter
         return commands;
     }
 
-    public String getPath()
+    public void prompt()
         throws IOException
     {
-        StringBuilder s = new StringBuilder();
+        String position;
         lock.lock();
         try
         {
-            if ( session.getConnection() != null )
-            {
-                s.append( session.getConnection().getConnector().getConnectionId() );
-            }
             if ( session.getDomain() != null )
             {
-                s.append( '$' ).append( session.getDomain() );
+                position = session.getDomain();
             }
-            s.append( '$' );
-            return s.toString();
+            else if ( session.getConnection() != null )
+            {
+                position = session.getConnection().getConnector().getConnectionId();
+            }
+            else
+            {
+                position = "?";
+            }
         }
         finally
         {
             lock.unlock();
         }
+        session.getOutput().print( position + "$ " );
     }
 
     public boolean isClosed()

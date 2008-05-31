@@ -28,7 +28,14 @@ public class DomainCommand
             return;
         }
         String domain = args.get( 0 );
-        session.setDomain( domain );
+        if ( domain.equalsIgnoreCase( NULL ) )
+        {
+            session.unsetDomain();
+        }
+        else
+        {
+            session.setDomain( domain );
+        }
         LOG.info( "Domain is set to " + domain );
     }
 }
