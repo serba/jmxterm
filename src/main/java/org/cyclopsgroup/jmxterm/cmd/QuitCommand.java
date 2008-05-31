@@ -3,11 +3,9 @@ package org.cyclopsgroup.jmxterm.cmd;
 import java.io.IOException;
 import java.util.List;
 
-import javax.management.remote.JMXConnector;
-
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
-
 
 public class QuitCommand
     implements Command
@@ -15,11 +13,11 @@ public class QuitCommand
     public void execute( List<String> args, Session session )
         throws IOException
     {
-        JMXConnector connector = session.getConnector();
+        Connection con = session.getConnection();
         session.close();
-        if ( connector != null )
+        if ( con != null )
         {
-            connector.close();
+            session.unsetConnection();
         }
     }
 }

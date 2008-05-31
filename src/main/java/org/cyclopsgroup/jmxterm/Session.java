@@ -2,19 +2,13 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.PrintStream;
 
-import javax.management.remote.JMXConnector;
-
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class Session
 {
-    private static final Log LOG = LogFactory.getLog( Session.class );
-
     private boolean closed;
 
-    private JMXConnector connector;
+    private Connection connection;
 
     private String domain;
 
@@ -28,7 +22,7 @@ public class Session
     private void requireConnector()
     {
         requireSession();
-        Validate.notNull( connector, "Connection is not opened yet" );
+        Validate.notNull( connection, "Connection is not opened yet" );
     }
 
     private void requireDomain()
@@ -40,17 +34,16 @@ public class Session
     public void close()
     {
         requireSession();
-        if ( connector != null )
+        if ( connection != null )
         {
-            unsetConnector();
+            unsetConnection();
         }
         closed = true;
-        LOG.info( "Session is closed" );
     }
 
-    public final JMXConnector getConnector()
+    public final Connection getConnection()
     {
-        return connector;
+        return connection;
     }
 
     public final String getDomain()
@@ -68,13 +61,12 @@ public class Session
         return closed;
     }
 
-    public void setConnector( JMXConnector connection )
+    public void setConnection( Connection connection )
     {
         Validate.notNull( connection, "Connection can't be NULL" );
         requireSession();
-        Validate.isTrue( this.connector == null, "Connection already exists" );
-        this.connector = connection;
-        LOG.info( "Connection is set to " + connection );
+        Validate.isTrue( this.connection == null, "Connection already exists" );
+        this.connection = connection;
     }
 
     public void setDomain( String domain )
@@ -82,7 +74,6 @@ public class Session
         Validate.notNull( domain, "domain can't be NULL" );
         requireConnector();
         this.domain = domain;
-        LOG.info( "Domain is set to " + domain );
     }
 
     public final void setOutput( PrintStream output )
@@ -90,15 +81,14 @@ public class Session
         this.output = output;
     }
 
-    public void unsetConnector()
+    public void unsetConnection()
     {
         requireConnector();
         if ( domain != null )
         {
             unsetDomain();
         }
-        connector = null;
-        LOG.info( "Connection is unset" );
+        connection = null;
     }
 
     public void unsetDomain()

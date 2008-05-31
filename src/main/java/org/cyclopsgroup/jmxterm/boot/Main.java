@@ -3,13 +3,16 @@ package org.cyclopsgroup.jmxterm.boot;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import org.cyclopsgroup.jmxterm.impl.CommandCenter;
+
 public class Main
 {
     public static final void main( String[] args )
-        throws IOException
+        throws Exception
     {
-        CommandCenter commandCenter = new CommandCenter( System.out );
+        System.out.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
 
+        CommandCenter commandCenter = new CommandCenter( System.out );
         ByteBuffer buffer = ByteBuffer.allocate( 1 << 16 );
         prompt( commandCenter );
         byte b;

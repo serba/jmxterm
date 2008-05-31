@@ -1,11 +1,10 @@
-package org.cyclopsgroup.jmxterm.boot;
+package org.cyclopsgroup.jmxterm.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
-
 
 public class HelpCommand
     implements Command
@@ -17,6 +16,9 @@ public class HelpCommand
         this.commandCenter = commandCenter;
     }
 
+    /**
+     * @inheritDoc
+     */
     public void execute( List<String> args, Session session )
     {
         session.getOutput().println( "Following commands are available to use:" );
