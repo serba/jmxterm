@@ -4,8 +4,15 @@ import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
 
+/**
+ * JMX communication context
+ *
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class Session
 {
+    private String bean;
+
     private boolean closed;
 
     private Connection connection;
@@ -13,23 +20,6 @@ public class Session
     private String domain;
 
     private PrintStream output = System.out;
-
-    private void requireSession()
-    {
-        Validate.isTrue( !closed, "Session is already closed" );
-    }
-
-    private void requireConnector()
-    {
-        requireSession();
-        Validate.notNull( connection, "Connection is not opened yet" );
-    }
-
-    private void requireDomain()
-    {
-        requireConnector();
-        Validate.notNull( domain, "Domain is not specified yet" );
-    }
 
     public void close()
     {
@@ -39,6 +29,11 @@ public class Session
             unsetConnection();
         }
         closed = true;
+    }
+
+    public final String getBean()
+    {
+        return bean;
     }
 
     public final Connection getConnection()
@@ -59,6 +54,28 @@ public class Session
     public final boolean isClosed()
     {
         return closed;
+    }
+
+    private void requireConnector()
+    {
+        requireSession();
+        Validate.notNull( connection, "Connection is not opened yet" );
+    }
+
+    private void requireDomain()
+    {
+        requireConnector();
+        Validate.notNull( domain, "Domain is not specified yet" );
+    }
+
+    private void requireSession()
+    {
+        Validate.isTrue( !closed, "Session is already closed" );
+    }
+
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
     }
 
     public void setConnection( Connection connection )
@@ -93,6 +110,7 @@ public class Session
     public void unsetDomain()
     {
         requireDomain();
+        bean = null;
         domain = null;
     }
 }

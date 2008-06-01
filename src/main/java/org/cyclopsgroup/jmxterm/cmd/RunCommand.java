@@ -5,7 +5,7 @@ import java.util.List;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
-public class PwdCommand
+public class RunCommand
     implements Command
 {
 

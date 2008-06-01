@@ -109,6 +109,29 @@ public class CommandCenter
         return commands;
     }
 
+    private String getPosition()
+        throws IOException
+    {
+        if ( session.getBean() != null )
+        {
+            return "BEAN$" + session.getBean();
+        }
+        if ( session.getDomain() != null )
+        {
+            return "DOMAIN$" + session.getDomain();
+        }
+        if ( session.getConnection() != null )
+        {
+            return "CONNECTION$" + session.getConnection().getConnector().getConnectionId();
+        }
+        return "?";
+    }
+
+    public boolean isClosed()
+    {
+        return session.isClosed();
+    }
+
     public void prompt()
         throws IOException
     {
@@ -116,28 +139,12 @@ public class CommandCenter
         lock.lock();
         try
         {
-            if ( session.getDomain() != null )
-            {
-                position = session.getDomain();
-            }
-            else if ( session.getConnection() != null )
-            {
-                position = session.getConnection().getConnector().getConnectionId();
-            }
-            else
-            {
-                position = "?";
-            }
+            position = getPosition();
         }
         finally
         {
             lock.unlock();
         }
         session.getOutput().print( position + "$ " );
-    }
-
-    public boolean isClosed()
-    {
-        return session.isClosed();
     }
 }
