@@ -26,6 +26,8 @@ public class CommandCenter
 
     private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
 
+    private static final String CONFIG_COMMAND_TYPE_SUFFIX = ".type";
+
     private static final String CONFIG_PATH = "META-INF/cyclopsgroup/jmxterm.properties";
 
     private final Map<String, Command> commands;
@@ -57,13 +59,22 @@ public class CommandCenter
         for ( Map.Entry<Object, Object> entry : props.entrySet() )
         {
             String name = (String) entry.getKey();
-            if ( !name.startsWith( CONFIG_COMMAND_ENTRY ) )
+            if ( !name.startsWith( CONFIG_COMMAND_ENTRY ) || !name.endsWith( CONFIG_COMMAND_TYPE_SUFFIX ) )
             {
                 continue;
             }
-            String commandName = name.substring( CONFIG_COMMAND_ENTRY.length() );
+            String commandConfig = name.substring( 0, name.length() - CONFIG_COMMAND_TYPE_SUFFIX.length() );
+            String commandName = commandConfig.substring( CONFIG_COMMAND_ENTRY.length() );
             Command command = (Command) classLoader.loadClass( ( (String) entry.getValue() ).trim() ).newInstance();
             commands.put( commandName, command );
+            String aliases = props.getProperty( commandConfig + ".alias" );
+            if ( StringUtils.isNotEmpty( aliases ) )
+            {
+                for ( String alias : StringUtils.split( aliases, ',' ) )
+                {
+                    commands.put( alias, command );
+                }
+            }
         }
         commands.put( "help", new HelpCommand( this ) );
         this.commands = Collections.unmodifiableMap( commands );
@@ -109,24 +120,6 @@ public class CommandCenter
         return commands;
     }
 
-    private String getPosition()
-        throws IOException
-    {
-        if ( session.getBean() != null )
-        {
-            return "BEAN$" + session.getBean();
-        }
-        if ( session.getDomain() != null )
-        {
-            return "DOMAIN$" + session.getDomain();
-        }
-        if ( session.getConnection() != null )
-        {
-            return "CONNECTION$" + session.getConnection().getConnector().getConnectionId();
-        }
-        return "?";
-    }
-
     public boolean isClosed()
     {
         return session.isClosed();
@@ -135,16 +128,6 @@ public class CommandCenter
     public void prompt()
         throws IOException
     {
-        String position;
-        lock.lock();
-        try
-        {
-            position = getPosition();
-        }
-        finally
-        {
-            lock.unlock();
-        }
-        session.getOutput().print( position + "$ " );
+        session.getOutput().print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
     }
 }

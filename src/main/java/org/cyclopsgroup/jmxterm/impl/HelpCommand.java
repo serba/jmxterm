@@ -1,7 +1,8 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -21,10 +22,12 @@ public class HelpCommand
      */
     public void execute( List<String> args, Session session )
     {
+        List<String> commandNames = new ArrayList<String>( commandCenter.getCommands().keySet() );
+        Collections.sort( commandNames );
         session.getOutput().println( "Following commands are available to use:" );
-        for ( Map.Entry<String, Command> entry : commandCenter.getCommands().entrySet() )
+        for ( String commandName : commandNames )
         {
-            session.getOutput().println( " - " + entry.getKey() );
+            session.getOutput().println( " - " + commandName );
         }
     }
 }

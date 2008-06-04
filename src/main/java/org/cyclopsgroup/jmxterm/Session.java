@@ -6,7 +6,7 @@ import org.apache.commons.lang.Validate;
 
 /**
  * JMX communication context
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class Session
@@ -62,12 +62,6 @@ public class Session
         Validate.notNull( connection, "Connection is not opened yet" );
     }
 
-    private void requireDomain()
-    {
-        requireConnector();
-        Validate.notNull( domain, "Domain is not specified yet" );
-    }
-
     private void requireSession()
     {
         Validate.isTrue( !closed, "Session is already closed" );
@@ -109,7 +103,6 @@ public class Session
 
     public void unsetDomain()
     {
-        requireDomain();
         bean = null;
         domain = null;
     }
