@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target( ElementType.FIELD )
+@Target( ElementType.METHOD )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Option
 {
@@ -15,7 +15,7 @@ public @interface Option
 
     String description() default "";
 
-    String displayName() default "";
+    String displayName() default "val";
 
     String longName() default "";
 

@@ -7,9 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target( ElementType.METHOD )
+@Target( ElementType.TYPE )
 @Retention( RetentionPolicy.RUNTIME )
-public @interface Execution
+public @interface Cli
 {
+    String description() default "";
 
+    boolean restrict() default true;
 }
