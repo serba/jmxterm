@@ -46,7 +46,7 @@ public final class CliUtils
         throws IntrospectionException
     {
         Cli cliAnnotation = beanType.getAnnotation( Cli.class );
-        Validate.notNull( cliAnnotation, "Type has to be annotated with @Cli" );
+        Validate.notNull( cliAnnotation, "Type " + beanType + " has to be annotated with @Cli" );
         BeanInfo beanInfo = Introspector.getBeanInfo( beanType );
         CliDefinition cliDefinition = new CliDefinition( cliAnnotation );
         for ( PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors() )
@@ -131,7 +131,14 @@ public final class CliUtils
         }
         else
         {
-            throw new IllegalStateException( "Argument type " + type + " is illegal" );
+            if ( values.length == 0 )
+            {
+                v = null;
+            }
+            else
+            {
+                v = values[0];
+            }
         }
         setValue( bean, prop, v );
     }

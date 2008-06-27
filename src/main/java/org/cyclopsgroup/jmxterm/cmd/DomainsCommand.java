@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
@@ -14,8 +15,9 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
+@Cli( name = "domains", description = "List all available domain names" )
 public class DomainsCommand
-    implements Command
+    extends Command
 {
     /**
      * Get list of domains for current JMX connection
@@ -33,7 +35,10 @@ public class DomainsCommand
         return result;
     }
 
-    public static void listDomains( Session session )
+    /**
+     * @inheritDoc
+     */
+    public void execute( Session session )
         throws IOException
     {
         session.getOutput().println( "Following domains are available" );
@@ -42,14 +47,5 @@ public class DomainsCommand
         {
             session.getOutput().println( String.format( "%%%-3d - %s", i++, domain ) );
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public void execute( List<String> args, Session session )
-        throws IOException
-    {
-        listDomains( session );
     }
 }

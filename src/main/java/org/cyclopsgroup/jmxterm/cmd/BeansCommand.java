@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
@@ -17,9 +19,18 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
+@Cli( name = "beans", description = "List available beans" )
 public class BeansCommand
-    implements Command
+    extends Command
 {
+    private String domain;
+
+    @Option( name = "d", longName = "domain", description = "Domain name or %N domain index" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
     /**
      * Get list of bean names under current domain
      * 
@@ -29,13 +40,13 @@ public class BeansCommand
      * @throws IOException
      */
     @SuppressWarnings( "unchecked" )
-    public static List<String> getBeans( Session session )
+    private static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {
         ObjectName queryName = null;
-        if ( session.getDomain() != null )
+        if ( domainName != null )
         {
-            queryName = new ObjectName( session.getDomain() + ":*" );
+            queryName = new ObjectName( domainName + ":*" );
         }
         Set<ObjectName> names =
             session.getConnection().getConnector().getMBeanServerConnection().queryNames( queryName, null );
@@ -48,25 +59,31 @@ public class BeansCommand
         return results;
     }
 
-    public static void listBeans( Session session )
-        throws MalformedObjectNameException, IOException
-    {
-        session.getOutput().println( "Following beans are available" );
-        int i = 0;
-        for ( String bean : getBeans( session ) )
-        {
-            session.getOutput().println( String.format( "%%%-3d - %s", i++, bean ) );
-        }
-    }
-
     /**
      * @inheritDoc
      * @throws MalformedObjectNameException
      * @throws IOException
      */
-    public void execute( List<String> args, Session session )
+    public void execute( Session session )
         throws MalformedObjectNameException, IOException
     {
-        listBeans( session );
+        String domainName = DomainCommand.getDomainName( domain, session );
+        if ( domainName == null && !domain.equalsIgnoreCase( "null" ) )
+        {
+            domainName = session.getDomain();
+        }
+        if ( domainName != null )
+        {
+            session.getOutput().println( "MBeans under domain " + domainName + ":" );
+        }
+        else
+        {
+            session.getOutput().println( "All available MBeans:" );
+        }
+        int i = 0;
+        for ( String bean : getBeans( session, domainName ) )
+        {
+            session.getOutput().println( String.format( "%%%-3d - %s", i++, bean ) );
+        }
     }
 }

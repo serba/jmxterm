@@ -1,7 +1,7 @@
 package org.cyclopsgroup.jcli.jccli;
 
 import java.beans.IntrospectionException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -10,8 +10,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.Parser;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.spi.CliDefinition;
 import org.cyclopsgroup.jcli.spi.CliUtils;
@@ -41,11 +43,28 @@ public class JakartaCommonsCliParser
 
     private final Parser jcParser;
 
+    private int width = 80;
+
+    /**
+     * @param jcParser Jakarta commons CLI parser implementation
+     */
     public JakartaCommonsCliParser( Parser jcParser )
     {
+        Validate.notNull( jcParser, "jcParser can't be NULL" );
         this.jcParser = jcParser;
     }
 
+    /**
+     * @return Width of text box where usage is printed
+     */
+    public final int getWidth()
+    {
+        return width;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public boolean parse( String[] args, Object bean )
         throws IntrospectionException
     {
@@ -94,12 +113,24 @@ public class JakartaCommonsCliParser
         return true;
     }
 
-    public void printUsage( Class<?> beanType, OutputStream output )
+    /**
+     * @inheritDoc
+     */
+    public void printUsage( Class<?> beanType, PrintWriter output )
         throws IntrospectionException
     {
         Options options = new Options();
-        CliDefinition cli = defineBean( beanType, options );
+        Cli cli = defineBean( beanType, options ).getCli();
         HelpFormatter format = new HelpFormatter();
-        format.printHelp( cli.getCli().description(), options, true );
+        format.printHelp( output, width, cli.name(), cli.description(), options, 2, 0, cli.note(), true );
+    }
+
+    /**
+     * @param width Width of text box where usage is printed
+     */
+    public final void setWidth( int width )
+    {
+        Validate.isTrue( width > 0, "Invalid width " + width );
+        this.width = width;
     }
 }

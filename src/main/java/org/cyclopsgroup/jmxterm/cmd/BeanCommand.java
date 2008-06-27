@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.management.MalformedObjectNameException;
@@ -9,12 +8,16 @@ import javax.management.ObjectName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cyclopsgroup.jcli.annotation.Argument;
+import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+@Cli( name = "bean", description = "Display or set current bean" )
 public class BeanCommand
-    implements Command
+    extends Command
 {
     private static final String STRING_PATTERN_PROPERTIES = "\\w\\=\\w(\\,\\w\\=\\w)*";
 
@@ -25,17 +28,28 @@ public class BeanCommand
 
     private static final Log LOG = LogFactory.getLog( BeanCommand.class );
 
+    private String bean;
+
+    private String domain;
+
+    @Option( name = "d", longName = "domain", description = "Domain name" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
+    @Argument
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
+    }
+
     public static void selectBean( String bean, Session session )
         throws MalformedObjectNameException, IOException
     {
         if ( SyntaxUtils.isNull( bean ) )
         {
             session.setBean( null );
-        }
-        else if ( SyntaxUtils.isIndex( bean ) )
-        {
-            String beanName = BeansCommand.getBeans( session ).get( SyntaxUtils.getIndex( bean ) );
-            session.setBean( beanName );
         }
         else if ( PATTERN_PROPERTIES.matcher( bean ).matches() && session.getDomain() != null )
         {
@@ -55,14 +69,13 @@ public class BeanCommand
     }
 
     /**
-     * @throws IOException
-     * @throws MalformedObjectNameException
      * @inheritDoc
      */
-    public void execute( List<String> args, Session session )
+    @Override
+    public void execute( Session session )
         throws MalformedObjectNameException, IOException
     {
-        if ( args.isEmpty() )
+        if ( bean == null )
         {
             if ( session.getBean() == null )
             {
@@ -70,10 +83,12 @@ public class BeanCommand
             }
             else
             {
-                session.getOutput().println( "Current bean is " + session.getBean() );
+                session.getOutput().println( "Bean " + session.getBean() + " is selected currently" );
             }
-            return;
         }
-        selectBean( args.get( 0 ), session );
+        else
+        {
+            selectBean( bean, session );
+        }
     }
 }

@@ -11,22 +11,27 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
 import org.apache.commons.lang.StringUtils;
+import org.cyclopsgroup.jcli.annotation.Argument;
+import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+@Cli( name = "get", description = "Get value of attribute(s)" )
 public class GetCommand
-    implements Command
+    extends Command
 {
-    public static void displayAttributes( List<String> args, Session session )
+    public void displayAttributes( Session session )
         throws IOException, JMException
     {
-        List<String> values = new ArrayList<String>( args.size() + 1 );
+        List<String> values = new ArrayList<String>( attributes.length + 1 );
         values.add( new SimpleDateFormat( "mm:HH:ss" ).format( new Date() ) );
 
-        ObjectName beanName = new ObjectName( session.getBean() );
+        ObjectName beanName = new ObjectName( bean == null ? session.getBean() : bean );
+
         MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
-        for ( String arg : args )
+        for ( String arg : attributes )
         {
             String attrName;
             if ( SyntaxUtils.isIndex( arg ) )
@@ -44,9 +49,25 @@ public class GetCommand
         session.getOutput().println( StringUtils.join( values, ',' ) );
     }
 
-    public void execute( List<String> args, Session session )
+    private String[] attributes = {};
+
+    private String bean;
+
+    public void execute( Session session )
         throws JMException, IOException
     {
-        displayAttributes( args, session );
+        displayAttributes( session );
+    }
+
+    @Argument( requires = 1 )
+    public final void setAttributes( String[] attributes )
+    {
+        this.attributes = attributes;
+    }
+
+    @Option( name = "b", longName = "bean" )
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
     }
 }

@@ -1,6 +1,6 @@
 package org.cyclopsgroup.jmxterm;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 import org.apache.commons.lang.Validate;
 
@@ -17,9 +17,11 @@ public class Session
 
     private Connection connection;
 
+    private boolean debug;
+
     private String domain;
 
-    private PrintStream output = System.out;
+    private PrintWriter output = new PrintWriter( System.out );
 
     public void close()
     {
@@ -46,7 +48,7 @@ public class Session
         return domain;
     }
 
-    public final PrintStream getOutput()
+    public final PrintWriter getOutput()
     {
         return output;
     }
@@ -54,6 +56,11 @@ public class Session
     public final boolean isClosed()
     {
         return closed;
+    }
+
+    public final boolean isDebug()
+    {
+        return debug;
     }
 
     private void requireConnector()
@@ -80,6 +87,11 @@ public class Session
         this.connection = connection;
     }
 
+    public final void setDebug( boolean debug )
+    {
+        this.debug = debug;
+    }
+
     public void setDomain( String domain )
     {
         Validate.notNull( domain, "domain can't be NULL" );
@@ -87,8 +99,9 @@ public class Session
         this.domain = domain;
     }
 
-    public final void setOutput( PrintStream output )
+    public final void setOutput( PrintWriter output )
     {
+        Validate.notNull( output, "output can't be NULL" );
         this.output = output;
     }
 

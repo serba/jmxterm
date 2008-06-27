@@ -1,19 +1,20 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import java.util.List;
-
+import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
+@Cli( name = "watch", description = "Watch the value of MBean attribute" )
 public class WatchCommand
-    implements Command
+    extends Command
 {
-
-    public void execute( List<String> args, Session session )
-        throws Exception
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void execute( Session session )
     {
         // TODO Auto-generated method stub
 
     }
-
 }

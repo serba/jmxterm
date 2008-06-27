@@ -1,16 +1,21 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.util.List;
 
+import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
 
+@Cli( name = "quit", description = "Terminate console" )
 public class QuitCommand
-    implements Command
+    extends Command
 {
-    public void execute( List<String> args, Session session )
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void execute( Session session )
         throws IOException
     {
         Connection con = session.getConnection();
@@ -19,6 +24,6 @@ public class QuitCommand
         {
             session.unsetConnection();
         }
-        System.out.println( "Bye" );
+        session.getOutput().println( "Bye" );
     }
 }

@@ -4,15 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.cyclopsgroup.jcli.annotation.Argument;
+import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.spi.CliUtils;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
+@Cli( name = "help", description = "Display available commands", note = "Run help [command1] [command2] ... to display usage or certain command(s)" )
 public class HelpCommand
-    implements Command
+    extends Command
 {
-    private final CommandCenter commandCenter;
+    private CommandCenter commandCenter;
 
-    public HelpCommand( CommandCenter commandCenter )
+    private String[] argNames = {};
+
+    @Argument
+    public final void setArgNames( String[] argNames )
+    {
+        this.argNames = argNames;
+    }
+
+    final void setCommandCenter( CommandCenter commandCenter )
     {
         this.commandCenter = commandCenter;
     }
@@ -20,14 +32,28 @@ public class HelpCommand
     /**
      * @inheritDoc
      */
-    public void execute( List<String> args, Session session )
+    @Override
+    public void execute( Session session )
+        throws Exception
     {
-        List<String> commandNames = new ArrayList<String>( commandCenter.getCommands().keySet() );
-        Collections.sort( commandNames );
-        session.getOutput().println( "Following commands are available to use:" );
-        for ( String commandName : commandNames )
+        if ( argNames.length == 0 )
         {
-            session.getOutput().println( " - " + commandName );
+            List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
+            Collections.sort( commandNames );
+            session.getOutput().println( "Following commands are available to use:" );
+            for ( String commandName : commandNames )
+            {
+                Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
+                Cli cli = CliUtils.defineCli( commandType ).getCli();
+                session.getOutput().println( String.format( "- %-16s %s", commandName, cli.description() ) );
+            }
+        }
+        else
+        {
+            for ( String argName : argNames )
+            {
+                commandCenter.execute( argName + " -h" );
+            }
         }
     }
 }

@@ -1,16 +1,18 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import java.util.List;
-
+import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
+@Cli( name = "run", description = "Invocate MBean action" )
 public class RunCommand
-    implements Command
+    extends Command
 {
-
-    public void execute( List<String> args, Session session )
-        throws Exception
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void execute( Session session )
     {
         // TODO Auto-generated method stub
 

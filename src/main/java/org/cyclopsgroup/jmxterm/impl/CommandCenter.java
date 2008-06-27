@@ -1,22 +1,15 @@
 package org.cyclopsgroup.jmxterm.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.PrintWriter;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.annotation.CliParser;
+import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
@@ -24,64 +17,42 @@ public class CommandCenter
 {
     private static final String COMMAND_DELIMITER = "&&";
 
-    private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
+    private final CliParser cliParser = new JakartaCommonsCliParser( new GnuParser() );
 
-    private static final String CONFIG_COMMAND_TYPE_SUFFIX = ".type";
-
-    private static final String CONFIG_PATH = "META-INF/cyclopsgroup/jmxterm.properties";
-
-    private final Map<String, Command> commands;
+    private final CommandFactory commandFactory;
 
     private final Lock lock = new ReentrantLock();
 
     private final Session session = new Session();
 
-    public CommandCenter( PrintStream output )
-        throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    public CommandCenter( PrintWriter output )
+        throws ClassNotFoundException, IOException
     {
+        commandFactory = new CommandFactory();
         session.setOutput( output );
-        Properties props = new Properties();
-        ClassLoader classLoader = getClass().getClassLoader();
-        Enumeration<URL> configs = classLoader.getResources( CONFIG_PATH );
-        while ( configs.hasMoreElements() )
-        {
-            InputStream in = configs.nextElement().openStream();
-            try
-            {
-                props.load( in );
-            }
-            finally
-            {
-                in.close();
-            }
-        }
-        HashMap<String, Command> commands = new HashMap<String, Command>();
-        for ( Map.Entry<Object, Object> entry : props.entrySet() )
-        {
-            String name = (String) entry.getKey();
-            if ( !name.startsWith( CONFIG_COMMAND_ENTRY ) || !name.endsWith( CONFIG_COMMAND_TYPE_SUFFIX ) )
-            {
-                continue;
-            }
-            String commandConfig = name.substring( 0, name.length() - CONFIG_COMMAND_TYPE_SUFFIX.length() );
-            String commandName = commandConfig.substring( CONFIG_COMMAND_ENTRY.length() );
-            Command command = (Command) classLoader.loadClass( ( (String) entry.getValue() ).trim() ).newInstance();
-            commands.put( commandName, command );
-            String aliases = props.getProperty( commandConfig + ".alias" );
-            if ( StringUtils.isNotEmpty( aliases ) )
-            {
-                for ( String alias : StringUtils.split( aliases, ',' ) )
-                {
-                    commands.put( alias, command );
-                }
-            }
-        }
-        commands.put( "help", new HelpCommand( this ) );
-        this.commands = Collections.unmodifiableMap( commands );
         output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
     }
 
     public void execute( String command )
+    {
+        try
+        {
+            doExecute( command );
+        }
+        catch ( Exception e )
+        {
+            if ( session.isDebug() )
+            {
+                e.printStackTrace( session.getOutput() );
+            }
+            else
+            {
+                session.getOutput().println( e.getClass().getSimpleName() + ":" + e.getMessage() );
+            }
+        }
+    }
+
+    private void doExecute( String command )
         throws Exception
     {
         if ( command == null || command.trim().length() == 0 )
@@ -100,14 +71,23 @@ public class CommandCenter
 
         String[] args = StringUtils.split( command, ' ' );
         String commandName = args[0];
-        Command cmd = commands.get( commandName );
-        Validate.notNull( cmd, "Unknown command " + commandName + ", try typing \"help\"" );
-        List<String> cmdArgs = new ArrayList<String>( Arrays.asList( args ) );
-        cmdArgs.remove( 0 );
+        String[] commandArgs = new String[args.length - 1];
+        System.arraycopy( args, 1, commandArgs, 0, args.length - 1 );
+        Command cmd = commandFactory.createCommand( commandName );
+        if ( cmd instanceof HelpCommand )
+        {
+            ( (HelpCommand) cmd ).setCommandCenter( this );
+        }
+        cliParser.parse( commandArgs, cmd );
+        if ( cmd.isHelp() )
+        {
+            cliParser.printUsage( cmd.getClass(), session.getOutput() );
+            return;
+        }
         lock.lock();
         try
         {
-            cmd.execute( cmdArgs, session );
+            cmd.execute( session );
         }
         finally
         {
@@ -115,9 +95,14 @@ public class CommandCenter
         }
     }
 
-    Map<String, Command> getCommands()
+    public Set<String> getCommandNames()
     {
-        return commands;
+        return commandFactory.getCommandTypes().keySet();
+    }
+
+    public Class<? extends Command> getCommandType( String name )
+    {
+        return commandFactory.getCommandTypes().get( name );
     }
 
     public boolean isClosed()
@@ -129,5 +114,6 @@ public class CommandCenter
         throws IOException
     {
         session.getOutput().print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
+        session.getOutput().flush();
     }
 }

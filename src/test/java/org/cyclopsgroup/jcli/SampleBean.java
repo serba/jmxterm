@@ -7,7 +7,7 @@ import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 
-@Cli( description = "A test" )
+@Cli( name = "sample", description = "A test" )
 public class SampleBean
 {
     private boolean booleanField;

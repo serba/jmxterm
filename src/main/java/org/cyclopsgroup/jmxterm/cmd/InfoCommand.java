@@ -1,7 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +18,8 @@ import javax.management.ObjectName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
@@ -26,8 +28,9 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
+@Cli( name = "info", description = "Display detail about an MBean" )
 public class InfoCommand
-    implements Command
+    extends Command
 {
     private static final Comparator<MBeanAttributeInfo> ATTRIBUTE_COMPARATOR = new Comparator<MBeanAttributeInfo>()
     {
@@ -77,14 +80,23 @@ public class InfoCommand
         return con.getMBeanInfo( name );
     }
 
+    private String bean;
+
+    @Option( name = "b", longName = "bean", description = "Name of bean" )
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
+    }
+
     /**
      * @inheritDoc
      */
-    public void execute( List<String> args, Session session )
+    @Override
+    public void execute( Session session )
         throws IOException, JMException
     {
         MBeanInfo info = getMBeanInfo( session );
-        PrintStream out = session.getOutput();
+        PrintWriter out = session.getOutput();
         out.println( "MBean " + session.getBean() );
         out.println( "Class name:" + info.getClassName() );
         out.println( "Attributes:" );

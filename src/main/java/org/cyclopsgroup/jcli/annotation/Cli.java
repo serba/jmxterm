@@ -13,5 +13,9 @@ public @interface Cli
 {
     String description() default "";
 
+    String name();
+
+    String note() default "";
+
     boolean restrict() default true;
 }
