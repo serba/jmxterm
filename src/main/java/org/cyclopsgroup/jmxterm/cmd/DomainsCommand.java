@@ -41,6 +41,11 @@ public class DomainsCommand
     public void execute( Session session )
         throws IOException
     {
+        if ( session.getConnection() == null )
+        {
+            session.getOutput().println( "There's no open connection right now, use open command" );
+            return;
+        }
         session.getOutput().println( "Following domains are available" );
         int i = 0;
         for ( String domain : getDomains( session ) )

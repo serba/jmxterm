@@ -47,7 +47,8 @@ public class CommandCenter
             }
             else
             {
-                session.getOutput().println( e.getClass().getSimpleName() + ":" + e.getMessage() );
+                // session.getOutput().println( e.getClass().getSimpleName() + ":" + e.getMessage() );
+                e.printStackTrace();
             }
         }
     }

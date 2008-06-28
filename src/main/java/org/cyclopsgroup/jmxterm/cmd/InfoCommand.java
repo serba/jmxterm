@@ -18,6 +18,7 @@ import javax.management.ObjectName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -57,14 +58,6 @@ public class InfoCommand
         return result;
     }
 
-    private static List<MBeanOperationInfo> getOperations( MBeanInfo beanInfo )
-    {
-        MBeanOperationInfo[] operationInfos = beanInfo.getOperations();
-        List<MBeanOperationInfo> result = new ArrayList<MBeanOperationInfo>( Arrays.asList( operationInfos ) );
-        Collections.sort( result, OPERATION_COMPARATOR );
-        return result;
-    }
-
     public static List<MBeanAttributeInfo> getAttributes( Session session )
         throws JMException, IOException
     {
@@ -80,13 +73,17 @@ public class InfoCommand
         return con.getMBeanInfo( name );
     }
 
+    private static List<MBeanOperationInfo> getOperations( MBeanInfo beanInfo )
+    {
+        MBeanOperationInfo[] operationInfos = beanInfo.getOperations();
+        List<MBeanOperationInfo> result = new ArrayList<MBeanOperationInfo>( Arrays.asList( operationInfos ) );
+        Collections.sort( result, OPERATION_COMPARATOR );
+        return result;
+    }
+
     private String bean;
 
-    @Option( name = "b", longName = "bean", description = "Name of bean" )
-    public final void setBean( String bean )
-    {
-        this.bean = bean;
-    }
+    private String domain;
 
     /**
      * @inheritDoc
@@ -118,5 +115,17 @@ public class InfoCommand
             out.println( String.format( "%%%-3d - %s(%s) returns %s", index++, op.getName(),
                                         StringUtils.join( paramTypes, ',' ), op.getReturnType() ) );
         }
+    }
+
+    @Argument( requires = 1 )
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
+    }
+
+    @Option( name = "d", longName = "domain", description = "Domain for bean" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
     }
 }

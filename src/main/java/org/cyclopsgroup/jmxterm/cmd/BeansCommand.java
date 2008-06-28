@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -67,8 +68,13 @@ public class BeansCommand
     public void execute( Session session )
         throws MalformedObjectNameException, IOException
     {
+        if ( session.getConnection() == null )
+        {
+            session.getOutput().println( "There's no open connection right now, use open command" );
+            return;
+        }
         String domainName = DomainCommand.getDomainName( domain, session );
-        if ( domainName == null && !domain.equalsIgnoreCase( "null" ) )
+        if ( domainName == null && !StringUtils.equalsIgnoreCase( domain, "null" ) )
         {
             domainName = session.getDomain();
         }
