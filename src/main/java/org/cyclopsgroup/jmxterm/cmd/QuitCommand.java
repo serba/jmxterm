@@ -24,6 +24,6 @@ public class QuitCommand
         {
             session.unsetConnection();
         }
-        session.getOutput().println( "Bye" );
+        session.output.println( "Bye" );
     }
 }

@@ -6,8 +6,7 @@ import java.util.regex.Pattern;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -26,8 +25,6 @@ public class BeanCommand
     private static final Pattern PATTERN_BEAN_NAME =
         Pattern.compile( "^(\\w|\\.)+\\:" + STRING_PATTERN_PROPERTIES + "$" );
 
-    private static final Log LOG = LogFactory.getLog( BeanCommand.class );
-
     private String bean;
 
     private String domain;
@@ -44,16 +41,26 @@ public class BeanCommand
         this.bean = bean;
     }
 
-    public static void selectBean( String bean, Session session )
+    private void selectBean( String bean, Session session )
         throws MalformedObjectNameException, IOException
     {
         if ( SyntaxUtils.isNull( bean ) )
         {
             session.setBean( null );
+            return;
         }
-        else if ( PATTERN_PROPERTIES.matcher( bean ).matches() && session.getDomain() != null )
+        if ( SyntaxUtils.isIndex( bean ) )
         {
-            session.setBean( session.getDomain() + ":" + bean );
+            return;
+        }
+        String domainName = DomainCommand.getDomainName( domain, session );
+        if ( domainName == null && !StringUtils.equalsIgnoreCase( domain, "null" ) )
+        {
+            domainName = session.getDomain();
+        }
+        if ( PATTERN_PROPERTIES.matcher( bean ).matches() && domainName != null )
+        {
+            session.setBean( domainName + ":" + bean );
         }
         else if ( PATTERN_BEAN_NAME.matcher( bean ).matches() )
         {
@@ -65,7 +72,7 @@ public class BeanCommand
         {
             throw new IllegalArgumentException( "Bean name " + bean + " isn't valid" );
         }
-        LOG.info( "Bean is set to " + session.getBean() );
+        session.output.println( "Bean is set to " + session.getBean() );
     }
 
     /**
@@ -79,11 +86,11 @@ public class BeanCommand
         {
             if ( session.getBean() == null )
             {
-                session.getOutput().println( "Bean is not set" );
+                session.output.println( "Bean is not set" );
             }
             else
             {
-                session.getOutput().println( "Bean " + session.getBean() + " is selected currently" );
+                session.output.println( "Bean " + session.getBean() + " is selected currently" );
             }
         }
         else

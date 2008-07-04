@@ -39,8 +39,8 @@ public class DomainCommand
             List<String> domains = DomainsCommand.getDomains( session );
             if ( index >= domains.size() )
             {
-                throw new IllegalArgumentException( "There're only " + domains.size() + " domains, " + domain +
-                    " doesn't exist" );
+                throw new IllegalArgumentException( "There're only " + domains.size() + " domains, " + domain
+                    + " doesn't exist" );
             }
             return domains.get( index );
         }
@@ -68,11 +68,11 @@ public class DomainCommand
         {
             if ( session.getDomain() == null )
             {
-                session.getOutput().println( "Domain is not set" );
+                session.output.println( "Domain is not set" );
             }
             else
             {
-                session.getOutput().println( "Domain is " + session.getDomain() );
+                session.output.println( "Domain is " + session.getDomain() );
             }
         }
         else
@@ -81,12 +81,12 @@ public class DomainCommand
             if ( domainName == null )
             {
                 session.unsetDomain();
-                session.getOutput().println( "Domain is unset" );
+                session.output.println( "Domain is unset" );
             }
             else
             {
                 session.setDomain( domainName );
-                session.getOutput().println( "Domain is set to " + session.getDomain() );
+                session.output.println( "Domain is set to " + session.getDomain() );
             }
         }
     }

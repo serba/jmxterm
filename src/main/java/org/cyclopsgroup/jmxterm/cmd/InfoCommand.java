@@ -93,7 +93,7 @@ public class InfoCommand
         throws IOException, JMException
     {
         MBeanInfo info = getMBeanInfo( session );
-        PrintWriter out = session.getOutput();
+        PrintWriter out = session.output;
         out.println( "MBean " + session.getBean() );
         out.println( "Class name:" + info.getClassName() );
         out.println( "Attributes:" );

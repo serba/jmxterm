@@ -6,16 +6,34 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation marks a property as non-option argument or arguments. Type of this property can be array, List or
+ * single value.
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Documented
 @Target( ElementType.METHOD )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Argument
 {
+    /**
+     * @return String description of argument which will be displayed in usage
+     */
     String description() default "";
 
+    /**
+     * @return Name of argument displayed in usage
+     */
     String displayName() default "";
 
+    /**
+     * @return Minimal number of expected arguments
+     */
     int requires() default 0;
 
+    /**
+     * @return Type of argument element
+     */
     Class<?> type() default String.class;
 }

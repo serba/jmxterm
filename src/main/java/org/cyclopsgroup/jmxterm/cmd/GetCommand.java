@@ -46,13 +46,17 @@ public class GetCommand
             Object result = con.getAttribute( beanName, attrName );
             values.add( result == null ? "null" : result.toString() );
         }
-        session.getOutput().println( StringUtils.join( values, ',' ) );
+        session.output.println( StringUtils.join( values, ',' ) );
     }
 
     private String[] attributes = {};
 
     private String bean;
 
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void execute( Session session )
         throws JMException, IOException
     {

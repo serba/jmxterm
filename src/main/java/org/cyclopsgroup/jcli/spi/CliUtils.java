@@ -18,30 +18,24 @@ import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 
+/**
+ * Utilities for CLI package
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public final class CliUtils
 {
-    private static final Log LOG = LogFactory.getLog( CliUtils.class );
-
     private static final String ERROR_MESSAGE = "Couldn't set value %s to %s#%s";
 
-    private CliUtils()
-    {
-    }
+    private static final Log LOG = LogFactory.getLog( CliUtils.class );
 
-    private static <A extends Annotation> A getAnnotation( PropertyDescriptor descriptor, Class<A> type )
-    {
-        A a = null;
-        if ( descriptor.getWriteMethod() != null )
-        {
-            a = descriptor.getWriteMethod().getAnnotation( type );
-        }
-        if ( a == null && descriptor.getReadMethod() != null )
-        {
-            a = descriptor.getReadMethod().getAnnotation( type );
-        }
-        return a;
-    }
-
+    /**
+     * Get {@link CliDefinition} out of given Java bean annotated with {@link Cli}
+     * 
+     * @param beanType Type of Java bean
+     * @return CliDefinition object
+     * @throws IntrospectionException Thrown when class structure has problem
+     */
     public static CliDefinition defineCli( Class<?> beanType )
         throws IntrospectionException
     {
@@ -71,22 +65,39 @@ public final class CliUtils
         return cliDefinition;
     }
 
-    public static void setValue( Object bean, PropertyDescriptor prop, String value )
+    /**
+     * Get annotation from either writer or reader of a Java property
+     * 
+     * @param <A> Type of annotation
+     * @param descriptor Field descriptor from which annotation is searched
+     * @param type Type of annotation
+     * @return Annotation or null if it's not found
+     */
+    private static <A extends Annotation> A getAnnotation( PropertyDescriptor descriptor, Class<A> type )
     {
-        Object v;
-        if ( prop.getPropertyType() == String.class )
+        A a = null;
+        if ( descriptor.getWriteMethod() != null )
         {
-            v = value;
+            a = descriptor.getWriteMethod().getAnnotation( type );
         }
-        else
+        if ( a == null && descriptor.getReadMethod() != null )
         {
-            v = ConvertUtils.convert( value, prop.getPropertyType() );
+            a = descriptor.getReadMethod().getAnnotation( type );
         }
-        setValue( bean, prop, v );
+        return a;
     }
 
+    /**
+     * Set single value to given Java property
+     * 
+     * @param bean Java bean
+     * @param prop Property of Java bean
+     * @param value Value to set
+     */
     public static void setValue( Object bean, PropertyDescriptor prop, Object value )
     {
+        Validate.notNull( bean, "Java bean can't be NULL" );
+        Validate.notNull( prop, "Java property descriptor can't be NULL" );
         try
         {
             prop.getWriteMethod().invoke( bean, value );
@@ -105,8 +116,39 @@ public final class CliUtils
         }
     }
 
+    /**
+     * Set single String value to given Java property
+     * 
+     * @param bean Java bean
+     * @param prop Property of Java bean
+     * @param value Value to set
+     */
+    public static void setValue( Object bean, PropertyDescriptor prop, String value )
+    {
+        Object v;
+        if ( prop.getPropertyType() == String.class )
+        {
+            v = value;
+        }
+        else
+        {
+            v = ConvertUtils.convert( value, prop.getPropertyType() );
+        }
+        setValue( bean, prop, v );
+    }
+
+    /**
+     * Set array of values to given Java property
+     * 
+     * @param bean Java bean
+     * @param prop Property of Java bean
+     * @param values String array of values to set
+     */
     public static void setValues( Object bean, PropertyDescriptor prop, String[] values )
     {
+        Validate.notNull( bean, "Java bean can't be NULL" );
+        Validate.notNull( prop, "Java property descriptor can't be NULL" );
+        Validate.notNull( values, "Values can't be NULL" );
         Class<?> type = prop.getPropertyType();
         Object v;
         if ( prop.getPropertyType().isArray() )
@@ -141,5 +183,9 @@ public final class CliUtils
             }
         }
         setValue( bean, prop, v );
+    }
+
+    private CliUtils()
+    {
     }
 }

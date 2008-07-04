@@ -70,7 +70,7 @@ public class BeansCommand
     {
         if ( session.getConnection() == null )
         {
-            session.getOutput().println( "There's no open connection right now, use open command" );
+            session.output.println( "There's no open connection right now, use open command" );
             return;
         }
         String domainName = DomainCommand.getDomainName( domain, session );
@@ -78,18 +78,24 @@ public class BeansCommand
         {
             domainName = session.getDomain();
         }
+        List<String> domains = new ArrayList<String>();
         if ( domainName != null )
         {
-            session.getOutput().println( "MBeans under domain " + domainName + ":" );
+            domains.add( domainName );
         }
         else
         {
-            session.getOutput().println( "All available MBeans:" );
+            domains.addAll( DomainsCommand.getDomains( session ) );
         }
+
         int i = 0;
-        for ( String bean : getBeans( session, domainName ) )
+        for ( String d : domains )
         {
-            session.getOutput().println( String.format( "%%%-3d - %s", i++, bean ) );
+            session.output.println( "domain = " + d + ":" );
+            for ( String bean : getBeans( session, d ) )
+            {
+                session.output.println( String.format( "  %%%-3d - %s", i++, bean ) );
+            }
         }
     }
 }

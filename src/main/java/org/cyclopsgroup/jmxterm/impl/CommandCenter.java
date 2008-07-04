@@ -8,11 +8,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
+/**
+ * Facade class where commands are maintained and executed
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class CommandCenter
 {
     private static final String COMMAND_DELIMITER = "&&";
@@ -23,34 +29,22 @@ public class CommandCenter
 
     private final Lock lock = new ReentrantLock();
 
-    private final Session session = new Session();
+    private final Session session;
 
+    /**
+     * Constructor with given output {@link PrintWriter}
+     * 
+     * @param output Message output. It can't be NULL
+     * @throws ClassNotFoundException Thrown when configured command can't be created
+     * @throws IOException Thrown for file access failure
+     */
     public CommandCenter( PrintWriter output )
         throws ClassNotFoundException, IOException
     {
+        Validate.notNull( output, "Output can't be NULL" );
+        session = new Session( output );
         commandFactory = new CommandFactory();
-        session.setOutput( output );
         output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
-    }
-
-    public void execute( String command )
-    {
-        try
-        {
-            doExecute( command );
-        }
-        catch ( Exception e )
-        {
-            if ( session.isDebug() )
-            {
-                e.printStackTrace( session.getOutput() );
-            }
-            else
-            {
-                // session.getOutput().println( e.getClass().getSimpleName() + ":" + e.getMessage() );
-                e.printStackTrace();
-            }
-        }
     }
 
     private void doExecute( String command )
@@ -82,7 +76,7 @@ public class CommandCenter
         cliParser.parse( commandArgs, cmd );
         if ( cmd.isHelp() )
         {
-            cliParser.printUsage( cmd.getClass(), session.getOutput() );
+            cliParser.printUsage( cmd.getClass(), session.output );
             return;
         }
         lock.lock();
@@ -96,25 +90,64 @@ public class CommandCenter
         }
     }
 
+    /**
+     * Execute a command
+     * 
+     * @param command String command to execute
+     */
+    public void execute( String command )
+    {
+        try
+        {
+            doExecute( command );
+        }
+        catch ( Exception e )
+        {
+            if ( session.isDebug() )
+            {
+                e.printStackTrace( session.output );
+            }
+            else
+            {
+                session.output.println( e.getClass().getSimpleName() + ":" + e.getMessage() );
+            }
+        }
+    }
+
+    /**
+     * @return Set of command names
+     */
     public Set<String> getCommandNames()
     {
-        return commandFactory.getCommandTypes().keySet();
+        return commandFactory.commandTypes.keySet();
     }
 
+    /**
+     * @param name Command name
+     * @return Type of command associated with given name
+     */
     public Class<? extends Command> getCommandType( String name )
     {
-        return commandFactory.getCommandTypes().get( name );
+        return commandFactory.commandTypes.get( name );
     }
 
+    /**
+     * @return True if command center is closed
+     */
     public boolean isClosed()
     {
         return session.isClosed();
     }
 
+    /**
+     * Print out a prompt waiting for command input
+     * 
+     * @throws IOException Thrown for communication error
+     */
     public void prompt()
         throws IOException
     {
-        session.getOutput().print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
-        session.getOutput().flush();
+        session.output.print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
+        session.output.flush();
     }
 }

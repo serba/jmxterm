@@ -13,9 +13,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Command;
 
+/**
+ * Factory class of commands which knows how to create Command class with given command name
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 class CommandFactory
 {
-    private final Map<String, Class<? extends Command>> commandTypes;
+    final Map<String, Class<? extends Command>> commandTypes;
 
     private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
 
@@ -23,11 +28,12 @@ class CommandFactory
 
     private static final String CONFIG_PATH = "META-INF/cyclopsgroup/jmxterm.properties";
 
-    public final Map<String, Class<? extends Command>> getCommandTypes()
-    {
-        return commandTypes;
-    }
-
+    /**
+     * Constructor which builds up command types
+     * 
+     * @throws ClassNotFoundException Thrown when configured command class doesn't exist
+     * @throws IOException Thrown when Jar is corrupted
+     */
     @SuppressWarnings( "unchecked" )
     CommandFactory()
         throws ClassNotFoundException, IOException
@@ -73,15 +79,24 @@ class CommandFactory
         this.commandTypes = Collections.unmodifiableMap( commands );
     }
 
+    /**
+     * Create command instance for given command name
+     * 
+     * @param commandName Name of command
+     * @return Instance of command. It won't be NULL
+     * @throws InstantiationException Thrown when command instance couldn't be created
+     * @throws IllegalAccessException Thrown when command instance couldn't be created
+     * @throws IllegalArgumentException Thrown when commandName is NULL or unknown
+     */
     Command createCommand( String commandName )
-        throws InstantiationException, IllegalAccessException
+        throws InstantiationException, IllegalAccessException, IllegalArgumentException
     {
         Validate.notNull( commandName, "commandName can't be NULL" );
         Class<? extends Command> commandType = commandTypes.get( commandName );
         if ( commandType == null )
         {
-            throw new IllegalArgumentException( "Command " + commandName +
-                " isn't valid, run help to see available commands" );
+            throw new IllegalArgumentException( "Command " + commandName
+                + " isn't valid, run help to see available commands" );
         }
         return commandType.newInstance();
     }

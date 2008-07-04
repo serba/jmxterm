@@ -17,11 +17,17 @@ public class Session
 
     private Connection connection;
 
-    private boolean debug;
+    private boolean debug = true;
 
     private String domain;
 
-    private PrintWriter output = new PrintWriter( System.out );
+    public final PrintWriter output;
+
+    public Session( PrintWriter output )
+    {
+        Validate.notNull( output, "Output can't be NULL" );
+        this.output = output;
+    }
 
     public void close()
     {
@@ -46,11 +52,6 @@ public class Session
     public final String getDomain()
     {
         return domain;
-    }
-
-    public final PrintWriter getOutput()
-    {
-        return output;
     }
 
     public final boolean isClosed()
@@ -97,12 +98,6 @@ public class Session
         Validate.notNull( domain, "domain can't be NULL" );
         requireConnector();
         this.domain = domain;
-    }
-
-    public final void setOutput( PrintWriter output )
-    {
-        Validate.notNull( output, "output can't be NULL" );
-        this.output = output;
     }
 
     public void unsetConnection()

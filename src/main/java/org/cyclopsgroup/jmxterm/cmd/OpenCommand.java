@@ -34,15 +34,13 @@ public class OpenCommand
             Connection con = session.getConnection();
             if ( con == null )
             {
-                session.getOutput().println( "Not connected" );
+                session.output.println( "Not connected" );
             }
             else
             {
 
-                session.getOutput().println(
-                                             String.format( "Connected to: expr=%s, id=%s, url=%s",
-                                                            con.getOriginalUrl(), con.getConnector().getConnectionId(),
-                                                            con.getUrl() ) );
+                session.output.println( String.format( "Connected to: expr=%s, id=%s, url=%s", con.getOriginalUrl(),
+                                                       con.getConnector().getConnectionId(), con.getUrl() ) );
             }
             return;
         }

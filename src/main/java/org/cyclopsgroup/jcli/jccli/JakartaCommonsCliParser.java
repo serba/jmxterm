@@ -19,6 +19,11 @@ import org.cyclopsgroup.jcli.spi.CliDefinition;
 import org.cyclopsgroup.jcli.spi.CliUtils;
 import org.cyclopsgroup.jcli.spi.OptionDefinition;
 
+/**
+ * Implementation of {@link CliParser} that uses a given Jakarta Commons CLI {@link Parser}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class JakartaCommonsCliParser
     implements CliParser
 {
@@ -46,6 +51,8 @@ public class JakartaCommonsCliParser
     private int width = 80;
 
     /**
+     * Constructor with given Jakarta Commons CLI parser
+     * 
      * @param jcParser Jakarta commons CLI parser implementation
      */
     public JakartaCommonsCliParser( Parser jcParser )
