@@ -25,7 +25,7 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
 /**
- * Command that shows information of current selected bean
+ * Command that displays attributes and operations of an MBean
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
@@ -58,17 +58,17 @@ public class InfoCommand
         return result;
     }
 
-    public static List<MBeanAttributeInfo> getAttributes( Session session )
+    public static List<MBeanAttributeInfo> getAttributes( String beanName, Session session )
         throws JMException, IOException
     {
         Validate.notNull( session, "Session can't be NULL" );
-        return getAttributes( getMBeanInfo( session ) );
+        return getAttributes( getMBeanInfo( beanName, session ) );
     }
 
-    private static MBeanInfo getMBeanInfo( Session session )
+    private static MBeanInfo getMBeanInfo( String beanName, Session session )
         throws IOException, JMException
     {
-        ObjectName name = new ObjectName( session.getBean() );
+        ObjectName name = new ObjectName( beanName );
         MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
         return con.getMBeanInfo( name );
     }
@@ -92,15 +92,22 @@ public class InfoCommand
     public void execute( Session session )
         throws IOException, JMException
     {
-        MBeanInfo info = getMBeanInfo( session );
+        String beanName = BeanCommand.getBeanName( bean, domain, session );
+        if ( beanName == null )
+        {
+            session.output.println( "Bean isn't set yet, please use -b option or bean command" );
+            return;
+        }
+        MBeanInfo info = getMBeanInfo( beanName, session );
         PrintWriter out = session.output;
-        out.println( "MBean " + session.getBean() );
+        out.println( "MBean " + beanName );
         out.println( "Class name:" + info.getClassName() );
         out.println( "Attributes:" );
         int index = 0;
         for ( MBeanAttributeInfo attr : getAttributes( info ) )
         {
-            out.println( String.format( "%%%-3d - %s(%s)", index++, attr.getName(), attr.getType() ) );
+            out.println( String.format( "  %%%-3d - %s (%s), %s", index++, attr.getName(), attr.getType(),
+                                        attr.getDescription() ) );
         }
         out.println( "Operations:" );
         index = 0;
@@ -112,8 +119,8 @@ public class InfoCommand
             {
                 paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
             }
-            out.println( String.format( "%%%-3d - %s(%s) returns %s", index++, op.getName(),
-                                        StringUtils.join( paramTypes, ',' ), op.getReturnType() ) );
+            out.println( String.format( "  %%%-3d - %s %s(%s), %s", index++, op.getReturnType(), op.getName(),
+                                        StringUtils.join( paramTypes, ',' ), op.getDescription() ) );
         }
     }
 
@@ -123,6 +130,11 @@ public class InfoCommand
         this.bean = bean;
     }
 
+    /**
+     * Given domain
+     * 
+     * @param domain Domain name
+     */
     @Option( name = "d", longName = "domain", description = "Domain for bean" )
     public final void setDomain( String domain )
     {

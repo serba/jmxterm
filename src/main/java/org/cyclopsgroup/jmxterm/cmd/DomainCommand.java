@@ -72,7 +72,7 @@ public class DomainCommand
             }
             else
             {
-                session.output.println( "Domain is " + session.getDomain() );
+                session.output.println( "Domain = " + session.getDomain() );
             }
         }
         else

@@ -3,6 +3,8 @@ package org.cyclopsgroup.jmxterm.cmd;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import javax.management.JMException;
+import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
@@ -14,11 +16,16 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+/**
+ * Command to display or set current bean
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Cli( name = "bean", description = "Display or set current bean" )
 public class BeanCommand
     extends Command
 {
-    private static final String STRING_PATTERN_PROPERTIES = "\\w\\=\\w(\\,\\w\\=\\w)*";
+    private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=\\w+(\\,\\w+\\=\\w+)*";
 
     private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + STRING_PATTERN_PROPERTIES + "$" );
 
@@ -29,50 +36,53 @@ public class BeanCommand
 
     private String domain;
 
+    /**
+     * Set domain option
+     * 
+     * @param domain Domain option to set
+     */
     @Option( name = "d", longName = "domain", description = "Domain name" )
     public final void setDomain( String domain )
     {
         this.domain = domain;
     }
 
+    /**
+     * Set bean option
+     * 
+     * @param bean Bean to set
+     */
     @Argument
     public final void setBean( String bean )
     {
         this.bean = bean;
     }
 
-    private void selectBean( String bean, Session session )
+    public static String getBeanName( String bean, String domain, Session session )
         throws MalformedObjectNameException, IOException
     {
         if ( SyntaxUtils.isNull( bean ) )
         {
-            session.setBean( null );
-            return;
+            return session.getBean();
         }
         if ( SyntaxUtils.isIndex( bean ) )
         {
-            return;
+            return null;
+        }
+        if ( PATTERN_BEAN_NAME.matcher( bean ).find() )
+        {
+            return bean;
         }
         String domainName = DomainCommand.getDomainName( domain, session );
         if ( domainName == null && !StringUtils.equalsIgnoreCase( domain, "null" ) )
         {
             domainName = session.getDomain();
         }
-        if ( PATTERN_PROPERTIES.matcher( bean ).matches() && domainName != null )
+        if ( PATTERN_PROPERTIES.matcher( bean ).find() && domainName != null )
         {
-            session.setBean( domainName + ":" + bean );
+            return domainName + ":" + bean;
         }
-        else if ( PATTERN_BEAN_NAME.matcher( bean ).matches() )
-        {
-            ObjectName beanName = new ObjectName( bean );
-            session.setDomain( beanName.getDomain() );
-            session.setBean( bean );
-        }
-        else
-        {
-            throw new IllegalArgumentException( "Bean name " + bean + " isn't valid" );
-        }
-        session.output.println( "Bean is set to " + session.getBean() );
+        throw new IllegalArgumentException( "Bean name " + bean + " isn't valid" );
     }
 
     /**
@@ -80,7 +90,7 @@ public class BeanCommand
      */
     @Override
     public void execute( Session session )
-        throws MalformedObjectNameException, IOException
+        throws IOException, JMException
     {
         if ( bean == null )
         {
@@ -90,12 +100,17 @@ public class BeanCommand
             }
             else
             {
-                session.output.println( "Bean " + session.getBean() + " is selected currently" );
+                session.output.println( "Bean = " + session.getBean() );
             }
         }
         else
         {
-            selectBean( bean, session );
+            String beanName = getBeanName( bean, domain, session );
+            ObjectName name = new ObjectName( beanName );
+            MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+            con.getMBeanInfo( name );
+            session.setBean( beanName );
+            session.output.println( "Bean is set to " + beanName );
         }
     }
 }

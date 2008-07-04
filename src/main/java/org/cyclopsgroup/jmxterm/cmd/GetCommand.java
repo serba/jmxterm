@@ -1,16 +1,16 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.JMException;
+import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
-import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -25,33 +25,73 @@ public class GetCommand
     public void displayAttributes( Session session )
         throws IOException, JMException
     {
-        List<String> values = new ArrayList<String>( attributes.length + 1 );
-        values.add( new SimpleDateFormat( "mm:HH:ss" ).format( new Date() ) );
-
-        ObjectName beanName = new ObjectName( bean == null ? session.getBean() : bean );
-
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
-        for ( String arg : attributes )
+        String beanName = BeanCommand.getBeanName( bean, domain, session );
+        if ( beanName == null )
         {
-            String attrName;
-            if ( SyntaxUtils.isIndex( arg ) )
-            {
-                int index = SyntaxUtils.getIndex( arg );
-                attrName = InfoCommand.getAttributes( session ).get( index ).getName();
-            }
-            else
-            {
-                attrName = arg;
-            }
-            Object result = con.getAttribute( beanName, attrName );
-            values.add( result == null ? "null" : result.toString() );
+            session.output.println( "Bean isn't set yet, please use -b option or bean command" );
+            return;
         }
-        session.output.println( StringUtils.join( values, ',' ) );
+        ObjectName name = new ObjectName( beanName );
+        session.output.println( beanName + ":" );
+        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
+        HashMap<String, MBeanAttributeInfo> attributeNames = new HashMap<String, MBeanAttributeInfo>();
+        if ( attributes.contains( "*" ) )
+        {
+            for ( MBeanAttributeInfo ai : ais )
+            {
+                attributeNames.put( ai.getName(), ai );
+            }
+        }
+        else
+        {
+            for ( String arg : attributes )
+            {
+                if ( SyntaxUtils.isIndex( arg ) )
+                {
+                    int index = SyntaxUtils.getIndex( arg );
+                    attributeNames.put( ais[index].getName(), ais[index] );
+                }
+                else
+                {
+                    for ( MBeanAttributeInfo ai : ais )
+                    {
+                        if ( ai.getName().equals( arg ) )
+                        {
+                            attributeNames.put( ai.getName(), ai );
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for ( Map.Entry<String, MBeanAttributeInfo> entry : attributeNames.entrySet() )
+        {
+            Object result = con.getAttribute( name, entry.getKey() );
+            SyntaxUtils.printExpression( session.output, entry.getKey(), result, entry.getValue().getDescription(), 2,
+                                         showDescription );
+        }
     }
 
-    private String[] attributes = {};
+    private List<String> attributes = new ArrayList<String>();
 
     private String bean;
+
+    private String domain;
+
+    private boolean showDescription;
+
+    @Option( name = "i", longName = "info", description = "Show detail information of each attribute" )
+    public final void setShowDescription( boolean showDescription )
+    {
+        this.showDescription = showDescription;
+    }
+
+    @Option( name = "d", longName = "domain", description = "Domain of bean" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
 
     /**
      * @inheritDoc
@@ -60,11 +100,16 @@ public class GetCommand
     public void execute( Session session )
         throws JMException, IOException
     {
+        if ( attributes.isEmpty() )
+        {
+            session.output.println( "Please specify at least one attribute" );
+            return;
+        }
         displayAttributes( session );
     }
 
     @Argument( requires = 1 )
-    public final void setAttributes( String[] attributes )
+    public final void setAttributes( List<String> attributes )
     {
         this.attributes = attributes;
     }
