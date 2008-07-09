@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -36,6 +35,7 @@ public class BeansCommand
      * Get list of bean names under current domain
      * 
      * @param session Current JMX session
+     * @param Full domain name
      * @return List of bean names
      * @throws MalformedObjectNameException
      * @throws IOException
@@ -74,10 +74,6 @@ public class BeansCommand
             return;
         }
         String domainName = DomainCommand.getDomainName( domain, session );
-        if ( domainName == null && !StringUtils.equalsIgnoreCase( domain, "null" ) )
-        {
-            domainName = session.getDomain();
-        }
         List<String> domains = new ArrayList<String>();
         if ( domainName != null )
         {
@@ -94,7 +90,7 @@ public class BeansCommand
             session.output.println( "domain = " + d + ":" );
             for ( String bean : getBeans( session, d ) )
             {
-                session.output.println( String.format( "  %%%-3d - %s", i++, bean ) );
+                session.output.println( String.format( "  #%-3d - %s", i++, bean ) );
             }
         }
     }

@@ -11,20 +11,16 @@ import javax.management.openmbean.CompositeData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Utility class for syntax checking
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public final class SyntaxUtils
 {
-    private SyntaxUtils()
-    {
-    }
-
-    private static final Pattern PATTERN_INDEX = Pattern.compile( "^\\%\\d+$" );
-
     private static final String NULL = "null";
 
-    public static boolean isIndex( String s )
-    {
-        return PATTERN_INDEX.matcher( s ).matches();
-    }
+    private static final Pattern PATTERN_INDEX = Pattern.compile( "^\\%\\d+$" );
 
     public static int getIndex( String s )
     {
@@ -32,11 +28,38 @@ public final class SyntaxUtils
         return Integer.parseInt( s.substring( 1 ) );
     }
 
-    public static boolean isNull( String s )
+    public static boolean isIndex( String s )
     {
-        return s == null || StringUtils.equalsIgnoreCase( NULL, s );
+        return PATTERN_INDEX.matcher( s ).matches();
     }
 
+    public static boolean isNull( String s )
+    {
+        return StringUtils.equalsIgnoreCase( NULL, s );
+    }
+
+    /**
+     * Parse given string expression to expected type of value
+     * 
+     * @param expression String expression
+     * @param type Target type
+     * @return Object of value
+     */
+    public static Object parse( String expression, String type )
+    {
+        return expression;
+    }
+
+    /**
+     * Print out <code>name = value;</code> expression considering various possible types of value
+     * 
+     * @param output Output writer where expression is printed
+     * @param name Variable name
+     * @param value Variable value
+     * @param description Description of expression
+     * @param indent Starting indentation length
+     * @param showDescription True if description needs to be printed
+     */
     public static void printExpression( PrintWriter output, Object name, Object value, String description, int indent,
                                         boolean showDescription )
     {
@@ -52,6 +75,14 @@ public final class SyntaxUtils
         output.println();
     }
 
+    /**
+     * Print out expression of given value considering various possible types of value
+     * 
+     * @param output Output writer where value is printed
+     * @param value Object value which can be anything
+     * @param indent Starting indentation length
+     * @param showDescription True if description needs to be printed
+     */
     public static void printValue( PrintWriter output, Object value, int indent, boolean showDescription )
     {
         if ( value == null )
@@ -100,10 +131,10 @@ public final class SyntaxUtils
         {
             output.println( "{ " );
             CompositeData data = (CompositeData) value;
-            for ( String key : data.getCompositeType().keySet() )
+            for ( Object key : data.getCompositeType().keySet() )
             {
-                Object v = data.get( key );
-                printExpression( output, key, v, data.getCompositeType().getDescription( key ), indent + 2,
+                Object v = data.get( (String) key );
+                printExpression( output, key, v, data.getCompositeType().getDescription( (String) key ), indent + 2,
                                  showDescription );
             }
             output.print( StringUtils.repeat( " ", indent ) + " }" );
@@ -116,5 +147,9 @@ public final class SyntaxUtils
         {
             output.print( value );
         }
+    }
+
+    private SyntaxUtils()
+    {
     }
 }

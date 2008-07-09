@@ -2,8 +2,8 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jcli.annotation.Argument;
@@ -21,38 +21,30 @@ public class DomainCommand
     /**
      * Get domain name from given domain expression
      * 
-     * @param domain Domain expression, which can be a name or %N
+     * @param domain Domain expression, which can be a name or NULL
      * @param session Current JMX session
-     * @return String name of domain
+     * @return String name of domain coming from given parameter or current session
      * @throws IOException
      */
     public static String getDomainName( String domain, Session session )
         throws IOException
     {
+        Validate.notNull( session, "Session can't be NULL" );
+        Validate.isTrue( session.getConnection() != null, "Session isn't opened" );
+        if ( domain == null )
+        {
+            return session.getDomain();
+        }
         if ( SyntaxUtils.isNull( domain ) )
         {
             return null;
         }
-        else if ( SyntaxUtils.isIndex( domain ) )
+        HashSet<String> domains = new HashSet<String>( DomainsCommand.getDomains( session ) );
+        if ( !domains.contains( domain ) )
         {
-            int index = SyntaxUtils.getIndex( domain );
-            List<String> domains = DomainsCommand.getDomains( session );
-            if ( index >= domains.size() )
-            {
-                throw new IllegalArgumentException( "There're only " + domains.size() + " domains, " + domain
-                    + " doesn't exist" );
-            }
-            return domains.get( index );
+            throw new IllegalArgumentException( "Domain " + domain + " doesn't exist, check your spelling" );
         }
-        else
-        {
-            HashSet<String> domains = new HashSet<String>( DomainsCommand.getDomains( session ) );
-            if ( !domains.contains( domain ) )
-            {
-                throw new IllegalArgumentException( "Domain " + domain + " doesn't exist, check your spelling" );
-            }
-            return domain;
-        }
+        return domain;
     }
 
     private String domain;

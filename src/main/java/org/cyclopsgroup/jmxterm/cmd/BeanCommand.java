@@ -5,10 +5,9 @@ import java.util.regex.Pattern;
 
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
-import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -58,27 +57,42 @@ public class BeanCommand
         this.bean = bean;
     }
 
+    /**
+     * Get full MBean name with given bean name, domain and session
+     * 
+     * @param bean Name of bean. It can be NULL so that session#getBean() is returned
+     * @param domain Domain for bean
+     * @param session Current session
+     * @return Full qualified name of MBean
+     * @throws JMException Thrown when given MBean name is malformed
+     * @throws IOException
+     */
     public static String getBeanName( String bean, String domain, Session session )
-        throws MalformedObjectNameException, IOException
+        throws JMException, IOException
     {
-        if ( SyntaxUtils.isNull( bean ) )
+        Validate.notNull( session, "Session can't be NULL" );
+        Validate.isTrue( session.getConnection() != null, "Session isn't opened" );
+        if ( bean == null )
         {
             return session.getBean();
         }
-        if ( SyntaxUtils.isIndex( bean ) )
+        if ( SyntaxUtils.isNull( bean ) )
         {
             return null;
         }
+        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
         if ( PATTERN_BEAN_NAME.matcher( bean ).find() )
         {
+            ObjectName name = new ObjectName( bean );
+            con.getMBeanInfo( name );
             return bean;
         }
         String domainName = DomainCommand.getDomainName( domain, session );
-        if ( domainName == null && !StringUtils.equalsIgnoreCase( domain, "null" ) )
+        if ( domainName == null )
         {
-            domainName = session.getDomain();
+            throw new IllegalArgumentException( "Please specify domain using either -d option or domain command" );
         }
-        if ( PATTERN_PROPERTIES.matcher( bean ).find() && domainName != null )
+        if ( PATTERN_PROPERTIES.matcher( bean ).find() )
         {
             return domainName + ":" + bean;
         }
@@ -106,6 +120,12 @@ public class BeanCommand
         else
         {
             String beanName = getBeanName( bean, domain, session );
+            if ( beanName == null )
+            {
+                session.setBean( null );
+                session.output.println( "Bean is unset" );
+                return;
+            }
             ObjectName name = new ObjectName( beanName );
             MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
             con.getMBeanInfo( name );

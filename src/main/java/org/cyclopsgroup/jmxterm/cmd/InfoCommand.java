@@ -95,8 +95,7 @@ public class InfoCommand
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         if ( beanName == null )
         {
-            session.output.println( "Bean isn't set yet, please use -b option or bean command" );
-            return;
+            throw new IllegalArgumentException( "Please specify a bean using either -b option or bean command" );
         }
         MBeanInfo info = getMBeanInfo( beanName, session );
         PrintWriter out = session.output;
@@ -106,7 +105,7 @@ public class InfoCommand
         int index = 0;
         for ( MBeanAttributeInfo attr : getAttributes( info ) )
         {
-            out.println( String.format( "  %%%-3d - %s (%s), %s", index++, attr.getName(), attr.getType(),
+            out.println( String.format( "  #%-3d - %s (%s), %s", index++, attr.getName(), attr.getType(),
                                         attr.getDescription() ) );
         }
         out.println( "Operations:" );
@@ -119,7 +118,7 @@ public class InfoCommand
             {
                 paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
             }
-            out.println( String.format( "  %%%-3d - %s %s(%s), %s", index++, op.getReturnType(), op.getName(),
+            out.println( String.format( "  #%-3d - %s %s(%s), %s", index++, op.getReturnType(), op.getName(),
                                         StringUtils.join( paramTypes, ',' ), op.getDescription() ) );
         }
     }

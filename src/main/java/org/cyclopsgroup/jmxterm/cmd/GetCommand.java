@@ -28,11 +28,10 @@ public class GetCommand
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         if ( beanName == null )
         {
-            session.output.println( "Bean isn't set yet, please use -b option or bean command" );
-            return;
+            throw new IllegalArgumentException( "Bean isn't set yet, please use -b option or bean command" );
         }
         ObjectName name = new ObjectName( beanName );
-        session.output.println( beanName + ":" );
+        session.output.println( "MBean = " + beanName + ":" );
         MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         HashMap<String, MBeanAttributeInfo> attributeNames = new HashMap<String, MBeanAttributeInfo>();

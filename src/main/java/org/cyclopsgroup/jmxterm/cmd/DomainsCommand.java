@@ -50,7 +50,7 @@ public class DomainsCommand
         int i = 0;
         for ( String domain : getDomains( session ) )
         {
-            session.output.println( String.format( "%%%-3d - %s", i++, domain ) );
+            session.output.println( String.format( "#%-3d - %s", i++, domain ) );
         }
     }
 }

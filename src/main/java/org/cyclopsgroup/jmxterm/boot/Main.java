@@ -23,14 +23,7 @@ public class Main
                 buffer.flip();
                 buffer.get( chunk );
                 String command = new String( chunk );
-                try
-                {
-                    commandCenter.execute( command );
-                }
-                catch ( Exception e )
-                {
-                    e.printStackTrace();
-                }
+                commandCenter.execute( command );
                 if ( commandCenter.isClosed() )
                 {
                     break;
