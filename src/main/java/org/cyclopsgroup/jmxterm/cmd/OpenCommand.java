@@ -42,7 +42,7 @@ public class OpenCommand
             }
             return;
         }
-        Validate.isTrue( session.getConnection() == null );
+        Validate.isTrue( session.getConnection() == null, "Session is already opened" );
         JMXServiceURL u = SyntaxUtils.getUrl( url );
         JMXConnector connector = JMXConnectorFactory.connect( u );
         session.setConnection( new Connection( connector, u, url ) );
