@@ -2,14 +2,15 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.management.openmbean.CompositeData;
+import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
 
 /**
  * Utility class for syntax checking
@@ -20,18 +21,7 @@ public final class SyntaxUtils
 {
     private static final String NULL = "null";
 
-    private static final Pattern PATTERN_INDEX = Pattern.compile( "^\\%\\d+$" );
-
-    public static int getIndex( String s )
-    {
-        Validate.isTrue( isIndex( s ), "Malformed index value " + s );
-        return Integer.parseInt( s.substring( 1 ) );
-    }
-
-    public static boolean isIndex( String s )
-    {
-        return PATTERN_INDEX.matcher( s ).matches();
-    }
+    private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
 
     public static boolean isNull( String s )
     {
@@ -147,6 +137,16 @@ public final class SyntaxUtils
         {
             output.print( value );
         }
+    }
+
+    public static JMXServiceURL getUrl( String url )
+        throws MalformedURLException
+    {
+        if ( PATTERN_HOST_PORT.matcher( url ).find() )
+        {
+            return new JMXServiceURL( "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi" );
+        }
+        return new JMXServiceURL( url );
     }
 
     private SyntaxUtils()

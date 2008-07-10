@@ -46,20 +46,12 @@ public class GetCommand
         {
             for ( String arg : attributes )
             {
-                if ( SyntaxUtils.isIndex( arg ) )
+                for ( MBeanAttributeInfo ai : ais )
                 {
-                    int index = SyntaxUtils.getIndex( arg );
-                    attributeNames.put( ais[index].getName(), ais[index] );
-                }
-                else
-                {
-                    for ( MBeanAttributeInfo ai : ais )
+                    if ( ai.getName().equals( arg ) )
                     {
-                        if ( ai.getName().equals( arg ) )
-                        {
-                            attributeNames.put( ai.getName(), ai );
-                            break;
-                        }
+                        attributeNames.put( ai.getName(), ai );
+                        break;
                     }
                 }
             }

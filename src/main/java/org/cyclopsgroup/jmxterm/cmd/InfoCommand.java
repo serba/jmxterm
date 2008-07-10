@@ -18,7 +18,6 @@ import javax.management.ObjectName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -123,7 +122,7 @@ public class InfoCommand
         }
     }
 
-    @Argument( requires = 1 )
+    @Option( name = "b", longName = "bean", description = "Name of MBean" )
     public final void setBean( String bean )
     {
         this.bean = bean;

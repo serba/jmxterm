@@ -6,13 +6,19 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Facade class where commands are maintained and executed
@@ -39,12 +45,39 @@ public class CommandCenter
      * @throws IOException Thrown for file access failure
      */
     public CommandCenter( PrintWriter output )
-        throws ClassNotFoundException, IOException
+        throws IOException
     {
         Validate.notNull( output, "Output can't be NULL" );
         session = new Session( output );
-        commandFactory = new CommandFactory();
-        output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
+        try
+        {
+            commandFactory = new CommandFactory();
+            output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new RuntimeException( "Command class not found, jar is corrupted probably", e );
+        }
+    }
+
+    public void connect( String url )
+        throws IOException
+    {
+        if ( session.getConnection() != null )
+        {
+            throw new IllegalStateException( "Command center is already opened" );
+        }
+        JMXServiceURL u = SyntaxUtils.getUrl( url );
+        JMXConnector connector = JMXConnectorFactory.connect( u );
+        session.setConnection( new Connection( connector, u, url ) );
+    }
+
+    /**
+     * Close session
+     */
+    public void close()
+    {
+        session.close();
     }
 
     private void doExecute( String command )

@@ -29,9 +29,12 @@ public class Session
         this.output = output;
     }
 
-    public void close()
+    public synchronized void close()
     {
-        requireSession();
+        if ( closed )
+        {
+            return;
+        }
         if ( connection != null )
         {
             unsetConnection();

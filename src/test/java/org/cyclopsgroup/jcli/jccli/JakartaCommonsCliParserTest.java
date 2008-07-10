@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.SampleBean;
+import org.cyclopsgroup.jcli.SampleBeanWithMultiValueOption;
 import org.cyclopsgroup.jcli.SampleBeanWithSimpleArgument;
 import org.junit.Test;
 
@@ -27,6 +28,16 @@ public class JakartaCommonsCliParserTest
         assertEquals( 34123, b.getIntField() );
         assertTrue( b.isBooleanField() );
         assertArrayEquals( new String[] { "3453", "34", "52345" }, b.getValues().toArray() );
+    }
+
+    @Test
+    public void testParseWithMultiValueOption()
+        throws IntrospectionException
+    {
+        JakartaCommonsCliParser parser = new JakartaCommonsCliParser( new GnuParser() );
+        SampleBeanWithMultiValueOption bean = new SampleBeanWithMultiValueOption();
+        parser.parse( StringUtils.split( "-o aaa -o bbb -o ccc" ), bean );
+        System.out.println( bean.getOptions() );
     }
 
     @Test

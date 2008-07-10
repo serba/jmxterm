@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
@@ -15,14 +14,13 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 @Cli( name = "open", description = "Open JMX session", note = "eg. open localhost:9991, or open jmx:service:..." )
 public class OpenCommand
     extends Command
 {
     private static final Log LOG = LogFactory.getLog( OpenCommand.class );
-
-    private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
 
     private String url;
 
@@ -45,15 +43,7 @@ public class OpenCommand
             return;
         }
         Validate.isTrue( session.getConnection() == null );
-        JMXServiceURL u;
-        if ( PATTERN_HOST_PORT.matcher( url ).find() )
-        {
-            u = new JMXServiceURL( "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi" );
-        }
-        else
-        {
-            u = new JMXServiceURL( url );
-        }
+        JMXServiceURL u = SyntaxUtils.getUrl( url );
         JMXConnector connector = JMXConnectorFactory.connect( u );
         session.setConnection( new Connection( connector, u, url ) );
         LOG.info( "Connection to " + url + " is opened" );

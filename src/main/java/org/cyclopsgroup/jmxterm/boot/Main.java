@@ -1,42 +1,94 @@
 package org.cyclopsgroup.jmxterm.boot;
 
+import java.beans.IntrospectionException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.PrintWriter;
-import java.nio.ByteBuffer;
+import java.io.Reader;
 
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.impl.CommandCenter;
 
 public class Main
 {
-    public static final void main( String[] args )
-        throws Exception
+    private static final PrintWriter STDOUT_WRITER = new PrintWriter( System.out, true );
+
+    private final CommandCenter commandCenter;
+
+    Main( CommandCenter commandCenter )
     {
-        CommandCenter commandCenter = new CommandCenter( new PrintWriter( System.out, true ) );
-        ByteBuffer buffer = ByteBuffer.allocate( 1 << 16 );
-        commandCenter.prompt();
-        byte b;
-        for ( ;; )
+        Validate.notNull( commandCenter, "CommandCenter can't be NULL" );
+        this.commandCenter = commandCenter;
+    }
+
+    private Main()
+        throws IOException
+    {
+        this( new CommandCenter( STDOUT_WRITER ) );
+    }
+
+    public static final void main( String[] args )
+        throws IntrospectionException, IOException
+    {
+        Main main = new Main();
+        main.execute( args );
+    }
+
+    void execute( String[] args )
+        throws IntrospectionException, IOException
+    {
+        MainOptions options = new MainOptions();
+        JakartaCommonsCliParser parser = new JakartaCommonsCliParser( new GnuParser() );
+        parser.parse( args, options );
+        if ( options.isHelp() )
         {
-            b = (byte) System.in.read();
-            if ( b == 10 )
+            parser.printUsage( MainOptions.class, STDOUT_WRITER );
+            return;
+        }
+        if ( options.getUrl() != null )
+        {
+            commandCenter.connect( options.getUrl() );
+        }
+
+        Reader input;
+        boolean closeInputFinally;
+        if ( options.getInput().equals( MainOptions.STDIN ) )
+        {
+            input = new InputStreamReader( System.in );
+            closeInputFinally = false;
+        }
+        else
+        {
+            input = new FileReader( new File( options.getInput() ) );
+            closeInputFinally = true;
+        }
+        try
+        {
+            LineNumberReader in = new LineNumberReader( input );
+            commandCenter.prompt();
+            String line = in.readLine();
+            while ( line != null )
             {
-                byte[] chunk = new byte[buffer.position()];
-                buffer.flip();
-                buffer.get( chunk );
-                String command = new String( chunk );
-                commandCenter.execute( command );
+                commandCenter.execute( line );
                 if ( commandCenter.isClosed() )
                 {
                     break;
                 }
-                else
-                {
-                    buffer.clear();
-                    commandCenter.prompt();
-                }
+                commandCenter.prompt();
+                line = in.readLine();
             }
-            else
+            commandCenter.close();
+        }
+        finally
+        {
+            if ( closeInputFinally )
             {
-                buffer.put( b );
+                input.close();
             }
         }
     }
