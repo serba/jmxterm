@@ -4,7 +4,7 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
-@Cli( name = "run", description = "Invoke an action" )
+@Cli( name = "set", description = "Set value of an attribute" )
 public class SetCommand
     extends Command
 {
