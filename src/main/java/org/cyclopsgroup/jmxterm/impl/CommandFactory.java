@@ -20,13 +20,25 @@ import org.cyclopsgroup.jmxterm.Command;
  */
 class CommandFactory
 {
-    final Map<String, Class<? extends Command>> commandTypes;
-
     private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
 
     private static final String CONFIG_COMMAND_TYPE_SUFFIX = ".type";
 
     private static final String CONFIG_PATH = "META-INF/cyclopsgroup/jmxterm.properties";
+
+    final Map<String, Class<? extends Command>> commandTypes;
+
+    /**
+     * Default constructor
+     * 
+     * @throws ClassNotFoundException Thrown when configured command class doesn't exist
+     * @throws IOException Thrown when Jar is corrupted
+     */
+    CommandFactory()
+        throws ClassNotFoundException, IOException
+    {
+        this( CONFIG_PATH );
+    }
 
     /**
      * Constructor which builds up command types
@@ -35,12 +47,13 @@ class CommandFactory
      * @throws IOException Thrown when Jar is corrupted
      */
     @SuppressWarnings( "unchecked" )
-    CommandFactory()
+    CommandFactory( String configPath )
         throws ClassNotFoundException, IOException
     {
+        Validate.notNull( configPath, "configPath can't be NULL" );
         Properties props = new Properties();
         ClassLoader classLoader = getClass().getClassLoader();
-        Enumeration<URL> configs = classLoader.getResources( CONFIG_PATH );
+        Enumeration<URL> configs = classLoader.getResources( configPath );
         while ( configs.hasMoreElements() )
         {
             InputStream in = configs.nextElement().openStream();

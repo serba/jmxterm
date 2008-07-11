@@ -76,7 +76,7 @@ public class RunCommand
         MBeanOperationInfo operationInfo = null;
         for ( MBeanOperationInfo info : beanInfo.getOperations() )
         {
-            if ( operationName.equals( info.getName() ) )
+            if ( operationName.equals( info.getName() ) && info.getSignature().length == parameters.size() - 1 )
             {
                 operationInfo = info;
                 break;
@@ -84,7 +84,8 @@ public class RunCommand
         }
         if ( operationInfo == null )
         {
-            throw new IllegalArgumentException( "Operation " + operationName + " doesn't exist in bean " + beanName );
+            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 )
+                + " parameters doesn't exist in bean " + beanName );
         }
         Object[] params = new Object[parameters.size() - 1];
         MBeanParameterInfo[] paramInfos = operationInfo.getSignature();

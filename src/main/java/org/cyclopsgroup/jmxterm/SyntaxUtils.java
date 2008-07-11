@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import javax.management.openmbean.CompositeData;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -23,6 +25,22 @@ public final class SyntaxUtils
 
     private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
 
+    public static JMXServiceURL getUrl( String url )
+        throws MalformedURLException
+    {
+        if ( PATTERN_HOST_PORT.matcher( url ).find() )
+        {
+            return new JMXServiceURL( "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi" );
+        }
+        return new JMXServiceURL( url );
+    }
+
+    /**
+     * Check if string value is <code>null</code>
+     * 
+     * @param s String value
+     * @return True if value is <code>null</code>
+     */
     public static boolean isNull( String s )
     {
         return StringUtils.equalsIgnoreCase( NULL, s );
@@ -37,7 +55,20 @@ public final class SyntaxUtils
      */
     public static Object parse( String expression, String type )
     {
-        return expression;
+        if ( StringUtils.isEmpty( expression ) || isNull( expression ) )
+        {
+            return null;
+        }
+        Class<?> c;
+        try
+        {
+            c = ClassUtils.getClass( type );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new IllegalArgumentException( "Type " + type + " isn't valid", e );
+        }
+        return ConvertUtils.convert( expression, c );
     }
 
     /**
@@ -137,16 +168,6 @@ public final class SyntaxUtils
         {
             output.print( value );
         }
-    }
-
-    public static JMXServiceURL getUrl( String url )
-        throws MalformedURLException
-    {
-        if ( PATTERN_HOST_PORT.matcher( url ).find() )
-        {
-            return new JMXServiceURL( "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi" );
-        }
-        return new JMXServiceURL( url );
     }
 
     private SyntaxUtils()
