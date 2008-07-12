@@ -72,7 +72,7 @@ public class SetCommand
         this.arguments = arguments;
     }
 
-    @Option( name = "b", longName = "bean", description = "Bean name" )
+    @Option( name = "b", longName = "bean", description = "MBean name where the attribute is. Optional if bean has been set" )
     public final void setBean( String bean )
     {
         this.bean = bean;

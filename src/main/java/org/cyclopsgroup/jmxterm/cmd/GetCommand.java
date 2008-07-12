@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.JMException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -21,6 +23,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class GetCommand
     extends Command
 {
+    @SuppressWarnings( "unchecked" )
     public void displayAttributes( Session session )
         throws IOException, JMException
     {
@@ -33,7 +36,8 @@ public class GetCommand
         session.msg( "mbean = " + beanName + ":" );
         MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
-        HashMap<String, MBeanAttributeInfo> attributeNames = new HashMap<String, MBeanAttributeInfo>();
+        Map<String, MBeanAttributeInfo> attributeNames =
+            (Map<String, MBeanAttributeInfo>) ListOrderedMap.decorate( new HashMap<String, MBeanAttributeInfo>() );
         if ( attributes.contains( "*" ) )
         {
             for ( MBeanAttributeInfo ai : ais )
@@ -49,15 +53,16 @@ public class GetCommand
                 {
                     if ( ai.getName().equals( arg ) )
                     {
-                        attributeNames.put( ai.getName(), ai );
+                        attributeNames.put( arg, ai );
                         break;
                     }
                 }
             }
         }
-        for ( String attributeName : this.attributes )
+        for ( Map.Entry<String, MBeanAttributeInfo> entry : attributeNames.entrySet() )
         {
-            MBeanAttributeInfo i = attributeNames.get( attributeName );
+            String attributeName = entry.getKey();
+            MBeanAttributeInfo i = entry.getValue();
             if ( i.isReadable() )
             {
                 Object result = con.getAttribute( name, attributeName );
@@ -93,7 +98,7 @@ public class GetCommand
         this.showDescription = showDescription;
     }
 
-    @Option( name = "d", longName = "domain", description = "Domain of bean" )
+    @Option( name = "d", longName = "domain", description = "Domain of bean, optional" )
     public final void setDomain( String domain )
     {
         this.domain = domain;
@@ -119,7 +124,7 @@ public class GetCommand
         this.attributes = attributes;
     }
 
-    @Option( name = "b", longName = "bean" )
+    @Option( name = "b", longName = "bean", description = "MBean name where the attribute is. Optional if bean has been set" )
     public final void setBean( String bean )
     {
         this.bean = bean;
