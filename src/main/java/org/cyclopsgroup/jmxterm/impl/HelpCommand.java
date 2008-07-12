@@ -20,7 +20,7 @@ import org.cyclopsgroup.jmxterm.Session;
 public class HelpCommand
     extends Command
 {
-    private CommandCenter commandCenter;
+    private CommandCenter commandCenter = null;
 
     private String[] argNames = {};
 
@@ -50,6 +50,7 @@ public class HelpCommand
     public void execute( Session session )
         throws Exception
     {
+        Validate.notNull( commandCenter, "Command center hasn't been set yet" );
         if ( argNames.length == 0 )
         {
             List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
@@ -59,8 +60,8 @@ public class HelpCommand
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
                 Cli cli = CliUtils.defineCli( commandType ).getCli();
-                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
-                    + cli.description() );
+                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":" +
+                    cli.description() );
             }
         }
         else

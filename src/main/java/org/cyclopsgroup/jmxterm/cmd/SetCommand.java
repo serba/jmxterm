@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.management.Attribute;
@@ -22,7 +23,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class SetCommand
     extends Command
 {
-    private List<String> arguments;
+    private List<String> arguments = Collections.emptyList();
 
     private String bean;
 
@@ -35,7 +36,6 @@ public class SetCommand
     public void execute( Session session )
         throws JMException, IOException
     {
-        Validate.notNull( arguments, "Argument can't be NULL" );
         Validate.isTrue( arguments.size() >= 2, "At least two arguments are required" );
         String attributeName = arguments.get( 0 );
 

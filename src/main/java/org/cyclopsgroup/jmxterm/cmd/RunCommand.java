@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.management.JMException;
@@ -23,7 +24,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class RunCommand
     extends Command
 {
-    private List<String> parameters;
+    private List<String> parameters = Collections.emptyList();
 
     private String bean;
 
@@ -52,6 +53,7 @@ public class RunCommand
     @Argument( requires = 1 )
     public final void setParameters( List<String> parameters )
     {
+        Validate.notNull( parameters, "Parameters can't be NULL" );
         this.parameters = parameters;
     }
 
@@ -84,8 +86,8 @@ public class RunCommand
         }
         if ( operationInfo == null )
         {
-            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 )
-                + " parameters doesn't exist in bean " + beanName );
+            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 ) +
+                " parameters doesn't exist in bean " + beanName );
         }
         Object[] params = new Object[parameters.size() - 1];
         MBeanParameterInfo[] paramInfos = operationInfo.getSignature();
