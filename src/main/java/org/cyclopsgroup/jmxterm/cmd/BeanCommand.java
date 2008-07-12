@@ -110,27 +110,26 @@ public class BeanCommand
         {
             if ( session.getBean() == null )
             {
-                session.output.println( "Bean is not set" );
+                session.msg( "bean is not set", SyntaxUtils.NULL );
             }
             else
             {
-                session.output.println( "Bean = " + session.getBean() );
+                session.msg( "bean = " + session.getBean(), session.getBean() );
             }
+            return;
         }
-        else
+        String beanName = getBeanName( bean, domain, session );
+        if ( beanName == null )
         {
-            String beanName = getBeanName( bean, domain, session );
-            if ( beanName == null )
-            {
-                session.setBean( null );
-                session.output.println( "Bean is unset" );
-                return;
-            }
-            ObjectName name = new ObjectName( beanName );
-            MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
-            con.getMBeanInfo( name );
-            session.setBean( beanName );
-            session.output.println( "Bean is set to " + beanName );
+            session.setBean( null );
+            session.msg( "bean is unset" );
+            return;
         }
+        ObjectName name = new ObjectName( beanName );
+        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        con.getMBeanInfo( name );
+        session.setBean( beanName );
+        session.msg( "bean is set to " + beanName );
+        session.ok();
     }
 }

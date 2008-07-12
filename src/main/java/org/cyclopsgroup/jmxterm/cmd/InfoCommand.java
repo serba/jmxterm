@@ -1,16 +1,18 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.management.JMException;
 import javax.management.MBeanAttributeInfo;
+import javax.management.MBeanFeatureInfo;
 import javax.management.MBeanInfo;
+import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 import javax.management.MBeanServerConnection;
@@ -18,6 +20,7 @@ import javax.management.ObjectName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -32,57 +35,92 @@ import org.cyclopsgroup.jmxterm.Session;
 public class InfoCommand
     extends Command
 {
-    private static final Comparator<MBeanAttributeInfo> ATTRIBUTE_COMPARATOR = new Comparator<MBeanAttributeInfo>()
+    private static final String TEXT_ATTRIBUTES = ":attributes:";
+
+    private static final String TEXT_NOTIFICATIONS = ":notifications:";
+
+    private static final String TEXT_OPERATIONS = ":operations:";
+
+    private static final Comparator<MBeanFeatureInfo> INFO_COMPARATOR = new Comparator<MBeanFeatureInfo>()
     {
-        public int compare( MBeanAttributeInfo o1, MBeanAttributeInfo o2 )
+        public int compare( MBeanFeatureInfo o1, MBeanFeatureInfo o2 )
         {
-            return o1.getName().compareTo( o2.getName() );
+            return new CompareToBuilder().append( o1.getName(), o2.getName() ).append( o1.hashCode(), o2.hashCode() ).toComparison();
         }
     };
 
-    private static final Comparator<MBeanOperationInfo> OPERATION_COMPARATOR = new Comparator<MBeanOperationInfo>()
+    private void displayAttributes( Session session, MBeanInfo info )
     {
-        public int compare( MBeanOperationInfo o1, MBeanOperationInfo o2 )
+        MBeanAttributeInfo[] attrInfos = info.getAttributes();
+        if ( attrInfos.length == 0 )
         {
-            return o1.getName().compareTo( o2.getName() );
+            session.msg( "there is no attribute" );
+            return;
         }
-    };
-
-    private static List<MBeanAttributeInfo> getAttributes( MBeanInfo beanInfo )
-        throws JMException, IOException
-    {
-        MBeanAttributeInfo[] attrInfos = beanInfo.getAttributes();
-        List<MBeanAttributeInfo> result = new ArrayList<MBeanAttributeInfo>( Arrays.asList( attrInfos ) );
-        Collections.sort( result, ATTRIBUTE_COMPARATOR );
-        return result;
+        int index = 0;
+        session.msg( TEXT_ATTRIBUTES, TEXT_ATTRIBUTES );
+        List<MBeanAttributeInfo> infos = new ArrayList<MBeanAttributeInfo>( Arrays.asList( attrInfos ) );
+        Collections.sort( infos, INFO_COMPARATOR );
+        for ( MBeanAttributeInfo attr : infos )
+        {
+            String rw = "" + ( attr.isReadable() ? "r" : "" ) + ( attr.isWritable() ? "w" : "" );
+            session.msg( String.format( "  #%-3d - %s (%s, %s)" + ( showDescription ? ", %s" : "" ), index++,
+                                        attr.getName(), attr.getType(), rw, attr.getDescription() ), attr.getName() );
+        }
     }
 
-    public static List<MBeanAttributeInfo> getAttributes( String beanName, Session session )
-        throws JMException, IOException
+    private void displayNotifications( Session session, MBeanInfo info )
     {
-        Validate.notNull( session, "Session can't be NULL" );
-        return getAttributes( getMBeanInfo( beanName, session ) );
+        MBeanNotificationInfo[] notificationInfos = info.getNotifications();
+        if ( notificationInfos.length == 0 )
+        {
+            session.msg( "there's no notifications" );
+            return;
+        }
+        int index = 0;
+        session.msg( TEXT_NOTIFICATIONS, TEXT_NOTIFICATIONS );
+        for ( MBeanNotificationInfo notification : notificationInfos )
+        {
+            session.msg( String.format( "  #%-3d - %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+                                        notification.getName(), StringUtils.join( notification.getNotifTypes(), "," ),
+                                        notification.getDescription() ), notification.getName() );
+        }
+
     }
 
-    private static MBeanInfo getMBeanInfo( String beanName, Session session )
-        throws IOException, JMException
+    private void displayOperations( Session session, MBeanInfo info )
     {
-        ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
-        return con.getMBeanInfo( name );
-    }
-
-    private static List<MBeanOperationInfo> getOperations( MBeanInfo beanInfo )
-    {
-        MBeanOperationInfo[] operationInfos = beanInfo.getOperations();
-        List<MBeanOperationInfo> result = new ArrayList<MBeanOperationInfo>( Arrays.asList( operationInfos ) );
-        Collections.sort( result, OPERATION_COMPARATOR );
-        return result;
+        MBeanOperationInfo[] operationInfos = info.getOperations();
+        if ( operationInfos.length == 0 )
+        {
+            session.msg( "there's no operations" );
+            return;
+        }
+        List<MBeanOperationInfo> operations = new ArrayList<MBeanOperationInfo>( Arrays.asList( operationInfos ) );
+        Collections.sort( operations, INFO_COMPARATOR );
+        session.msg( TEXT_OPERATIONS, TEXT_OPERATIONS );
+        int index = 0;
+        for ( MBeanOperationInfo op : operations )
+        {
+            MBeanParameterInfo[] paramInfos = op.getSignature();
+            List<String> paramTypes = new ArrayList<String>( paramInfos.length );
+            for ( MBeanParameterInfo paramInfo : paramInfos )
+            {
+                paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
+            }
+            session.msg( String.format( "  #%-3d - %s %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+                                        op.getReturnType(), op.getName(), StringUtils.join( paramTypes, ',' ),
+                                        op.getDescription() ), op.getName() );
+        }
     }
 
     private String bean;
 
     private String domain;
+
+    private boolean showDescription;
+
+    private String type = "aon";
 
     /**
      * @inheritDoc
@@ -96,29 +134,27 @@ public class InfoCommand
         {
             throw new IllegalArgumentException( "Please specify a bean using either -b option or bean command" );
         }
-        MBeanInfo info = getMBeanInfo( beanName, session );
-        PrintWriter out = session.output;
-        out.println( "MBean " + beanName );
-        out.println( "Class name:" + info.getClassName() );
-        out.println( "Attributes:" );
-        int index = 0;
-        for ( MBeanAttributeInfo attr : getAttributes( info ) )
+        ObjectName name = new ObjectName( beanName );
+        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanInfo info = con.getMBeanInfo( name );
+        session.msg( "mbean = " + beanName );
+        session.msg( "class name = " + info.getClassName() );
+        for ( char t : type.toCharArray() )
         {
-            out.println( String.format( "  #%-3d - %s (%s), %s", index++, attr.getName(), attr.getType(),
-                                        attr.getDescription() ) );
-        }
-        out.println( "Operations:" );
-        index = 0;
-        for ( MBeanOperationInfo op : getOperations( info ) )
-        {
-            MBeanParameterInfo[] paramInfos = op.getSignature();
-            List<String> paramTypes = new ArrayList<String>( paramInfos.length );
-            for ( MBeanParameterInfo paramInfo : paramInfos )
+            switch ( t )
             {
-                paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
+                case 'a':
+                    displayAttributes( session, info );
+                    break;
+                case 'o':
+                    displayOperations( session, info );
+                    break;
+                case 'n':
+                    displayNotifications( session, info );
+                    break;
+                default:
+                    throw new IllegalArgumentException( "Unrecognizable character " + t + " in type option " + type );
             }
-            out.println( String.format( "  #%-3d - %s %s(%s), %s", index++, op.getReturnType(), op.getName(),
-                                        StringUtils.join( paramTypes, ',' ), op.getDescription() ) );
         }
     }
 
@@ -137,5 +173,19 @@ public class InfoCommand
     public final void setDomain( String domain )
     {
         this.domain = domain;
+    }
+
+    @Option( name = "e", longName = "detail", description = "Show description" )
+    public final void setShowDescription( boolean showDescription )
+    {
+        this.showDescription = showDescription;
+    }
+
+    @Option( name = "t", longName = "type", description = "Types(a|o|u) to display, for example aon for all attributes, operations and notifications" )
+    public void setType( String type )
+    {
+        Validate.isTrue( StringUtils.isNotEmpty( type ), "Type can't be NULL" );
+        Validate.isTrue( Pattern.matches( "^a?o?n?$", type ), "Type must be a?|o?|n?" );
+        this.type = type;
     }
 }

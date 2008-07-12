@@ -20,6 +20,8 @@ public final class MainOptions
 
     public static final String STDOUT = "stdout";
 
+    private boolean abbreviated;
+
     private boolean help;
 
     private String input = STDIN;
@@ -43,9 +45,20 @@ public final class MainOptions
         return url;
     }
 
+    public final boolean isAbbreviated()
+    {
+        return abbreviated;
+    }
+
     public boolean isHelp()
     {
         return help;
+    }
+
+    @Option( name = "a", longName = "abbreviated", description = "Flag for printing abbreviated version" )
+    public final void setAbbreviated( boolean abbreviated )
+    {
+        this.abbreviated = abbreviated;
     }
 
     @Option( name = "h", longName = "help", description = "Show usage of this command line" )

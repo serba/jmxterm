@@ -11,6 +11,14 @@ public class OptionCommand
 {
     private String verbose;
 
+    private String abbreviated;
+
+    @Option( name = "a", longName = "abbreviated", description = "yes|no" )
+    public final void setAbbreviated( String abbreviated )
+    {
+        this.abbreviated = abbreviated;
+    }
+
     /**
      * @param verbose Verbose level of session
      */
@@ -20,6 +28,26 @@ public class OptionCommand
         this.verbose = verbose;
     }
 
+    private static Boolean toBoolean( String value )
+    {
+        if ( value == null )
+        {
+            return null;
+        }
+        if ( value.equalsIgnoreCase( "yes" ) )
+        {
+            return Boolean.TRUE;
+        }
+        else if ( value.equalsIgnoreCase( "no" ) )
+        {
+            return Boolean.FALSE;
+        }
+        else
+        {
+            throw new IllegalArgumentException( "Boolean option value has to be yes|no, " + value + " is invalid" );
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -27,24 +55,27 @@ public class OptionCommand
     public void execute( Session session )
         throws Exception
     {
-        if ( verbose == null )
+        Boolean v = toBoolean( verbose );
+        if ( v != null )
         {
-            session.output.println( "No change, verbose = " + ( session.isDebug() ? "yes" : "no" ) );
-            return;
-        }
-        if ( verbose.equalsIgnoreCase( "yes" ) )
-        {
-            session.setDebug( true );
-            session.output.println( "Verbose is turned on" );
-        }
-        else if ( verbose.equalsIgnoreCase( "no" ) )
-        {
-            session.setDebug( false );
-            session.output.println( "Verbose if turned off" );
+            session.setVerbose( v );
+            session.msg( "verbose option is turned " + ( v ? "on" : "off" ) );
         }
         else
         {
-            throw new IllegalArgumentException( "Verbose option value has to be yes|no, " + verbose + " is invalid" );
+            session.msg( "no change for verbose, verbose = " + ( session.isVerbose() ? "yes" : "no" ) );
         }
+
+        Boolean a = toBoolean( abbreviated );
+        if ( a != null )
+        {
+            session.setAbbreviated( a );
+            session.msg( "abbreviated option is turned " + ( a ? "on" : "off" ) );
+        }
+        else
+        {
+            session.msg( "no change for abbreviated, abbreviated = " + ( session.isAbbreviated() ? "yes" : "no" ) );
+        }
+        session.ok();
     }
 }

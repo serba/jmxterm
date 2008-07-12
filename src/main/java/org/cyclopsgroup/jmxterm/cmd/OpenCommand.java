@@ -7,8 +7,6 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
@@ -20,8 +18,6 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class OpenCommand
     extends Command
 {
-    private static final Log LOG = LogFactory.getLog( OpenCommand.class );
-
     private String url;
 
     public void execute( Session session )
@@ -32,12 +28,12 @@ public class OpenCommand
             Connection con = session.getConnection();
             if ( con == null )
             {
-                session.output.println( "Not connected" );
+                session.msg( "not connected", SyntaxUtils.NULL );
             }
             else
             {
-
-                session.output.println( String.format( "Connected to: expr=%s, id=%s, url=%s", con.getOriginalUrl(),
+                session.output.println( String.format( session.isAbbreviated() ? "%s,%s,%s"
+                                : "connected to: expr=%s, id=%s, url=%s", con.getOriginalUrl(),
                                                        con.getConnector().getConnectionId(), con.getUrl() ) );
             }
             return;
@@ -46,7 +42,8 @@ public class OpenCommand
         JMXServiceURL u = SyntaxUtils.getUrl( url );
         JMXConnector connector = JMXConnectorFactory.connect( u );
         session.setConnection( new Connection( connector, u, url ) );
-        LOG.info( "Connection to " + url + " is opened" );
+        session.msg( "Connection to " + url + " is opened" );
+        session.ok();
     }
 
     public final String getUrl()

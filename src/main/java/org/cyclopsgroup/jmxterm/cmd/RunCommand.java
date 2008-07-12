@@ -99,7 +99,7 @@ public class RunCommand
             params[i] = SyntaxUtils.parse( parameters.get( i + 1 ), paramInfo.getType() );
             signatures[i] = paramInfo.getType();
         }
-        session.output.println( String.format( "Calling operation %s of MBean %s", operationName, beanName ) );
+        session.msg( String.format( "calling operation %s of mbean %s", operationName, beanName ) );
         Object result;
         if ( measure )
         {
@@ -111,14 +111,14 @@ public class RunCommand
             finally
             {
                 long latency = System.currentTimeMillis() - start;
-                session.output.println( latency + "ms is taken by invocation" );
+                session.msg( latency + "ms is taken by invocation" );
             }
         }
         else
         {
             result = con.invoke( name, operationName, params, signatures );
         }
-        session.output.print( "Operation returns: " );
+        session.msg( "operation returns: " );
         SyntaxUtils.printValue( session.output, result, 0, false );
         session.output.println();
     }

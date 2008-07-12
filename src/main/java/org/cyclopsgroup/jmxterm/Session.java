@@ -2,6 +2,7 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.PrintWriter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -11,13 +12,15 @@ import org.apache.commons.lang.Validate;
  */
 public class Session
 {
+    private boolean abbreviated;
+
     private String bean;
 
     private boolean closed;
 
     private Connection connection;
 
-    private boolean debug = true;
+    private boolean verbose = true;
 
     private String domain;
 
@@ -57,14 +60,58 @@ public class Session
         return domain;
     }
 
+    public final boolean isAbbreviated()
+    {
+        return abbreviated;
+    }
+
     public final boolean isClosed()
     {
         return closed;
     }
 
-    public final boolean isDebug()
+    public final boolean isVerbose()
     {
-        return debug;
+        return verbose;
+    }
+
+    /**
+     * Output a message based on abbreviated option
+     * 
+     * @param msg
+     */
+    public void msg( String msg )
+    {
+        msg( msg, null );
+    }
+
+    public void msg( String msg, String abbr )
+    {
+        if ( abbreviated )
+        {
+            if ( StringUtils.isNotEmpty( abbr ) )
+            {
+                output.println( abbr );
+            }
+        }
+        else
+        {
+            if ( StringUtils.isNotEmpty( msg ) )
+            {
+                output.println( msg );
+            }
+        }
+    }
+
+    /**
+     * Print out <code>ok</code> if abbreviated option is true
+     */
+    public void ok()
+    {
+        if ( abbreviated )
+        {
+            output.println( "ok" );
+        }
     }
 
     private void requireConnector()
@@ -76,6 +123,11 @@ public class Session
     private void requireSession()
     {
         Validate.isTrue( !closed, "Session is already closed" );
+    }
+
+    public final void setAbbreviated( boolean abbreviated )
+    {
+        this.abbreviated = abbreviated;
     }
 
     public final void setBean( String bean )
@@ -91,9 +143,9 @@ public class Session
         this.connection = connection;
     }
 
-    public final void setDebug( boolean debug )
+    public final void setVerbose( boolean debug )
     {
-        this.debug = debug;
+        this.verbose = debug;
     }
 
     public void setDomain( String domain )

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
@@ -16,8 +14,6 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class DomainCommand
     extends Command
 {
-    public static final Log LOG = LogFactory.getLog( DomainCommand.class );
-
     /**
      * Get domain name from given domain expression
      * 
@@ -60,27 +56,26 @@ public class DomainCommand
         {
             if ( session.getDomain() == null )
             {
-                session.output.println( "Domain is not set" );
+                session.msg( "domain is not set", SyntaxUtils.NULL );
             }
             else
             {
-                session.output.println( "Domain = " + session.getDomain() );
+                session.msg( "domain = " + session.getDomain(), session.getDomain() );
             }
+            return;
+        }
+        String domainName = getDomainName( domain, session );
+        if ( domainName == null )
+        {
+            session.unsetDomain();
+            session.msg( "domain is unset" );
         }
         else
         {
-            String domainName = getDomainName( domain, session );
-            if ( domainName == null )
-            {
-                session.unsetDomain();
-                session.output.println( "Domain is unset" );
-            }
-            else
-            {
-                session.setDomain( domainName );
-                session.output.println( "Domain is set to " + session.getDomain() );
-            }
+            session.setDomain( domainName );
+            session.msg( "domain is set to " + session.getDomain() );
         }
+        session.ok();
     }
 
     @Argument

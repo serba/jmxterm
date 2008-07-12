@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.management.JMException;
 import javax.management.MBeanAttributeInfo;
@@ -31,7 +30,7 @@ public class GetCommand
             throw new IllegalArgumentException( "Bean isn't set yet, please use -b option or bean command" );
         }
         ObjectName name = new ObjectName( beanName );
-        session.output.println( "MBean = " + beanName + ":" );
+        session.msg( "mbean = " + beanName + ":" );
         MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         HashMap<String, MBeanAttributeInfo> attributeNames = new HashMap<String, MBeanAttributeInfo>();
@@ -56,11 +55,27 @@ public class GetCommand
                 }
             }
         }
-        for ( Map.Entry<String, MBeanAttributeInfo> entry : attributeNames.entrySet() )
+        for ( String attributeName : this.attributes )
         {
-            Object result = con.getAttribute( name, entry.getKey() );
-            SyntaxUtils.printExpression( session.output, entry.getKey(), result, entry.getValue().getDescription(), 2,
-                                         showDescription );
+            MBeanAttributeInfo i = attributeNames.get( attributeName );
+            if ( i.isReadable() )
+            {
+                Object result = con.getAttribute( name, attributeName );
+                if ( session.isAbbreviated() )
+                {
+                    SyntaxUtils.printValue( session.output, result, 0, false );
+                    session.output.println();
+                }
+                else
+                {
+                    SyntaxUtils.printExpression( session.output, attributeName, result, i.getDescription(), 2,
+                                                 showDescription );
+                }
+            }
+            else
+            {
+                session.msg( "  " + i.getName() + " is not readable", i.getName() + "=?" );
+            }
         }
     }
 
@@ -93,8 +108,7 @@ public class GetCommand
     {
         if ( attributes.isEmpty() )
         {
-            session.output.println( "Please specify at least one attribute" );
-            return;
+            throw new IllegalArgumentException( "Please specify at least one attribute" );
         }
         displayAttributes( session );
     }

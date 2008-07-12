@@ -60,6 +60,14 @@ public class CommandCenter
         }
     }
 
+    /**
+     * Close session
+     */
+    public void close()
+    {
+        session.close();
+    }
+
     public void connect( String url )
         throws IOException
     {
@@ -70,14 +78,6 @@ public class CommandCenter
         JMXServiceURL u = SyntaxUtils.getUrl( url );
         JMXConnector connector = JMXConnectorFactory.connect( u );
         session.setConnection( new Connection( connector, u, url ) );
-    }
-
-    /**
-     * Close session
-     */
-    public void close()
-    {
-        session.close();
     }
 
     private void doExecute( String command )
@@ -136,7 +136,7 @@ public class CommandCenter
         }
         catch ( Exception e )
         {
-            if ( session.isDebug() )
+            if ( session.isVerbose() )
             {
                 e.printStackTrace( session.output );
             }
@@ -180,7 +180,15 @@ public class CommandCenter
     public void prompt()
         throws IOException
     {
-        session.output.print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
-        session.output.flush();
+        if ( !session.isAbbreviated() )
+        {
+            session.output.print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
+            session.output.flush();
+        }
+    }
+
+    public void setAbbreviated( boolean abbreviated )
+    {
+        session.setAbbreviated( abbreviated );
     }
 }

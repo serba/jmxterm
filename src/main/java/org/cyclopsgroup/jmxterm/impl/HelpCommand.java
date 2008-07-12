@@ -54,12 +54,13 @@ public class HelpCommand
         {
             List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
             Collections.sort( commandNames );
-            session.output.println( "Following commands are available to use:" );
+            session.msg( "following commands are available to use:" );
             for ( String commandName : commandNames )
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
                 Cli cli = CliUtils.defineCli( commandType ).getCli();
-                session.output.println( String.format( "- %-16s %s", commandName, cli.description() ) );
+                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
+                    + cli.description() );
             }
         }
         else

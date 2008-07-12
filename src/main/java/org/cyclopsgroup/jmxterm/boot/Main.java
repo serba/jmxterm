@@ -50,6 +50,7 @@ public class Main
             parser.printUsage( MainOptions.class, STDOUT_WRITER );
             return;
         }
+        commandCenter.setAbbreviated( options.isAbbreviated() );
         if ( options.getUrl() != null )
         {
             commandCenter.connect( options.getUrl() );

@@ -70,8 +70,7 @@ public class BeansCommand
     {
         if ( session.getConnection() == null )
         {
-            session.output.println( "There's no open connection right now, use open command" );
-            return;
+            throw new IllegalStateException( "There's no open connection right now, use open command" );
         }
         String domainName = DomainCommand.getDomainName( domain, session );
         List<String> domains = new ArrayList<String>();
@@ -87,10 +86,10 @@ public class BeansCommand
         int i = 0;
         for ( String d : domains )
         {
-            session.output.println( "domain = " + d + ":" );
+            session.msg( "domain = " + d + ":" );
             for ( String bean : getBeans( session, d ) )
             {
-                session.output.println( String.format( "  #%-3d - %s", i++, bean ) );
+                session.msg( String.format( "  #%-3d - %s", i++, bean ), bean );
             }
         }
     }

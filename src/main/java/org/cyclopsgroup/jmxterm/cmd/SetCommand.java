@@ -57,6 +57,10 @@ public class SetCommand
         {
             throw new IllegalArgumentException( "Attribute " + attributeName + " is not sepcified" );
         }
+        if ( !attributeInfo.isWritable() )
+        {
+            throw new IllegalArgumentException( "Attribute " + attributeName + " is not writable" );
+        }
         Object value = SyntaxUtils.parse( arguments.get( 1 ), attributeInfo.getType() );
         con.setAttribute( name, new Attribute( attributeName, value ) );
     }

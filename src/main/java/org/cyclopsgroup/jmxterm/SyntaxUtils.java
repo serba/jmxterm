@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class SyntaxUtils
 {
-    private static final String NULL = "null";
+    public static final String NULL = "null";
 
     private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
 
@@ -108,7 +108,7 @@ public final class SyntaxUtils
     {
         if ( value == null )
         {
-            output.print( "NULL" );
+            output.print( NULL );
         }
         else if ( value.getClass().isArray() )
         {

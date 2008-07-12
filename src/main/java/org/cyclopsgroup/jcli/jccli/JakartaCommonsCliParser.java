@@ -36,7 +36,8 @@ public class JakartaCommonsCliParser
         for ( OptionDefinition def : cliDefinition.getOptions().values() )
         {
             Option opt =
-                new Option( def.getName(), def.getOption().longName(), !def.isFlag(), def.getOption().description() );
+                new Option( def.getName(), def.getOption().longName(), !def.isFlag(), "  "
+                    + def.getOption().description() );
             opt.setRequired( def.getOption().required() );
             opt.setOptionalArg( !def.getOption().required() );
             opt.setArgName( def.getOption().displayName() );

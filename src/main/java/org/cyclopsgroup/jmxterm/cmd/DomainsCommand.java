@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -41,16 +42,19 @@ public class DomainsCommand
     public void execute( Session session )
         throws IOException
     {
+        Validate.notNull( session, "Session can't be NULL" );
         if ( session.getConnection() == null )
         {
-            session.output.println( "There's no open connection right now, use open command" );
-            return;
+            throw new IllegalStateException( "There's no open connection right now, use open command" );
         }
-        session.output.println( "Following domains are available" );
+        if ( !session.isAbbreviated() )
+        {
+            session.msg( "following domains are available" );
+        }
         int i = 0;
         for ( String domain : getDomains( session ) )
         {
-            session.output.println( String.format( "#%-3d - %s", i++, domain ) );
+            session.msg( String.format( "#%-3d - %s", i++, domain ), domain );
         }
     }
 }
