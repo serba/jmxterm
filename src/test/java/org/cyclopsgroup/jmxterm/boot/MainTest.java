@@ -28,6 +28,7 @@ public class MainTest
             {
                 allowing( cc ).prompt();
                 allowing( cc ).isClosed();
+                one( cc ).setAbbreviated( false );
                 one( cc ).execute( "beans" );
                 one( cc ).execute( "exit" );
                 one( cc ).close();
