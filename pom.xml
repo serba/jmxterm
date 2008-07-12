@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cyclopsgroup.jmxterm</groupId>
 	<artifactId>jmxterm</artifactId>
 	<name>JMX Terminal</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<description></description>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<dependencies>
 		<dependency>
 			<groupId>classworlds</groupId>
@@ -69,6 +79,15 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<scm>
+		<connection>
+			scm:svn:https://svn.cyclops-group.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
+		</connection>
+		<developerConnection>
+			scm:svn:https://svn.cyclops-group.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
+		</developerConnection>
+		<url>http://fisheye3.atlassian.com/browse/cyclops-group</url>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -97,4 +116,24 @@
 			</plugin>
 		</plugins>
 	</build>
+	<developers>
+		<developer>
+			<id>jiaqi</id>
+			<email>jiaqi.guo@gmail.com</email>
+			<name>Jiaqi Guo</name>
+			<timezone>-6</timezone>
+			<url>http://www.cyclopsgroup.org/members/jiaqi</url>
+		</developer>
+	</developers>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>
+					maven-project-info-reports-plugin
+				</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+
 </project>
