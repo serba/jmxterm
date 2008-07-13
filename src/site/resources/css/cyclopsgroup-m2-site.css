@@ -1,0 +1,102 @@
+body {
+    font-family: verdana, arial, sans-serif;
+    background-color: white;
+    margin: 0px;
+}
+
+li, td {
+    font-family: verdana, arial, sans-serif;
+}
+
+h1,h2,h3,h4,h5 {
+    background-color: transparent;
+    border-style: none;
+}
+
+h1 {
+  font-size: 1.4em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1.0em;
+}
+
+a:link,a:visited {
+    text-decoration: none;
+    color: #3465A4;
+}
+
+img {
+    border-width: 0px;
+}
+
+#banner {
+   background-color: #729FCF;
+   background-image: url('http://cyclops-group.sourceforge.net/images/cyclopsgroup_logo.png');
+   background-repeat: no-repeat;
+   background-position: right;
+   border-width: 0px;
+   padding: 16px;
+}
+
+#bannerLeft {
+   color: white;
+   font-weight: normal;
+   background-image: url('../images/terminal.png');
+   background-repeat: no-repeat;
+   padding: 12px 0px 8px 80px;
+}
+
+#breadcrumbs {
+    background-color: #729FCF;
+    border-color: #CCC;
+    border-style: solid;
+    border-width: 0px 0px 2px 0px;
+    font-size: small;
+    color: white !important;
+}
+
+#breadcrumbs a {
+    color: white !important;
+    font-weight: bold;
+}
+
+#leftColumn {
+    background-color: transparent;
+    border-style: none;
+    width: 19%;
+}
+
+#bodyColumn {
+    margin-left: 20%;
+}
+
+#leftColumn li, #leftColumn h5 {
+    font-size: small;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#contentBox h2, #contentBox h3, #contentBox h4, #contentBox h5 {
+    font-size: clear;
+    color: #5E5E5E;
+}
+
+#contentBox h2 {
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #AAA;
+    background-image: url('../images/finish.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}
+
+#footer {
+    border-color: #AAA;
+    border-style: solid;
+    border-width: 2px 0px 0px 0px;
+}

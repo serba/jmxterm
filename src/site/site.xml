@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Maven">
-	<bannerLeft>
-		<name>JMX Terminal</name>
-		<src>
-			http://maven.apache.org/images/apache-maven-project.png
-		</src>
-		<href>http://www.cyclopsgroup.org/projects/jmxterm</href>
-	</bannerLeft>
-	<bannerRight>
-		<src>http://maven.apache.org/images/maven-small.gif</src>
-	</bannerRight>
-	<body>
-		<links>
-			<item name="CyclopsGroup.org"
-				href="http://www.cyclopsgroup.org/" />
-			<item name="JMX Terminal"
-				href="http://www.cyclopsgroup.org/projects/jmxterm" />
-		</links>
-		<menu name="JMX Terminal">
-			<item name="Goals" href="index.html" />
-			<item name="1 Minute Tutorial" href="tutorial.html" />
-			<item name="User Manual" href="manual.html" />
-			<item name="Download" href="download.html" />
-			<item name="Road Map" href="roadmap.html" />
-		</menu>
-		<menu ref="reports" />
-	</body>
+<project
+    name="JMX Terminal: Command line based interative JMX client">
+    <bannerLeft>
+        <name>JMX Terminal</name>
+        <href>http://www.cyclopsgroup.org/projects/jmxterm</href>
+    </bannerLeft>
+    <body>
+        <head>
+            <script type="text/javascript"
+                src="http://www.google-analytics.com/urchin.js">
+            </script>
+            <script type="text/javascript">
+                <![CDATA[
+                    _uacct = "UA-76203-1";
+                    urchinTracker();
+                ]]>
+            </script>
+        </head>
+        <links>
+            <item name="CyclopsGroup.org"
+                href="http://www.cyclopsgroup.org/" />
+            <item name="JMX Terminal"
+                href="http://www.cyclopsgroup.org/projects/jmxterm" />
+        </links>
+        <menu name="JMX Terminal">
+            <item name="Introduction" href="index.html" />
+            <item name="1 Minute Tutorial" href="tutorial.html" />
+            <item name="User Manual" href="manual.html" />
+            <item name="Download and Use" href="download.html" />
+            <item name="Road Map" href="roadmap.html" />
+            <item name="What do you think" href="feedback.html" />
+            <item name="Source Code" href="sourcecode.html"
+                collapse="true">
+                <item name="Browse"
+                    href="http://fisheye3.atlassian.com/browse/cyclops-group" />
+                <item name="Search"
+                    href="http://fisheye3.atlassian.com/search/cyclops-group" />
+                <item name="Change Log"
+                    href="http://fisheye3.atlassian.com/changelog/cyclops-group" />
+                <item name="Chart"
+                    href="http://fisheye3.atlassian.com/chart/cyclops-group" />
+                <item name="Checkout" href="source-repository.html" />
+            </item>
+        </menu>
+        <menu ref="reports" />
+    </body>
 </project>

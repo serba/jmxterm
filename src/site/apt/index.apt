@@ -1,0 +1,16 @@
+What is JMX terminal
+
+  JMX terminal(jmxterm) is a command line based interactive JMX client. It's designed to allow user to access JMX from command line without graphical environment.
+
+Why should I be interested?
+
+  There are several reasons why JMX terminal exists in this cruel world. Firstly if you are looking for a JMX client that works under non-X environment, there are not many good options. Besides, what make JMX terminal interesting are:
+
+  * Independent
+    JMX terminal depends on JDK 1.5+ only. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-use package. You don't need to worry about how to setup dependencies.
+
+  * Download and use
+    The executable JMX terminal is wrapped with a JAR file, which can be immediately used by calling java -jar jmxterm-#-uber.jar. There's no configuration, directories, environment variables for file permissions that need to setup. Check out {{{download.html}download}} for more details.
+
+  * Self documented
+    In JMX terminal, every command is explained with help option and examples. You may also find many examples in {{{tutorial.html}tutorial}}.

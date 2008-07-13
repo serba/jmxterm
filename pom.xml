@@ -4,11 +4,12 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.cyclopsgroup.jmxterm</groupId>
+    <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
     <name>JMX Terminal</name>
-    <version>0.0.1-SNAPSHOT</version>
-    <description></description>
+    <version>0.1</version>
+    <description>Command line based interactive JMX client</description>
+    <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -142,6 +143,10 @@
                 <artifactId>maven-jxr-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
             </plugin>
@@ -151,4 +156,24 @@
             </plugin>
         </plugins>
     </reporting>
+    <distributionManagement>
+        <repository>
+            <id>cyclopsgroup.server.sourceforge</id>
+            <url>
+                scpexe://shell.sourceforge.net/home/groups/c/cy/cyclops-group/m2-export
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>cyclopsgroup.server.sourceforge</id>
+            <url>
+                scpexe://shell.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/m2
+            </url>
+        </snapshotRepository>
+        <site>
+            <id>cyclopsgroup.server.sourceforge</id>
+            <url>
+                scpexe://shell.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/projects/jmxterm
+            </url>
+        </site>
+    </distributionManagement>
 </project>
