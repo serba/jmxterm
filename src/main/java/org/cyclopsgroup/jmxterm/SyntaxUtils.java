@@ -21,10 +21,18 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class SyntaxUtils
 {
+    /**
+     * String <code>null</code> that identifies empty value
+     */
     public static final String NULL = "null";
 
-    private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.)+\\:\\d+$" );
+    private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.|\\-)+\\:\\d+$" );
 
+    /**
+     * @param url String expression of MBean server URL or abbreviation like localhost:9991
+     * @return Parsed JMXServerURL
+     * @throws MalformedURLException Thrown when syntax is invalid
+     */
     public static JMXServiceURL getUrl( String url )
         throws MalformedURLException
     {
