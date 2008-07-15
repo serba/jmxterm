@@ -30,7 +30,7 @@ public class DomainsCommand
     public static List<String> getDomains( Session session )
         throws IOException
     {
-        String[] domains = session.getConnection().getConnector().getMBeanServerConnection().getDomains();
+        String[] domains = session.getServerConnection().getDomains();
         List<String> result = new ArrayList<String>( Arrays.asList( domains ) );
         Collections.sort( result );
         return result;
@@ -54,7 +54,7 @@ public class DomainsCommand
         int i = 0;
         for ( String domain : getDomains( session ) )
         {
-            session.msg( String.format( "#%-3d - %s", i++, domain ), domain );
+            session.msg( String.format( "%%%-3d - %s", i++, domain ), domain );
         }
     }
 }

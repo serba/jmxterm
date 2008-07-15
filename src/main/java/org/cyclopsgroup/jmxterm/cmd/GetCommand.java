@@ -34,7 +34,7 @@ public class GetCommand
         }
         ObjectName name = new ObjectName( beanName );
         session.msg( "mbean = " + beanName + ":" );
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanServerConnection con = session.getServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         Map<String, MBeanAttributeInfo> attributeNames =
             (Map<String, MBeanAttributeInfo>) ListOrderedMap.decorate( new HashMap<String, MBeanAttributeInfo>() );

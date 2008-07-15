@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project
-    name="JMX Terminal: Command line based interative JMX client">
+<project name="JMXTERM: Command line based interative JMX client">
     <bannerLeft>
-        <name>JMX Terminal</name>
-        <href>http://www.cyclopsgroup.org/projects/jmxterm</href>
+        <name>jmxterm - JMX terminal</name>
+        <src>images/logo.png</src>
+        <href>index.html</href>
     </bannerLeft>
     <body>
         <head>
@@ -18,16 +18,18 @@
             </script>
         </head>
         <links>
-            <item name="CyclopsGroup.org"
+            <item name="cyclopsgroup.org"
                 href="http://www.cyclopsgroup.org/" />
-            <item name="JMX Terminal"
-                href="http://www.cyclopsgroup.org/projects/jmxterm" />
+            <item name="wiki"
+                href="http://wiki.cyclopsgroup.org" />
+            <item name="sf.net/cyclops-group"
+                hrerf="http://sourceforge.net/projects/cyclops-group" />
         </links>
-        <menu name="JMX Terminal">
+        <menu name="JMXTERM">
             <item name="Introduction" href="index.html" />
             <item name="1 Minute Tutorial" href="tutorial.html" />
             <item name="User Manual" href="manual.html" />
-            <item name="Download and Use" href="download.html" />
+            <item name="Download and Run" href="download.html" />
             <item name="Road Map" href="roadmap.html" />
             <item name="What do you think" href="feedback.html" />
             <item name="Source Code" href="sourcecode.html"

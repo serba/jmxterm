@@ -1,35 +1,30 @@
 package org.cyclopsgroup.jmxterm;
 
-import javax.management.remote.JMXConnector;
+import java.io.IOException;
+
 import javax.management.remote.JMXServiceURL;
 
-public final class Connection
+/**
+ * Identifies lifecycle of a connection
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
+public interface Connection
 {
-    private final JMXConnector connector;
+    /**
+     * @return The URL user manually input
+     */
+    String getDisplayUrl();
 
-    private final String originalUrl;
+    /**
+     * @return JMX service URL object
+     */
+    JMXServiceURL getUrl();
 
-    private final JMXServiceURL url;
-
-    public Connection( JMXConnector connector, JMXServiceURL url, String originalUrl )
-    {
-        this.connector = connector;
-        this.url = url;
-        this.originalUrl = originalUrl;
-    }
-
-    public JMXConnector getConnector()
-    {
-        return connector;
-    }
-
-    public String getOriginalUrl()
-    {
-        return originalUrl;
-    }
-
-    public JMXServiceURL getUrl()
-    {
-        return url;
-    }
+    /**
+     * @return Id of connector
+     * @throws IOException Thrown when ID can't be retrieved
+     */
+    String getConnectorId()
+        throws IOException;
 }

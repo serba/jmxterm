@@ -2,11 +2,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
 
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
-
-import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
@@ -33,17 +28,15 @@ public class OpenCommand
             else
             {
                 session.output.println( String.format( session.isAbbreviated() ? "%s,%s,%s"
-                                : "connected to: expr=%s, id=%s, url=%s", con.getOriginalUrl(),
-                                                       con.getConnector().getConnectionId(), con.getUrl() ) );
+                                : "connected to: expr=%s, id=%s, url=%s", con.getDisplayUrl(), con.getConnectorId(),
+                                                       con.getUrl() ) );
             }
             return;
         }
-        Validate.isTrue( session.getConnection() == null, "Session is already opened" );
-        JMXServiceURL u = SyntaxUtils.getUrl( url );
-        JMXConnector connector = JMXConnectorFactory.connect( u );
-        session.setConnection( new Connection( connector, u, url ) );
-        session.msg( "Connection to " + url + " is opened" );
-        session.ok();
+        if ( session.connect( url ) )
+        {
+            session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
+        }
     }
 
     public final String getUrl()

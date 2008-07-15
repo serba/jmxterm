@@ -73,7 +73,7 @@ public class RunCommand
         Validate.isTrue( parameters.size() > 0, "At least one parameter is needed" );
         String operationName = parameters.get( 0 );
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanServerConnection con = session.getServerConnection();
         MBeanInfo beanInfo = con.getMBeanInfo( name );
         MBeanOperationInfo operationInfo = null;
         for ( MBeanOperationInfo info : beanInfo.getOperations() )

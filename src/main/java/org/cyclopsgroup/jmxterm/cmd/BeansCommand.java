@@ -49,8 +49,7 @@ public class BeansCommand
         {
             queryName = new ObjectName( domainName + ":*" );
         }
-        Set<ObjectName> names =
-            session.getConnection().getConnector().getMBeanServerConnection().queryNames( queryName, null );
+        Set<ObjectName> names = session.getServerConnection().queryNames( queryName, null );
         List<String> results = new ArrayList<String>( names.size() );
         for ( ObjectName name : names )
         {
@@ -73,22 +72,21 @@ public class BeansCommand
         }
         String domainName = DomainCommand.getDomainName( domain, session );
         List<String> domains = new ArrayList<String>();
-        if ( domainName != null )
-        {
-            domains.add( domainName );
-        }
-        else
+        if ( domainName == null )
         {
             domains.addAll( DomainsCommand.getDomains( session ) );
         }
-
+        else
+        {
+            domains.add( domainName );
+        }
         int i = 0;
         for ( String d : domains )
         {
             session.msg( "domain = " + d + ":" );
             for ( String bean : getBeans( session, d ) )
             {
-                session.msg( String.format( "  #%-3d - %s", i++, bean ), bean );
+                session.msg( String.format( "  %%%-3d - %s", i++, bean ), bean );
             }
         }
     }

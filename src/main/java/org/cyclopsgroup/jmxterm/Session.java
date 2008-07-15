@@ -1,12 +1,18 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 /**
- * JMX communication context
+ * JMX communication context. This class exists for the whole lifecycle of a command execution
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
@@ -18,20 +24,26 @@ public class Session
 
     private boolean closed;
 
-    private Connection connection;
-
-    private boolean verbose = true;
+    private ConnectionImpl connection;
 
     private String domain;
 
     public final PrintWriter output;
 
+    private boolean verbose = true;
+
+    /**
+     * @param output Output destination
+     */
     public Session( PrintWriter output )
     {
         Validate.notNull( output, "Output can't be NULL" );
         this.output = output;
     }
 
+    /**
+     * Close JMX terminal session
+     */
     public synchronized void close()
     {
         if ( closed )
@@ -43,6 +55,35 @@ public class Session
             unsetConnection();
         }
         closed = true;
+    }
+
+    public synchronized boolean connect( String url )
+        throws IOException
+    {
+        Validate.isTrue( connection == null, "Session is already opened" );
+        Validate.notNull( url, "URL can't be NULL" );
+        JMXServiceURL u = SyntaxUtils.getUrl( url );
+        JMXConnector connector = JMXConnectorFactory.connect( u );
+        connection = new ConnectionImpl( connector, u, url );
+        return true;
+    }
+
+    /**
+     * Close JMX connector
+     * 
+     * @throws IOException Thrown when connection can't be closed
+     */
+    public synchronized boolean disconnect()
+        throws IOException
+    {
+        ConnectionImpl conn = connection;
+        unsetConnection();
+        if ( conn != null )
+        {
+            conn.getConnector().close();
+            return true;
+        }
+        return false;
     }
 
     public final String getBean()
@@ -58,6 +99,19 @@ public class Session
     public final String getDomain()
     {
         return domain;
+    }
+
+    /**
+     * Get connection to MBean server
+     * 
+     * @return MBean server connection
+     * @throws IOException Thrown when server connection can't be retrieved
+     */
+    public MBeanServerConnection getServerConnection()
+        throws IOException
+    {
+        requireConnector();
+        return connection.getConnector().getMBeanServerConnection();
     }
 
     public final boolean isAbbreviated()
@@ -135,7 +189,7 @@ public class Session
         this.bean = bean;
     }
 
-    public void setConnection( Connection connection )
+    public void setConnection( ConnectionImpl connection )
     {
         Validate.notNull( connection, "Connection can't be NULL" );
         requireSession();
@@ -143,16 +197,16 @@ public class Session
         this.connection = connection;
     }
 
-    public final void setVerbose( boolean debug )
-    {
-        this.verbose = debug;
-    }
-
     public void setDomain( String domain )
     {
         Validate.notNull( domain, "domain can't be NULL" );
         requireConnector();
         this.domain = domain;
+    }
+
+    public final void setVerbose( boolean debug )
+    {
+        this.verbose = debug;
     }
 
     public void unsetConnection()

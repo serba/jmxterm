@@ -35,11 +35,11 @@ import org.cyclopsgroup.jmxterm.Session;
 public class InfoCommand
     extends Command
 {
-    private static final String TEXT_ATTRIBUTES = ":attributes:";
+    private static final String TEXT_ATTRIBUTES = "# attributes";
 
-    private static final String TEXT_NOTIFICATIONS = ":notifications:";
+    private static final String TEXT_NOTIFICATIONS = "# notifications";
 
-    private static final String TEXT_OPERATIONS = ":operations:";
+    private static final String TEXT_OPERATIONS = "# operations";
 
     private static final Comparator<MBeanFeatureInfo> INFO_COMPARATOR = new Comparator<MBeanFeatureInfo>()
     {
@@ -64,7 +64,7 @@ public class InfoCommand
         for ( MBeanAttributeInfo attr : infos )
         {
             String rw = "" + ( attr.isReadable() ? "r" : "" ) + ( attr.isWritable() ? "w" : "" );
-            session.msg( String.format( "  #%-3d - %s (%s, %s)" + ( showDescription ? ", %s" : "" ), index++,
+            session.msg( String.format( "  %%%-3d - %s (%s, %s)" + ( showDescription ? ", %s" : "" ), index++,
                                         attr.getName(), attr.getType(), rw, attr.getDescription() ), attr.getName() );
         }
     }
@@ -81,7 +81,7 @@ public class InfoCommand
         session.msg( TEXT_NOTIFICATIONS, TEXT_NOTIFICATIONS );
         for ( MBeanNotificationInfo notification : notificationInfos )
         {
-            session.msg( String.format( "  #%-3d - %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+            session.msg( String.format( "  %%%-3d - %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
                                         notification.getName(), StringUtils.join( notification.getNotifTypes(), "," ),
                                         notification.getDescription() ), notification.getName() );
         }
@@ -108,7 +108,7 @@ public class InfoCommand
             {
                 paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
             }
-            session.msg( String.format( "  #%-3d - %s %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+            session.msg( String.format( "  %%%-3d - %s %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
                                         op.getReturnType(), op.getName(), StringUtils.join( paramTypes, ',' ),
                                         op.getDescription() ), op.getName() );
         }
@@ -135,7 +135,7 @@ public class InfoCommand
             throw new IllegalArgumentException( "Please specify a bean using either -b option or bean command" );
         }
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanServerConnection con = session.getServerConnection();
         MBeanInfo info = con.getMBeanInfo( name );
         session.msg( "mbean = " + beanName );
         session.msg( "class name = " + info.getClassName() );

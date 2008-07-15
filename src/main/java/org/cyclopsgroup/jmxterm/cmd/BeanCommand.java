@@ -71,7 +71,6 @@ public class BeanCommand
         throws JMException, IOException
     {
         Validate.notNull( session, "Session can't be NULL" );
-        Validate.isTrue( session.getConnection() != null, "Session isn't opened" );
         if ( bean == null )
         {
             return session.getBean();
@@ -80,7 +79,7 @@ public class BeanCommand
         {
             return null;
         }
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanServerConnection con = session.getServerConnection();
         if ( PATTERN_BEAN_NAME.matcher( bean ).find() )
         {
             ObjectName name = new ObjectName( bean );
@@ -126,7 +125,7 @@ public class BeanCommand
             return;
         }
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getConnection().getConnector().getMBeanServerConnection();
+        MBeanServerConnection con = session.getServerConnection();
         con.getMBeanInfo( name );
         session.setBean( beanName );
         session.msg( "bean is set to " + beanName );

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
-import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 @Cli( name = "quit", description = "Terminate console" )
 public class QuitCommand
@@ -18,13 +18,7 @@ public class QuitCommand
     public void execute( Session session )
         throws IOException
     {
-        Connection con = session.getConnection();
-        session.close();
-        if ( con != null )
-        {
-            session.unsetConnection();
-        }
-        session.msg( "bye" );
-        session.ok();
+        session.disconnect();
+        session.msg( "bye", SyntaxUtils.OK );
     }
 }

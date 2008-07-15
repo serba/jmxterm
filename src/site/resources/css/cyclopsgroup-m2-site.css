@@ -40,15 +40,6 @@ img {
    background-repeat: no-repeat;
    background-position: right;
    border-width: 0px;
-   padding: 16px;
-}
-
-#bannerLeft {
-   color: white;
-   font-weight: normal;
-   background-image: url('../images/terminal.png');
-   background-repeat: no-repeat;
-   padding: 12px 0px 8px 80px;
 }
 
 #breadcrumbs {

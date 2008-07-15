@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm.boot;
 import java.io.File;
 
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 
@@ -80,7 +79,7 @@ public class MainOptions
     /**
      * @param file Input script path or <code>stdin</code> as default value for console input
      */
-    @Argument( description = "Input script file. There can only be one input file. \"stdin\" is the default value which means console input" )
+    @Option( name = "i", longName = "input", description = "Input script file. There can only be one input file. \"stdin\" is the default value which means console input" )
     public final void setInput( String file )
     {
         Validate.notNull( file, "Input file can't be NULL" );

@@ -26,6 +26,11 @@ public final class SyntaxUtils
      */
     public static final String NULL = "null";
 
+    /**
+     * String <code>ok</code> that shows a command is executed successfully
+     */
+    public static final String OK = "ok";
+
     private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.|\\-)+\\:\\d+$" );
 
     /**
@@ -51,7 +56,7 @@ public final class SyntaxUtils
      */
     public static boolean isNull( String s )
     {
-        return StringUtils.equalsIgnoreCase( NULL, s );
+        return StringUtils.equalsIgnoreCase( NULL, s ) || StringUtils.equals( "*", s );
     }
 
     /**

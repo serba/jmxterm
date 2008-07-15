@@ -1,16 +1,16 @@
-What is JMX terminal
+What is JMXTERM
 
-  JMX terminal(jmxterm) is a command line based interactive JMX client. It's designed to allow user to access JMX from command line without graphical environment.
+  <<jmxterm>>(JMX terminal) is a command line based interactive JMX client. It's designed to allow user to access JMX from command line without graphical environment. In another word, it's a command line based jconsole.
+  
+  jmxterm is an open source Java project under {{{http://www.cyclopsgroup.org}CyclopsGroup.org}}.
 
 Why should I be interested?
 
-  There are several reasons why JMX terminal exists in this cruel world. Firstly if you are looking for a JMX client that works under non-X environment, there are not many good options. Besides, what make JMX terminal interesting are:
+  There are several reasons why JMX terminal exists in this cruel world. Firstly if you are looking for a pure command line based JMX client software, there are not many good options. Besides, what make jmxterm interesting are:
 
-  * Independent
-    JMX terminal depends on JDK 1.5+ only. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-use package. You don't need to worry about how to setup dependencies.
+  * <<Independent>> - jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run package. You don't need to worry about how to setup dependencies.
 
-  * Download and use
-    The executable JMX terminal is wrapped with a JAR file, which can be immediately used by calling java -jar jmxterm-#-uber.jar. There's no configuration, directories, environment variables for file permissions that need to setup. Check out {{{download.html}download}} for more details.
+  * <<Download and run>> - The executable JMXTERM is wrapped with a JAR file, which can be immediately used by calling <<<java -jar jmxterm-#-uber.jar>>>. There's no configuration, directories, environment variables for file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details.
 
-  * Self documented
-    In JMX terminal, every command is explained with help option and examples. You may also find many examples in {{{tutorial.html}tutorial}}.
+  * <<Self documented>> - In jmxterm, every command is explained with usage page and examples. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}.
+
