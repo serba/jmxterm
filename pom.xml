@@ -7,7 +7,7 @@
     <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
     <name>jmxterm</name>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <description>Command line based interactive JMX client</description>
     <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
     <licenses>
@@ -82,10 +82,10 @@
     </dependencies>
     <scm>
         <connection>
-            scm:svn:https://svn.cyclops-group.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
+            scm:svn:https://cyclops-group.svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
         </connection>
         <developerConnection>
-            scm:svn:https://svn.cyclops-group.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
+            scm:svn:https://cyclops-group.svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk
         </developerConnection>
         <url>http://fisheye3.atlassian.com/browse/cyclops-group</url>
     </scm>

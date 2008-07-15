@@ -2,6 +2,6 @@ Download and Run
 
   * <<Download and install JDK>> - Before we start rolling, make sure JRE or JDK 1.5+ is installed on your computer and <<<java>>> command is runnable. Check out {{{http://www.java.com/en/download/}java.com/download}} if you haven't installed JDK. 
 
-  * <<Download executable jmxterm package>> - jmxterm is designed to be ready for run out-of-box. The executable jar file is downloadable from {{{}SourceForge.net/cyclops-group download page}}. File <<<*-uber.jar>>> is the one ready to run out-of-box. 
+  * <<Download executable jmxterm package>> - jmxterm is designed to be ready for run out-of-box. The executable jar file is downloadable from {{{https://sourceforge.net/project/showfiles.php?group_id=91358&package_id=284164}SourceForge.net/cyclops-group download page}}. File <<<*-uber.jar>>> is the one ready to run out-of-box. 
   
   * <<Run jmxterm with java -jar>> - Once you download <<<jmxterm-#-uber.jar>>> to local (for example /home/my/jmxterm-1.0-uber.jar), terminal can be opened with command <<<java -jar /home/my/jmxterm-1.0-uber.jar>>>. jmxterm executable package can also take several options for more flexible usage, please jump to {{{manual.html}Manual}} for more information.
