@@ -10,7 +10,23 @@ import org.junit.Test;
 public class SyntaxUtilsTest
 {
     /**
-     * Verify string expression of type is correctly parsed 
+     * Test how getUrl() figure out MBeanServer URL based on various pattern of input
+     * 
+     * @throws MalformedURLException Thrown when syntax is invalid
+     */
+    @Test
+    public void testGetUrl()
+        throws MalformedURLException
+    {
+        assertEquals( "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
+                      SyntaxUtils.getUrl( "xyz-host.cyclopsgroup.org:12345" ).getURLPath() );
+        assertEquals(
+                      "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
+                      SyntaxUtils.getUrl( "service:jmx:rmi:///jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi" ).getURLPath() );
+    }
+
+    /**
+     * Verify string expression of type is correctly parsed
      */
     @Test
     public void testParseNormally()
@@ -23,23 +39,11 @@ public class SyntaxUtilsTest
     }
 
     /**
-     * Verify that Exception is thrown when type is wrong 
+     * Verify that Exception is thrown when type is wrong
      */
     @Test( expected = IllegalArgumentException.class )
     public void testParseWithWrongType()
     {
         SyntaxUtils.parse( "x", "x" );
-    }
-    
-    /**
-     * Test how getUrl() figure out MBeanServer URL based on various pattern of input
-     * 
-     * @throws MalformedURLException Thrown when syntax is invalid
-     */
-    @Test
-    public void testGetUrl() throws MalformedURLException
-    {
-        assertEquals("/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi", SyntaxUtils.getUrl("xyz-host.cyclopsgroup.org:12345").getURLPath() );
-        assertEquals("/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi", SyntaxUtils.getUrl("service:jmx:rmi:///jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi").getURLPath());
     }
 }

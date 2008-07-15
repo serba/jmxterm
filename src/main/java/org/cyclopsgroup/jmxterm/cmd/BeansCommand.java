@@ -19,7 +19,7 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "beans", description = "List available beans" )
+@Cli( name = "beans", description = "List available beans", note = "Example:\nbeans\nbeans -d java.lang" )
 public class BeansCommand
     extends Command
 {
@@ -62,9 +62,8 @@ public class BeansCommand
 
     /**
      * @inheritDoc
-     * @throws MalformedObjectNameException
-     * @throws IOException
      */
+    @Override
     public void execute( Session session )
         throws MalformedObjectNameException, IOException
     {

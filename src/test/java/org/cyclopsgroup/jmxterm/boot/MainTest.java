@@ -34,7 +34,7 @@ public class MainTest
                 one( cc ).close();
             }
         } );
-        main.execute( new String[] { "-i", "src/test/testscript.jmx" } );
+        main.execute( new String[] { "src/test/testscript.jmx" } );
         context.assertIsSatisfied();
     }
 }

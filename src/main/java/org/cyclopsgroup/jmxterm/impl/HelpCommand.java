@@ -16,7 +16,7 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "help", description = "Display available commands", note = "Run help [command1] [command2] ... to display usage or certain command(s)" )
+@Cli( name = "help", description = "Display available commands or usage of a command", note = "Run \"help [command1] [command2] ...\" to display usage or certain command(s). Help without argument shows list of available commands" )
 public class HelpCommand
     extends Command
 {
@@ -60,8 +60,8 @@ public class HelpCommand
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
                 Cli cli = CliUtils.defineCli( commandType ).getCli();
-                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":" +
-                    cli.description() );
+                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
+                    + cli.description() );
             }
         }
         else
