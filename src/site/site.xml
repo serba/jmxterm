@@ -23,7 +23,7 @@
             <item name="wiki"
                 href="http://wiki.cyclopsgroup.org" />
             <item name="sf.net/cyclops-group"
-                hrerf="http://sourceforge.net/projects/cyclops-group" />
+                href="http://sourceforge.net/projects/cyclops-group" />
         </links>
         <menu name="JMXTERM">
             <item name="Introduction" href="index.html" />
