@@ -10,6 +10,7 @@
     <version>0.2-SNAPSHOT</version>
     <description>Command line based interactive JMX client</description>
     <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
+    <inceptionYear>2008</inceptionYear>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -17,6 +18,10 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <issueManagement>
+        <system>sourceforge</system>
+        <url>http://sourceforge.net/tracker/?group_id=91358</url>
+    </issueManagement>
     <dependencies>
         <dependency>
             <groupId>classworlds</groupId>
@@ -107,6 +112,14 @@
                         </manifest>
                     </archive>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

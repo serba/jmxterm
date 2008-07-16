@@ -11,6 +11,83 @@ Why should I be interested?
   * <<Independent>> - jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run package. You don't need to worry about how to setup dependencies.
 
   * <<Download and run>> - The executable JMXTERM is wrapped with a JAR file, which can be immediately used by calling <<<java -jar jmxterm-#-uber.jar>>>. There's no configuration, directories, environment variables for file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details.
+  
+  * <<Interactive>> - Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is interactive and user friendly. User can do complicated series of operations in a session.
 
   * <<Self documented>> - In jmxterm, every command is explained with usage page and examples. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}.
 
+User experience
+
++--------------------------------------------------------------------------------+
+jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar 
+Welcome to JMX terminal. Type "help" for available commands.
+?$ open localhost:9991
+Connection to localhost:9991 is opened
+>$ domains
+following domains are available
+%0   - JMImplementation
+%1   - com.sun.management
+%2   - java.lang
+%3   - java.util.logging
+>$ beans -d java.lang
+domain = java.lang:
+  %0   - java.lang:name=Code Cache,type=MemoryPool
+  %1   - java.lang:name=CodeCacheManager,type=MemoryManager
+  %2   - java.lang:name=PS Eden Space,type=MemoryPool
+  %3   - java.lang:name=PS MarkSweep,type=GarbageCollector
+  %4   - java.lang:name=PS Old Gen,type=MemoryPool
+  %5   - java.lang:name=PS Perm Gen,type=MemoryPool
+  %6   - java.lang:name=PS Scavenge,type=GarbageCollector
+  %7   - java.lang:name=PS Survivor Space,type=MemoryPool
+  %8   - java.lang:type=ClassLoading
+  %9   - java.lang:type=Compilation
+  %10  - java.lang:type=Memory
+  %11  - java.lang:type=OperatingSystem
+  %12  - java.lang:type=Runtime
+  %13  - java.lang:type=Threading
+>$ bean java.lang:type=OperatingSystem
+bean is set to java.lang:type=OperatingSystem
+>$ info
+mbean = java.lang:type=OperatingSystem
+class name = com.sun.management.UnixOperatingSystem
+# attributes
+  %0   - Arch (java.lang.String, r)
+  %1   - AvailableProcessors (int, r)
+  %2   - CommittedVirtualMemorySize (long, r)
+  %3   - FreePhysicalMemorySize (long, r)
+  %4   - FreeSwapSpaceSize (long, r)
+  %5   - MaxFileDescriptorCount (long, r)
+  %6   - Name (java.lang.String, r)
+  %7   - OpenFileDescriptorCount (long, r)
+  %8   - ProcessCpuTime (long, r)
+  %9   - SystemLoadAverage (double, r)
+  %10  - TotalPhysicalMemorySize (long, r)
+  %11  - TotalSwapSpaceSize (long, r)
+  %12  - Version (java.lang.String, r)
+there's no operations
+there's no notifications
+>$ get *
+mbean = java.lang:type=OperatingSystem:
+  "MaxFileDescriptorCount" = 1024;
+  "OpenFileDescriptorCount" = 273;
+  "CommittedVirtualMemorySize" = 1634246656;
+  "FreePhysicalMemorySize" = 292585472;
+  "FreeSwapSpaceSize" = 5140758528;
+  "ProcessCpuTime" = 164850000000;
+  "TotalPhysicalMemorySize" = 2123792384;
+  "TotalSwapSpaceSize" = 5140758528;
+  "Name" = "Linux";
+  "AvailableProcessors" = 2;
+  "Arch" = "i386";
+  "SystemLoadAverage" = 0.04;
+  "Version" = "2.6.24-19-generic";
+>$ get Name Arch Version     
+mbean = java.lang:type=OperatingSystem:
+  "Name" = "Linux";
+  "Arch" = "i386";
+  "Version" = "2.6.24-19-generic";
+>$ close
+JMX connection is closed
+?$ bye
+bye
++--------------------------------------------------------------------------------+

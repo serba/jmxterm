@@ -1,0 +1,13 @@
+Roadmap
+
+  jmxterm project just started recently. It's still buggy and poorly documented. The outstanding known issuers are:
+
+  * Documentation
+  
+  * Test coverage
+  
+  * JMX Login authentication
+  
+  * List local JVM processes
+  
+  * Command option validation

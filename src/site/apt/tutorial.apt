@@ -1,0 +1,32 @@
+It actually takes about 20 seconds
+
+  Once jmxterm-#-uber.jar is downloaded, you can run this jar using <<<java -jar>>> command. Then all available commands can be described using help command. For example:
+
++--------------------------------------------------------------------------------+
+jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar
+Welcome to JMX terminal. Type "help" for available commands.
+?$ help
+following commands are available to use:
+- bean             Display or set current bean
+- beans            List available beans
+- bye              Terminate console
+- close            Close JMX session
+- domain           Display or set current domain
+- domains          List all available domain names
+- exit             Terminate console
+- get              Get value of attribute(s)
+- help             Display available commands or usage of a command
+- info             Display detail about an MBean
+- open             Open JMX session
+- option           Set options for command session
+- quit             Terminate console
+- run              Invocate MBean action
+- set              Set value of an attribute
+?$ help open
+usage: open [-h]
+Open JMX session
+  -h,--help  Display usage
+eg. open localhost:9991, or open jmx:service:...
++--------------------------------------------------------------------------------+
+
+  jmxterm can do much more than this. Check out {{{manual.html}User Manual}} for more complicated usage.

@@ -5,6 +5,11 @@
         <src>images/logo.png</src>
         <href>index.html</href>
     </bannerLeft>
+    <bannerRight>
+        <src>
+            http://cyclops-group.sourceforge.net/images/cyclopsgroup_logo.png
+        </src>
+    </bannerRight>
     <body>
         <head>
             <script type="text/javascript"
@@ -20,8 +25,7 @@
         <links>
             <item name="cyclopsgroup.org"
                 href="http://www.cyclopsgroup.org/" />
-            <item name="wiki"
-                href="http://wiki.cyclopsgroup.org" />
+            <item name="wiki" href="http://wiki.cyclopsgroup.org" />
             <item name="sf.net/cyclops-group"
                 href="http://sourceforge.net/projects/cyclops-group" />
         </links>
@@ -42,7 +46,7 @@
                     href="http://fisheye3.atlassian.com/changelog/cyclops-group" />
                 <item name="Chart"
                     href="http://fisheye3.atlassian.com/chart/cyclops-group" />
-                <item name="Checkout" href="source-repository.html" />
+                <item name="Checkout Code" href="source-repository.html" />
             </item>
         </menu>
         <menu ref="reports" />
