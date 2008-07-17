@@ -26,7 +26,7 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public boolean isConnected()
+    public synchronized boolean isConnected()
     {
         return connection != null;
     }
@@ -35,14 +35,13 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public Connection getConnection()
+    public synchronized Connection getConnection()
     {
-        Connection c = connection;
-        if ( c == null )
+        if ( connection == null )
         {
             throw new IllegalStateException( "Connection isn't open yet. Run open command to open a connection" );
         }
-        return c;
+        return connection;
     }
 
     /**
