@@ -7,8 +7,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.cli.GnuParser;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.QuotedStringTokenizer;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
@@ -31,6 +33,8 @@ public class CommandCenter
     private final Lock lock = new ReentrantLock();
 
     private final Session session;
+
+    private final QuotedStringTokenizer argTokenizer = new QuotedStringTokenizer();
 
     /**
      * Constructor with given output {@link PrintWriter}
@@ -111,7 +115,7 @@ public class CommandCenter
         }
 
         // Take the first argument out since it's command name
-        String[] args = StringUtils.split( command, ' ' );
+        String[] args = argTokenizer.parse( command ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
         String commandName = args[0];
         // Leave the rest of arguments for command
         String[] commandArgs = new String[args.length - 1];

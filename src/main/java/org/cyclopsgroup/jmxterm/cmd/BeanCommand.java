@@ -24,7 +24,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class BeanCommand
     extends Command
 {
-    private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=\\w+(\\,\\w+\\=\\w+)*";
+    private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
 
     private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + STRING_PATTERN_PROPERTIES + "$" );
 
