@@ -2,6 +2,7 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.IOException;
 
+import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXServiceURL;
 
 /**
@@ -12,19 +13,26 @@ import javax.management.remote.JMXServiceURL;
 public interface Connection
 {
     /**
-     * @return The URL user manually input
-     */
-    String getDisplayUrl();
-
-    /**
-     * @return JMX service URL object
-     */
-    JMXServiceURL getUrl();
-
-    /**
      * @return Id of connector
      * @throws IOException Thrown when ID can't be retrieved
      */
     String getConnectorId()
         throws IOException;
+
+    /**
+     * @return The URL user manually input
+     */
+    String getDisplayUrl();
+
+    /**
+     * @return MBean server connection
+     * @throws IOException Thrown for communication problem
+     */
+    MBeanServerConnection getServerConnection()
+        throws IOException;
+
+    /**
+     * @return JMX service URL object
+     */
+    JMXServiceURL getUrl();
 }

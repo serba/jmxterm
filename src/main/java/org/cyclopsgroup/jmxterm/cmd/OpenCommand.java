@@ -33,10 +33,9 @@ public class OpenCommand
             }
             return;
         }
-        if ( session.connect( url ) )
-        {
-            session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
-        }
+        session.connect( url );
+        session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
+
     }
 
     public final String getUrl()

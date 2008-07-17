@@ -12,6 +12,7 @@ import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.CommandFactory;
 import org.cyclopsgroup.jmxterm.Session;
 
 /**
@@ -39,19 +40,24 @@ public class CommandCenter
      * @throws IOException Thrown for file access failure
      */
     public CommandCenter( PrintWriter output )
-        throws IOException
+        throws IOException, ClassNotFoundException
+    {
+        this( output, new PredefinedCommandFactory() );
+    }
+
+    /**
+     * This constructor is for testing purpose only
+     * 
+     * @param output Output result
+     * @param commandFactory Given command factory
+     */
+    public CommandCenter( PrintWriter output, CommandFactory commandFactory )
     {
         Validate.notNull( output, "Output can't be NULL" );
-        session = new Session( output );
-        try
-        {
-            commandFactory = new CommandFactory();
-            output.println( "Welcome to JMX terminal. Type \"help\" for available commands." );
-        }
-        catch ( ClassNotFoundException e )
-        {
-            throw new RuntimeException( "Command class not found, jar is corrupted probably", e );
-        }
+        Validate.notNull( commandFactory, "Command factory can't be NULL" );
+        this.session = new ConnectionAwareSession( output );
+        this.commandFactory = commandFactory;
+        session.msg( "Welcome to JMX terminal. Type \"help\" for available commands." );
     }
 
     /**
@@ -118,8 +124,6 @@ public class CommandCenter
         throws Exception
     {
         Command cmd = commandFactory.createCommand( commandName );
-
-        // Particularly for HelpCommand, call setCommandCenter with itself
         if ( cmd instanceof HelpCommand )
         {
             ( (HelpCommand) cmd ).setCommandCenter( this );
@@ -174,7 +178,7 @@ public class CommandCenter
      */
     public Set<String> getCommandNames()
     {
-        return commandFactory.commandTypes.keySet();
+        return commandFactory.getCommandTypes().keySet();
     }
 
     /**
@@ -183,7 +187,7 @@ public class CommandCenter
      */
     public Class<? extends Command> getCommandType( String name )
     {
-        return commandFactory.commandTypes.get( name );
+        return commandFactory.getCommandTypes().get( name );
     }
 
     /**
@@ -204,7 +208,7 @@ public class CommandCenter
     {
         if ( !session.isAbbreviated() )
         {
-            session.output.print( ( session.getConnection() == null ? "?" : ">" ) + "$ " );
+            session.output.print( ( session.isConnected() ? ">" : "?" ) + "$ " );
             session.output.flush();
         }
     }

@@ -49,7 +49,7 @@ public class BeansCommand
         {
             queryName = new ObjectName( domainName + ":*" );
         }
-        Set<ObjectName> names = session.getServerConnection().queryNames( queryName, null );
+        Set<ObjectName> names = session.getConnection().getServerConnection().queryNames( queryName, null );
         List<String> results = new ArrayList<String>( names.size() );
         for ( ObjectName name : names )
         {
@@ -66,10 +66,6 @@ public class BeansCommand
     public void execute( Session session )
         throws MalformedObjectNameException, IOException
     {
-        if ( session.getConnection() == null )
-        {
-            throw new IllegalStateException( "There's no open connection right now, use open command" );
-        }
         String domainName = DomainCommand.getDomainName( domain, session );
         List<String> domains = new ArrayList<String>();
         if ( domainName == null )

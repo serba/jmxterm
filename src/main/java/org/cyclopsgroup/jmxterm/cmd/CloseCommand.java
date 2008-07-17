@@ -1,5 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
+import java.io.IOException;
+
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -13,11 +15,8 @@ public class CloseCommand
      */
     @Override
     public void execute( Session session )
-        throws Exception
+        throws IOException
     {
-        if ( session.disconnect() )
-        {
-            session.msg( "JMX connection is closed", "ok" );
-        }
+        session.disconnect();
     }
 }

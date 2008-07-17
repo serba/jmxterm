@@ -135,7 +135,7 @@ public class InfoCommand
             throw new IllegalArgumentException( "Please specify a bean using either -b option or bean command" );
         }
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanInfo info = con.getMBeanInfo( name );
         session.msg( "mbean = " + beanName );
         session.msg( "class name = " + info.getClassName() );

@@ -1,11 +1,13 @@
-package org.cyclopsgroup.jmxterm;
+package org.cyclopsgroup.jmxterm.impl;
 
 import java.io.IOException;
 
+import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jmxterm.Connection;
 
 /**
  * Identifies a JMX connection
@@ -36,12 +38,27 @@ class ConnectionImpl
         this.displayUrl = displayUrl;
     }
 
+    void close()
+        throws IOException
+    {
+        connector.close();
+    }
+
     /**
      * @return JMX connector
      */
     public final JMXConnector getConnector()
     {
         return connector;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public String getConnectorId()
+        throws IOException
+    {
+        return connector.getConnectionId();
     }
 
     /**
@@ -55,17 +72,17 @@ class ConnectionImpl
     /**
      * @inheritDoc
      */
-    public final JMXServiceURL getUrl()
+    public MBeanServerConnection getServerConnection()
+        throws IOException
     {
-        return url;
+        return connector.getMBeanServerConnection();
     }
 
     /**
      * @inheritDoc
      */
-    public String getConnectorId()
-        throws IOException
+    public final JMXServiceURL getUrl()
     {
-        return connector.getConnectionId();
+        return url;
     }
 }

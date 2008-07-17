@@ -79,7 +79,7 @@ public class BeanCommand
         {
             return null;
         }
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         if ( PATTERN_BEAN_NAME.matcher( bean ).find() )
         {
             ObjectName name = new ObjectName( bean );
@@ -121,14 +121,13 @@ public class BeanCommand
         if ( beanName == null )
         {
             session.setBean( null );
-            session.msg( "bean is unset" );
+            session.msg( "bean is unset", SyntaxUtils.OK );
             return;
         }
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         con.getMBeanInfo( name );
         session.setBean( beanName );
-        session.msg( "bean is set to " + beanName );
-        session.ok();
+        session.msg( "bean is set to " + beanName, SyntaxUtils.OK );
     }
 }

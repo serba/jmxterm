@@ -50,8 +50,9 @@ public class DomainCommand
      */
     @Override
     public void execute( Session session )
-        throws Exception
+        throws IOException
     {
+        Validate.notNull( session, "Session can't be NULL" );
         if ( domain == null )
         {
             if ( session.getDomain() == null )
@@ -68,14 +69,13 @@ public class DomainCommand
         if ( domainName == null )
         {
             session.unsetDomain();
-            session.msg( "domain is unset" );
+            session.msg( "domain is unset", SyntaxUtils.OK );
         }
         else
         {
             session.setDomain( domainName );
-            session.msg( "domain is set to " + session.getDomain() );
+            session.msg( "domain is set to " + session.getDomain(), SyntaxUtils.OK );
         }
-        session.ok();
     }
 
     @Argument

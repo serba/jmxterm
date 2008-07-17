@@ -27,13 +27,13 @@ public class Main
     }
 
     private Main()
-        throws IOException
+        throws IOException, ClassNotFoundException
     {
         this( new CommandCenter( STDOUT_WRITER ) );
     }
 
     public static final void main( String[] args )
-        throws IntrospectionException, IOException
+        throws IntrospectionException, IOException, ClassNotFoundException
     {
         Main main = new Main();
         main.execute( args );

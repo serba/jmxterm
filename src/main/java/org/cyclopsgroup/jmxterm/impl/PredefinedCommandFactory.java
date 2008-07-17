@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +11,15 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.CommandFactory;
 
 /**
  * Factory class of commands which knows how to create Command class with given command name
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-class CommandFactory
+class PredefinedCommandFactory
+    implements CommandFactory
 {
     private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
 
@@ -26,7 +27,7 @@ class CommandFactory
 
     private static final String CONFIG_PATH = "META-INF/cyclopsgroup/jmxterm.properties";
 
-    final Map<String, Class<? extends Command>> commandTypes;
+    private final CommandFactory delegate;
 
     /**
      * Default constructor
@@ -34,7 +35,7 @@ class CommandFactory
      * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
-    CommandFactory()
+    PredefinedCommandFactory()
         throws ClassNotFoundException, IOException
     {
         this( CONFIG_PATH );
@@ -47,7 +48,7 @@ class CommandFactory
      * @throws IOException Thrown when Jar is corrupted
      */
     @SuppressWarnings( "unchecked" )
-    CommandFactory( String configPath )
+    PredefinedCommandFactory( String configPath )
         throws ClassNotFoundException, IOException
     {
         Validate.notNull( configPath, "configPath can't be NULL" );
@@ -89,28 +90,23 @@ class CommandFactory
             }
         }
         commands.put( "help", HelpCommand.class );
-        this.commandTypes = Collections.unmodifiableMap( commands );
+        delegate = new TypeMapCommandFactory( commands );
     }
 
     /**
-     * Create command instance for given command name
-     * 
-     * @param commandName Name of command
-     * @return Instance of command. It won't be NULL
-     * @throws InstantiationException Thrown when command instance couldn't be created
-     * @throws IllegalAccessException Thrown when command instance couldn't be created
-     * @throws IllegalArgumentException Thrown when commandName is NULL or unknown
+     * @inheritDoc
      */
-    Command createCommand( String commandName )
-        throws InstantiationException, IllegalAccessException, IllegalArgumentException
+    public Command createCommand( String commandName )
+        throws Exception
     {
-        Validate.notNull( commandName, "commandName can't be NULL" );
-        Class<? extends Command> commandType = commandTypes.get( commandName );
-        if ( commandType == null )
-        {
-            throw new IllegalArgumentException( "Command " + commandName
-                + " isn't valid, run help to see available commands" );
-        }
-        return commandType.newInstance();
+        return delegate.createCommand( commandName );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public Map<String, Class<? extends Command>> getCommandTypes()
+    {
+        return delegate.getCommandTypes();
     }
 }

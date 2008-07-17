@@ -73,7 +73,7 @@ public class RunCommand
         Validate.isTrue( parameters.size() > 0, "At least one parameter is needed" );
         String operationName = parameters.get( 0 );
         ObjectName name = new ObjectName( beanName );
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanInfo beanInfo = con.getMBeanInfo( name );
         MBeanOperationInfo operationInfo = null;
         for ( MBeanOperationInfo info : beanInfo.getOperations() )
@@ -86,8 +86,8 @@ public class RunCommand
         }
         if ( operationInfo == null )
         {
-            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 ) +
-                " parameters doesn't exist in bean " + beanName );
+            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 )
+                + " parameters doesn't exist in bean " + beanName );
         }
         Object[] params = new Object[parameters.size() - 1];
         MBeanParameterInfo[] paramInfos = operationInfo.getSignature();

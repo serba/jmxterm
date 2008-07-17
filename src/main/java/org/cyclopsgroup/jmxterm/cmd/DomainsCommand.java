@@ -30,7 +30,7 @@ public class DomainsCommand
     public static List<String> getDomains( Session session )
         throws IOException
     {
-        String[] domains = session.getServerConnection().getDomains();
+        String[] domains = session.getConnection().getServerConnection().getDomains();
         List<String> result = new ArrayList<String>( Arrays.asList( domains ) );
         Collections.sort( result );
         return result;
@@ -43,10 +43,6 @@ public class DomainsCommand
         throws IOException
     {
         Validate.notNull( session, "Session can't be NULL" );
-        if ( session.getConnection() == null )
-        {
-            throw new IllegalStateException( "There's no open connection right now, use open command" );
-        }
         if ( !session.isAbbreviated() )
         {
             session.msg( "following domains are available" );

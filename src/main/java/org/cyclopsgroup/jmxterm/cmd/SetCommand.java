@@ -42,7 +42,7 @@ public class SetCommand
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         ObjectName name = new ObjectName( beanName );
 
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanInfo beanInfo = con.getMBeanInfo( new ObjectName( beanName ) );
         MBeanAttributeInfo attributeInfo = null;
         for ( MBeanAttributeInfo i : beanInfo.getAttributes() )

@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +49,7 @@ public class HelpCommand
      */
     @Override
     public void execute( Session session )
-        throws Exception
+        throws IntrospectionException
     {
         Validate.notNull( commandCenter, "Command center hasn't been set yet" );
         if ( argNames.length == 0 )

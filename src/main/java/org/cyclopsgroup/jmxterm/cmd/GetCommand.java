@@ -28,13 +28,9 @@ public class GetCommand
         throws IOException, JMException
     {
         String beanName = BeanCommand.getBeanName( bean, domain, session );
-        if ( beanName == null )
-        {
-            throw new IllegalArgumentException( "Bean isn't set yet, please use -b option or bean command" );
-        }
         ObjectName name = new ObjectName( beanName );
         session.msg( "mbean = " + beanName + ":" );
-        MBeanServerConnection con = session.getServerConnection();
+        MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         Map<String, MBeanAttributeInfo> attributeNames =
             (Map<String, MBeanAttributeInfo>) ListOrderedMap.decorate( new HashMap<String, MBeanAttributeInfo>() );
