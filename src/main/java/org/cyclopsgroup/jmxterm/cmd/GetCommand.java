@@ -24,7 +24,7 @@ public class GetCommand
     extends Command
 {
     @SuppressWarnings( "unchecked" )
-    public void displayAttributes( Session session )
+    private void displayAttributes( Session session )
         throws IOException, JMException
     {
         String beanName = BeanCommand.getBeanName( bean, domain, session );

@@ -31,9 +31,9 @@
         </links>
         <menu name="JMXTERM">
             <item name="Introduction" href="index.html" />
+            <item name="Download and Run" href="download.html" />
             <item name="1 Minute Tutorial" href="tutorial.html" />
             <item name="User Manual" href="manual.html" />
-            <item name="Download and Run" href="download.html" />
             <item name="Road Map" href="roadmap.html" />
             <item name="What do you think" href="feedback.html" />
             <item name="Source Code" href="sourcecode.html"
@@ -46,7 +46,8 @@
                     href="http://fisheye3.atlassian.com/changelog/cyclops-group" />
                 <item name="Chart"
                     href="http://fisheye3.atlassian.com/chart/cyclops-group" />
-                <item name="Checkout Code" href="source-repository.html" />
+                <item name="Checkout Code"
+                    href="source-repository.html" />
             </item>
         </menu>
         <menu ref="reports" />

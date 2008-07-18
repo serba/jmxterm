@@ -15,6 +15,10 @@ public class OpenCommand
 {
     private String url;
 
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void execute( Session session )
         throws IOException
     {

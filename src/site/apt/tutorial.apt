@@ -1,6 +1,6 @@
 It actually takes about 20 seconds
 
-  Once jmxterm-#-uber.jar is downloaded, you can run this jar using <<<java -jar>>> command. Then all available commands can be described using help command. For example:
+  <<JAVA -JAR JMXTERM-##-UBER.JAR>> is all you need. Yes, there's no dependency, installation, user configuration, file structure, permission or log directory to setup. Just {{{download.html} Download And Run}}. <<<java -jar jmxterm-##-uber.jar>>> without any option opens an interactive command line console where commands are self-explained. You will never get lost. 
 
 +--------------------------------------------------------------------------------+
 jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar
