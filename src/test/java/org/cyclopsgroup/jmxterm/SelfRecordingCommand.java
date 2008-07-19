@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 
-@Cli( name = "test" )
+@Cli( name = "test", description = "desc" )
 public class SelfRecordingCommand
     extends Command
 {
@@ -21,7 +21,6 @@ public class SelfRecordingCommand
 
     @Override
     public void execute( Session session )
-        throws Exception
     {
         records.add( this );
     }

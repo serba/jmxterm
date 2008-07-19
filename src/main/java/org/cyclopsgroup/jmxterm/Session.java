@@ -7,8 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 /**
- * JMX communication context. This class exists for the whole lifecycle of a command execution. The runner of session
- * make sure all calls are synchronized.
+ * JMX communication context. This class exists for the whole lifecycle of a command execution. It is NOT thread safe.
+ * The caller(CommandCenter) makes sure all calls are synchronized.
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
@@ -36,9 +36,9 @@ public abstract class Session
     }
 
     /**
-     * Close JMX terminal session. It is unnecessarily synchronized
+     * Close JMX terminal console. Supposedly, process terminates after this call
      */
-    public synchronized void close()
+    public void close()
     {
         if ( closed )
         {
@@ -69,25 +69,43 @@ public abstract class Session
         return bean;
     }
 
+    /**
+     * @return Current open JMX server connection
+     */
     public abstract Connection getConnection();
 
+    /**
+     * @return Current domain
+     */
     public final String getDomain()
     {
         return domain;
     }
 
+    /**
+     * @return True if output is abbreviated
+     */
     public final boolean isAbbreviated()
     {
         return abbreviated;
     }
 
+    /**
+     * @return True if {@link #close()} has been called
+     */
     public final boolean isClosed()
     {
         return closed;
     }
 
+    /**
+     * @return True if there's a open connection to JMX server
+     */
     public abstract boolean isConnected();
 
+    /**
+     * @return True if <code>verbose</code> option is turned on
+     */
     public final boolean isVerbose()
     {
         return verbose;
@@ -96,13 +114,19 @@ public abstract class Session
     /**
      * Output a message based on abbreviated option
      * 
-     * @param msg
+     * @param msg Message to output
      */
     public void msg( String msg )
     {
         msg( msg, null );
     }
 
+    /**
+     * Output a string message
+     * 
+     * @param msg Message to output when <code>abbreviated</code> option is off
+     * @param abbr Message to output when <code>abbreviated</code> option is on
+     */
     public void msg( String msg, String abbr )
     {
         if ( abbreviated )
@@ -132,6 +156,9 @@ public abstract class Session
         }
     }
 
+    /**
+     * @param abbreviated True if <code>abbreviated</code> option is to be turned on
+     */
     public final void setAbbreviated( boolean abbreviated )
     {
         this.abbreviated = abbreviated;

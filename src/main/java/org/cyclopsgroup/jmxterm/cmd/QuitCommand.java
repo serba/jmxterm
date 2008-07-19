@@ -18,6 +18,7 @@ public class QuitCommand
     public void execute( Session session )
         throws IOException
     {
+        session.disconnect();
         session.close();
         session.msg( "bye", SyntaxUtils.OK );
     }

@@ -63,6 +63,7 @@ public class SetCommand
         }
         Object value = SyntaxUtils.parse( arguments.get( 1 ), attributeInfo.getType() );
         con.setAttribute( name, new Attribute( attributeName, value ) );
+        session.msg( "Value of attribute " + attributeName + " is set to " + value, SyntaxUtils.OK );
     }
 
     @Argument( requires = 2, description = "name, value, value2..." )

@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
@@ -124,6 +125,12 @@ public class CommandCenter
         doExecute( commandName, commandArgs );
     }
 
+    void printUsage( Class<? extends Command> commandType )
+        throws IntrospectionException
+    {
+        cliParser.printUsage( commandType, session.output );
+    }
+
     private void doExecute( String commandName, String[] commandArgs )
         throws Exception
     {
@@ -137,7 +144,7 @@ public class CommandCenter
         // Print out usage if help option is specified
         if ( cmd.isHelp() )
         {
-            cliParser.printUsage( cmd.getClass(), session.output );
+            printUsage( cmd.getClass() );
             return;
         }
 

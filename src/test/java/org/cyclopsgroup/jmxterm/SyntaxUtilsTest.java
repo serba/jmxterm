@@ -3,7 +3,11 @@ package org.cyclopsgroup.jmxterm;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -45,5 +49,34 @@ public class SyntaxUtilsTest
     public void testParseWithWrongType()
     {
         SyntaxUtils.parse( "x", "x" );
+    }
+
+    @Test
+    public void testPrintValue()
+    {
+        assertEquals( "3", printValue( 3 ) );
+        assertEquals( "\"x\"", printValue( "x" ) );
+        assertEquals( "5.555", printValue( 5.555f ) );
+        assertEquals( "( 1, 2, 3 )", printValue( Arrays.asList( 1, 2, 3 ) ) );
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put( "a", "qqq" );
+        assertEquals( "[1,2,3]", printValue( new int[] { 1, 2, 3 } ).replaceAll( "\\s", "" ) );
+        assertEquals( "{\"a\"=\"qqq\";}", printValue( map ).replaceAll( "\\s", "" ) );
+    }
+
+    @Test
+    public void testPrintExpression()
+    {
+        StringWriter output = new StringWriter();
+        SyntaxUtils.printExpression( new PrintWriter( output, true ), "a", 123, null, 0, false );
+        assertEquals( "\"a\"=123;", output.toString().replaceAll( "\\s", "" ) );
+    }
+
+    private static String printValue( Object v )
+    {
+        StringWriter output = new StringWriter();
+        SyntaxUtils.printValue( new PrintWriter( output, true ), v, 0, false );
+        return output.toString();
     }
 }

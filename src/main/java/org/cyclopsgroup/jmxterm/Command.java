@@ -1,5 +1,9 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.io.IOException;
+
+import javax.management.JMException;
+
 import org.cyclopsgroup.jcli.annotation.Option;
 
 /**
@@ -17,10 +21,11 @@ public abstract class Command
      * Execute command logic
      * 
      * @param session Current console session
-     * @throws Exception Allow any exception
+     * @throws IOException IOException is allowed
+     * @throws JMException JMException can be caused by user's mistake
      */
     public abstract void execute( Session session )
-        throws Exception;
+        throws IOException, JMException;
 
     /**
      * @see #setHelp(boolean)

@@ -49,7 +49,6 @@ public class HelpCommand
      */
     @Override
     public void execute( Session session )
-        throws IntrospectionException
     {
         Validate.notNull( commandCenter, "Command center hasn't been set yet" );
         if ( argNames.length == 0 )
@@ -60,16 +59,36 @@ public class HelpCommand
             for ( String commandName : commandNames )
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
-                Cli cli = CliUtils.defineCli( commandType ).getCli();
-                session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
-                    + cli.description() );
+                Cli cli;
+                try
+                {
+                    cli = CliUtils.defineCli( commandType ).getCli();
+                    session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
+                        + cli.description() );
+                }
+                catch ( IntrospectionException e )
+                {
+                    throw new RuntimeException( "Command type " + commandType + " has some problem", e );
+                }
             }
         }
         else
         {
             for ( String argName : argNames )
             {
-                commandCenter.execute( argName + " -h" );
+                Class<? extends Command> commandType = commandCenter.getCommandType( argName );
+                if ( commandType == null )
+                {
+                    throw new IllegalArgumentException( "Command " + argName + " is not found" );
+                }
+                try
+                {
+                    commandCenter.printUsage( commandType );
+                }
+                catch ( IntrospectionException e )
+                {
+                    throw new RuntimeException( "Command type " + commandType + " has some problem", e );
+                }
             }
         }
     }

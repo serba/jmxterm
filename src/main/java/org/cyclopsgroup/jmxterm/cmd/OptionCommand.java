@@ -53,7 +53,6 @@ public class OptionCommand
      */
     @Override
     public void execute( Session session )
-        throws Exception
     {
         Boolean v = toBoolean( verbose );
         if ( v != null )

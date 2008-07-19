@@ -12,12 +12,20 @@ import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
-class ConnectionAwareSession
+/**
+ * Implementation of {@link Session} which keeps a {@link ConnectionImpl}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
+public class ConnectionAwareSession
     extends Session
 {
     private ConnectionImpl connection;
 
-    ConnectionAwareSession( PrintWriter output )
+    /**
+     * @param output Output result
+     */
+    public ConnectionAwareSession( PrintWriter output )
     {
         super( output );
     }
@@ -26,7 +34,7 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public synchronized boolean isConnected()
+    public boolean isConnected()
     {
         return connection != null;
     }
@@ -35,7 +43,7 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public synchronized Connection getConnection()
+    public Connection getConnection()
     {
         if ( connection == null )
         {
@@ -48,21 +56,27 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public synchronized void connect( String url )
+    public void connect( String url )
         throws IOException
     {
         Validate.isTrue( connection == null, "Session is already opened" );
         Validate.notNull( url, "URL can't be NULL" );
         JMXServiceURL u = SyntaxUtils.getUrl( url );
-        JMXConnector connector = JMXConnectorFactory.connect( u );
+        JMXConnector connector = doConnect( u );
         connection = new ConnectionImpl( connector, u, url );
+    }
+
+    protected JMXConnector doConnect( JMXServiceURL url )
+        throws IOException
+    {
+        return JMXConnectorFactory.connect( url );
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public synchronized void disconnect()
+    public void disconnect()
         throws IOException
     {
         if ( connection == null )
