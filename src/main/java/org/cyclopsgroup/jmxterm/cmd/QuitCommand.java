@@ -7,7 +7,12 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
-@Cli( name = "quit", description = "Terminate console" )
+/**
+ * Command to terminate the console
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
+@Cli( name = "quit", description = "Terminate console and exit" )
 public class QuitCommand
     extends Command
 {

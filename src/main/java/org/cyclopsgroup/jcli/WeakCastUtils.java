@@ -10,12 +10,27 @@ import javax.naming.OperationNotSupportedException;
 
 import org.apache.commons.lang.Validate;
 
+/**
+ * Utility that cast object into given interface(s) even though class doesn't implement interface(s)
+ *
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public final class WeakCastUtils
 {
     private WeakCastUtils()
     {
     }
 
+    /**
+     * Cast object into multiple interfaces
+     * 
+     * @param from Object to cast 
+     * @param interfaces Interfaces to cast to
+     * @param classLoader ClassLoader to load methods for invocation
+     * @return Result that implements given interfaces
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     */
     public static Object cast( final Object from, final Class<?>[] interfaces, ClassLoader classLoader )
         throws SecurityException, NoSuchMethodException
     {
@@ -48,6 +63,17 @@ public final class WeakCastUtils
         } );
     }
 
+    /**
+     * Cast object to one given interface
+     * 
+     * @param <T> Type of interface
+     * @param from Object to cast
+     * @param interfase Interface to cast to
+     * @param classLoader Class loader to load invocation methods
+     * @return Result that implements interface
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     */
     @SuppressWarnings( "unchecked" )
     public static <T> T cast( Object from, Class<T> interfase, ClassLoader classLoader )
         throws SecurityException, NoSuchMethodException
@@ -56,6 +82,16 @@ public final class WeakCastUtils
         return (T) cast( from, new Class<?>[] { interfase }, classLoader );
     }
 
+    /**
+     * Cast object to one given interface using ClassLoader of interface
+     * 
+     * @param <T> Type of interface
+     * @param from Object to cast
+     * @param interfase Interface to cast to
+     * @return Result that implements interface
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     */
     public static <T> T cast( Object from, Class<T> interfase )
         throws SecurityException, NoSuchMethodException
     {

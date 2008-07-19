@@ -9,6 +9,11 @@ import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+/**
+ * Command to open JMX connection
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Cli( name = "open", description = "Open JMX session", note = "eg. open localhost:9991, or open jmx:service:..." )
 public class OpenCommand
     extends Command
@@ -42,11 +47,9 @@ public class OpenCommand
 
     }
 
-    public final String getUrl()
-    {
-        return url;
-    }
-
+    /**
+     * @param url URL of MBean service to open
+     */
     @Argument
     public final void setUrl( String url )
     {

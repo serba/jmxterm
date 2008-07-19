@@ -19,6 +19,11 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+/**
+ * Command to set an attribute
+ *
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Cli( name = "set", description = "Set value of an attribute" )
 public class SetCommand
     extends Command
@@ -66,6 +71,9 @@ public class SetCommand
         session.msg( "Value of attribute " + attributeName + " is set to " + value, SyntaxUtils.OK );
     }
 
+    /**
+     * @param arguments Argument list. The first argument is attribute name
+     */
     @Argument( requires = 2, description = "name, value, value2..." )
     public final void setArguments( List<String> arguments )
     {
@@ -73,12 +81,18 @@ public class SetCommand
         this.arguments = arguments;
     }
 
+    /**
+     * @param bean Bean where the attribute is
+     */
     @Option( name = "b", longName = "bean", description = "MBean name where the attribute is. Optional if bean has been set" )
     public final void setBean( String bean )
     {
         this.bean = bean;
     }
 
+    /**
+     * @param domain Domain where the bean is
+     */
     @Option( name = "d", longName = "domain", description = "Domain under which the bean is" )
     public final void setDomain( String domain )
     {

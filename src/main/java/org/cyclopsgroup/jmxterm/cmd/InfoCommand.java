@@ -158,6 +158,9 @@ public class InfoCommand
         }
     }
 
+    /**
+     * @param bean Bean for which information is displayed
+     */
     @Option( name = "b", longName = "bean", description = "Name of MBean" )
     public final void setBean( String bean )
     {
@@ -175,12 +178,18 @@ public class InfoCommand
         this.domain = domain;
     }
 
+    /**
+     * @param showDescription True to show detail description
+     */
     @Option( name = "e", longName = "detail", description = "Show description" )
     public final void setShowDescription( boolean showDescription )
     {
         this.showDescription = showDescription;
     }
 
+    /**
+     * @param type Type of detail to display
+     */
     @Option( name = "t", longName = "type", description = "Types(a|o|u) to display, for example aon for all attributes, operations and notifications" )
     public void setType( String type )
     {

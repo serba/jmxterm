@@ -22,6 +22,9 @@ public abstract class Session
 
     private String domain;
 
+    /**
+     * Output field
+     */
     public final PrintWriter output;
 
     private boolean verbose = true;
@@ -64,6 +67,9 @@ public abstract class Session
     public abstract void disconnect()
         throws IOException;
 
+    /**
+     * @return Current selected bean
+     */
     public final String getBean()
     {
         return bean;
@@ -164,22 +170,40 @@ public abstract class Session
         this.abbreviated = abbreviated;
     }
 
+    /**
+     * Set current selected bean
+     * 
+     * @param bean Bean to select
+     */
     public final void setBean( String bean )
     {
         this.bean = bean;
     }
 
-    public void setDomain( String domain )
+    /**
+     * Set current selected domain
+     * 
+     * @param domain Domain to select
+     */
+    public final void setDomain( String domain )
     {
         Validate.notNull( domain, "domain can't be NULL" );
         this.domain = domain;
     }
 
-    public final void setVerbose( boolean debug )
+    /**
+     * Set verbose option
+     * 
+     * @param verbose Verbose option
+     */
+    public final void setVerbose( boolean verbose )
     {
-        this.verbose = debug;
+        this.verbose = verbose;
     }
 
+    /**
+     * Set domain and bean to be NULL
+     */
     public void unsetDomain()
     {
         bean = null;

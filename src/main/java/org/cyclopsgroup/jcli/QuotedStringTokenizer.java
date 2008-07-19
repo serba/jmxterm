@@ -6,28 +6,61 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * String tokenizer which split string into segments considering quotation and character escaping
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class QuotedStringTokenizer
 {
     private enum ParsingState
     {
-        ESCAPED_OR_QUOTE_END, QUOTED, READY, WORD_STARTED;
+        /**
+         * Ready for escaping next character or end a quoted segment
+         */
+        ESCAPED_OR_QUOTE_END,
+        /**
+         * Quotation started
+         */
+        QUOTED,
+        /**
+         * Ready for new word
+         */
+        READY,
+        /**
+         * Word started without quotation
+         */
+        WORD_STARTED;
     }
 
     private final char delimiter;
 
     private final char quotation;
 
+    /**
+     * Default constructor that uses white space as delimiter and &quot; as quotation character
+     */
     public QuotedStringTokenizer()
     {
         this( ' ', '\"' );
     }
 
+    /**
+     * @param delimiter Delimiter character
+     * @param quotation Quotation character
+     */
     public QuotedStringTokenizer( char delimiter, char quotation )
     {
         this.delimiter = delimiter;
         this.quotation = quotation;
     }
 
+    /**
+     * Parse given string into segments
+     * 
+     * @param input Given string input
+     * @return List of segments
+     */
     public List<String> parse( String input )
     {
         if ( StringUtils.trimToNull( input ) == null )
@@ -94,8 +127,8 @@ public class QuotedStringTokenizer
                     }
                     else
                     {
-                        state = ParsingState.QUOTED;
                         buf.append( c );
+                        state = ParsingState.QUOTED;
                     }
                     break;
             }

@@ -6,15 +6,15 @@ What is JMXTERM
 
 Why should I be interested?
 
-  There are several reasons why JMX terminal exists in this cruel world. Firstly if you are looking for a pure command line based JMX client software, there are not many good options. Besides, what make jmxterm interesting are:
+  There are several reasons why jmxterm exists in this cruel world. Firstly if you are looking for a pure command line based JMX client software, there are not many good options. Besides, what make jmxterm interesting are:
 
-  * <<Independent>> - jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run package. You don't need to worry about how to setup dependencies.
+  * <<Independent>> - jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} package. You don't need to worry about how to setup dependencies.
 
-  * <<Download and run>> - The executable JMXTERM is wrapped with a JAR file, which can be immediately used by calling <<<java -jar jmxterm-#-uber.jar>>>. There's no configuration, directories, environment variables for file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details.
+  * <<Download and run>> - The executable jmxterm is wrapped with a JAR file, which can be immediately used by calling <<<java -jar jmxterm-#-uber.jar>>> once it's downloaded. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details.
   
   * <<Interactive>> - Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is interactive and user friendly. User can do complicated series of operations in a session.
 
-  * <<Self documented>> - In jmxterm, every command is explained with usage page and examples. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}.
+  * <<Self documented>> - In jmxterm, every command is explained with usage page and examples. <<<-h>>> and <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}.
 
 User experience
 

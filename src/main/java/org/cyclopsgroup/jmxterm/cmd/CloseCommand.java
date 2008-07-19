@@ -6,7 +6,12 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
-@Cli( name = "close", description = "Close JMX session" )
+/**
+ * Command to close current connection
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
+@Cli( name = "close", description = "Close JMX connection" )
 public class CloseCommand
     extends Command
 {

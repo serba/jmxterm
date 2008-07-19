@@ -14,6 +14,11 @@ import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.impl.CommandCenter;
 
+/**
+ * Main class invoked directly from command line
+ *
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class Main
 {
     private static final PrintWriter STDOUT_WRITER = new PrintWriter( System.out, true );
@@ -32,6 +37,14 @@ public class Main
         this( new CommandCenter( STDOUT_WRITER ) );
     }
 
+    /**
+     * Main entry
+     * 
+     * @param args Main command
+     * @throws IntrospectionException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static final void main( String[] args )
         throws IntrospectionException, IOException, ClassNotFoundException
     {

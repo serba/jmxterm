@@ -5,6 +5,11 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 
+/**
+ * Command to change/display console options
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Cli( name = "option", description = "Set options for command session" )
 public class OptionCommand
     extends Command
@@ -13,6 +18,9 @@ public class OptionCommand
 
     private String abbreviated;
 
+    /**
+     * @param abbreviated Option <code>abbreviated</code>
+     */
     @Option( name = "a", longName = "abbreviated", description = "yes|no" )
     public final void setAbbreviated( String abbreviated )
     {

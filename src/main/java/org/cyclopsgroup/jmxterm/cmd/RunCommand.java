@@ -20,6 +20,11 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
+/**
+ * Command to run an MBean operation
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 @Cli( name = "run", description = "Invocate MBean action" )
 public class RunCommand
     extends Command
@@ -32,24 +37,36 @@ public class RunCommand
 
     private boolean measure;
 
+    /**
+     * @param measure True if you want to display latency
+     */
     @Option( name = "m", longName = "measure", description = "Measure the time spent on the invocation of operation" )
     public final void setMeasure( boolean measure )
     {
         this.measure = measure;
     }
 
+    /**
+     * @param domain Domain under which is bean is
+     */
     @Option( name = "d", longName = "domain", description = "Domain of MBean to invoke" )
     public final void setDomain( String domain )
     {
         this.domain = domain;
     }
 
+    /**
+     * @param bean Bean under which the operation is
+     */
     @Option( name = "b", longName = "bean", description = "MBean to invoke" )
     public final void setBean( String bean )
     {
         this.bean = bean;
     }
 
+    /**
+     * @param parameters List of parameters. The first parameter is operation name
+     */
     @Argument( requires = 1 )
     public final void setParameters( List<String> parameters )
     {

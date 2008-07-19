@@ -25,6 +25,9 @@ public class BeansCommand
 {
     private String domain;
 
+    /**
+     * @param domain Domain under which beans are listed
+     */
     @Option( name = "d", longName = "domain", description = "Domain name or %N domain index" )
     public final void setDomain( String domain )
     {

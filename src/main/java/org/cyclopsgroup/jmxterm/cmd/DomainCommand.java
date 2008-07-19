@@ -10,7 +10,12 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
-@Cli( name = "domain", description = "Display or set current domain" )
+/**
+ * Get or set current selected domain
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
+@Cli( name = "domain", description = "Display or set current selected domain" )
 public class DomainCommand
     extends Command
 {
@@ -78,6 +83,9 @@ public class DomainCommand
         }
     }
 
+    /**
+     * @param domain Domain to select
+     */
     @Argument
     public final void setDomain( String domain )
     {

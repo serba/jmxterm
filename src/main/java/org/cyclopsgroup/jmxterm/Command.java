@@ -28,7 +28,7 @@ public abstract class Command
         throws IOException, JMException;
 
     /**
-     * @see #setHelp(boolean)
+     * @return True if help option is on
      */
     public final boolean isHelp()
     {

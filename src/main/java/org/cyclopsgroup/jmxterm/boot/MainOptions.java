@@ -14,10 +14,19 @@ import org.cyclopsgroup.jcli.annotation.Option;
 @Cli( name = "jmxterm", description = "Main executable of JMX terminal CLI tool", note = "Without any option, this command opens an interactive command line based console. With a given input file, commands in file will be executed and process ends after file is processed" )
 public class MainOptions
 {
+    /**
+     * Constant <code>stderr</code> that identifies standard error output
+     */
     public static final String STDERR = "stderr";
 
+    /**
+     * Constant <code>stdin</code> that identifies standard input
+     */
     public static final String STDIN = "stdin";
 
+    /**
+     * Constant <code>stdout</code> that identifies standard output
+     */
     public static final String STDOUT = "stdout";
 
     private boolean abbreviated;
@@ -31,7 +40,7 @@ public class MainOptions
     private String url;
 
     /**
-     * @see #setInput(String)
+     * @return #setInput(String)
      */
     public final String getInput()
     {
@@ -39,7 +48,7 @@ public class MainOptions
     }
 
     /**
-     * @see #setOutput(String)
+     * @return #setOutput(String)
      */
     public final String getOutput()
     {
@@ -47,29 +56,41 @@ public class MainOptions
     }
 
     /**
-     * @see #setUrl(String)
+     * @return #setUrl(String)
      */
     public final String getUrl()
     {
         return url;
     }
 
+    /**
+     * @return {@link #setAbbreviated(boolean)}
+     */
     public final boolean isAbbreviated()
     {
         return abbreviated;
     }
 
+    /**
+     * @return {@link #setHelp(boolean)}
+     */
     public final boolean isHelp()
     {
         return help;
     }
 
+    /**
+     * @param abbreviated True to turn on <code>abbreviated</code> flag
+     */
     @Option( name = "a", longName = "abbreviated", description = "Flag for printing abbreviated version" )
     public final void setAbbreviated( boolean abbreviated )
     {
         this.abbreviated = abbreviated;
     }
 
+    /**
+     * @param help True to turn on <code>help</code> flag
+     */
     @Option( name = "h", longName = "help", description = "Show usage of this command line" )
     public final void setHelp( boolean help )
     {
@@ -87,13 +108,19 @@ public class MainOptions
         this.input = file;
     }
 
-    @Option( name = "o", longName = "output", description = "Output file" )
+    /**
+     * @param outputFile It can be a file or {@link #STDERR} or {@link #STDERR}
+     */
+    @Option( name = "o", longName = "output", description = "Output file, stdout or stderr. Default value is stdout" )
     public final void setOutput( String outputFile )
     {
         Validate.notNull( outputFile, "Output file can't be NULL" );
         this.output = outputFile;
     }
 
+    /**
+     * @param url MBean server URL
+     */
     @Option( name = "u", longName = "url", description = "JMX connection URL" )
     public final void setUrl( String url )
     {
