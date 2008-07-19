@@ -2,6 +2,7 @@ package org.cyclopsgroup.jmxterm.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.beans.IntrospectionException;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.Arrays;
@@ -52,5 +53,28 @@ public class HelpCommandTest
         } );
         command.execute( new MockSession( output, null ) );
         assertEquals( "a:desc\nb:desc\n", output.toString() );
+    }
+
+    @Test
+    public void testExecuteWithOption()
+        throws MalformedURLException, IntrospectionException
+    {
+        command.setArgNames( new String[] { "a", "b" } );
+        final CommandCenter cc = context.mock( CommandCenter.class );
+        command.setCommandCenter( cc );
+
+        context.checking( new Expectations()
+        {
+            {
+                one( cc ).getCommandType( "a" );
+                will( returnValue( SelfRecordingCommand.class ) );
+                one( cc ).printUsage( SelfRecordingCommand.class );
+                one( cc ).getCommandType( "b" );
+                will( returnValue( SelfRecordingCommand.class ) );
+                one( cc ).printUsage( SelfRecordingCommand.class );
+            }
+        } );
+        command.execute( new MockSession( output, null ) );
+        context.assertIsSatisfied();
     }
 }

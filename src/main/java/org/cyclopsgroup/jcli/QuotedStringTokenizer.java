@@ -13,11 +13,6 @@ public class QuotedStringTokenizer
         ESCAPED_OR_QUOTE_END, QUOTED, READY, WORD_STARTED;
     }
 
-    public static void main( String[] args )
-    {
-        System.out.println( new QuotedStringTokenizer().parse( "a b \"c d \" e  f    g\"h " ) );
-    }
-
     private final char delimiter;
 
     private final char quotation;
