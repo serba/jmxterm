@@ -37,7 +37,11 @@ public class MainOptions
 
     private String output = STDOUT;
 
+    private String password;
+
     private String url;
+
+    private String user;
 
     /**
      * @return #setInput(String)
@@ -56,11 +60,27 @@ public class MainOptions
     }
 
     /**
+     * @return Password for user/password authentication
+     */
+    public final String getPassword()
+    {
+        return password;
+    }
+
+    /**
      * @return #setUrl(String)
      */
     public final String getUrl()
     {
         return url;
+    }
+
+    /**
+     * @return User name for user/password authentication
+     */
+    public final String getUser()
+    {
+        return user;
     }
 
     /**
@@ -119,12 +139,32 @@ public class MainOptions
     }
 
     /**
+     * @param password Password for user/password authentication
+     */
+    @Option( name = "p", longName = "password", description = "Password for user/password authentication" )
+    public final void setPassword( String password )
+    {
+        Validate.notNull( password, "Password can't be NULL" );
+        this.password = password;
+    }
+
+    /**
      * @param url MBean server URL
      */
-    @Option( name = "u", longName = "url", description = "JMX connection URL" )
+    @Option( name = "l", longName = "url", description = "Location of MBean service. It can be <host>:<port> or full service URL." )
     public final void setUrl( String url )
     {
         Validate.notNull( url, "URL can't be NULL" );
         this.url = url;
+    }
+
+    /**
+     * @param user User name for user/password authentication
+     */
+    @Option( name = "u", longName = "user", description = "User name for user/password authentication" )
+    public final void setUser( String user )
+    {
+        Validate.notNull( user, "User can't be NULL" );
+        this.user = user;
     }
 }

@@ -2,6 +2,7 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -54,9 +55,10 @@ public abstract class Session
      * Connect to MBean server
      * 
      * @param url URL to connect
+     * @param env Environment variables
      * @throws IOException
      */
-    public abstract void connect( String url )
+    public abstract void connect( String url, Map<String, Object> env )
         throws IOException;
 
     /**

@@ -18,7 +18,7 @@ import org.cyclopsgroup.jmxterm.CommandFactory;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-class PredefinedCommandFactory
+public class PredefinedCommandFactory
     implements CommandFactory
 {
     private static final String CONFIG_COMMAND_ENTRY = "jmxterm.commands.";
@@ -35,7 +35,7 @@ class PredefinedCommandFactory
      * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
-    PredefinedCommandFactory()
+    public PredefinedCommandFactory()
         throws ClassNotFoundException, IOException
     {
         this( CONFIG_PATH );
@@ -44,11 +44,12 @@ class PredefinedCommandFactory
     /**
      * Constructor which builds up command types
      * 
+     * @param configPath Path of configuration file in classpath
      * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
     @SuppressWarnings( "unchecked" )
-    PredefinedCommandFactory( String configPath )
+    public PredefinedCommandFactory( String configPath )
         throws ClassNotFoundException, IOException
     {
         Validate.notNull( configPath, "configPath can't be NULL" );

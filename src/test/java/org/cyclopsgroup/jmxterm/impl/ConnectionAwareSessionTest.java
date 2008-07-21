@@ -3,6 +3,7 @@ package org.cyclopsgroup.jmxterm.impl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Map;
 
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
@@ -28,7 +29,7 @@ public class ConnectionAwareSessionTest
         {
 
             @Override
-            protected JMXConnector doConnect( JMXServiceURL url )
+            protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
                 throws IOException
             {
                 return con;
@@ -40,6 +41,6 @@ public class ConnectionAwareSessionTest
     public void testConnect()
         throws IOException
     {
-        session.connect( "localhost:9991" );
+        session.connect( "localhost:9991", null );
     }
 }

@@ -2,6 +2,7 @@ package org.cyclopsgroup.jmxterm.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
@@ -56,20 +57,20 @@ public class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public void connect( String url )
+    public void connect( String url, Map<String, Object> env )
         throws IOException
     {
         Validate.isTrue( connection == null, "Session is already opened" );
         Validate.notNull( url, "URL can't be NULL" );
         JMXServiceURL u = SyntaxUtils.getUrl( url );
-        JMXConnector connector = doConnect( u );
+        JMXConnector connector = doConnect( u, env );
         connection = new ConnectionImpl( connector, u, url );
     }
 
-    protected JMXConnector doConnect( JMXServiceURL url )
+    protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {
-        return JMXConnectorFactory.connect( url );
+        return JMXConnectorFactory.connect( url, env );
     }
 
     /**

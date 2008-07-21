@@ -16,7 +16,7 @@ import org.cyclopsgroup.jmxterm.impl.CommandCenter;
 
 /**
  * Main class invoked directly from command line
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class Main
@@ -66,7 +66,7 @@ public class Main
         commandCenter.setAbbreviated( options.isAbbreviated() );
         if ( options.getUrl() != null )
         {
-            commandCenter.connect( options.getUrl() );
+            commandCenter.connect( options.getUrl(), null );
         }
 
         Reader input;

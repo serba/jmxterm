@@ -1,9 +1,14 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.management.remote.JMXConnector;
 
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
@@ -19,6 +24,28 @@ public class OpenCommand
     extends Command
 {
     private String url;
+
+    private String user;
+
+    private String password;
+
+    /**
+     * @param user User name for user authentication
+     */
+    @Option( name = "u", longName = "user", description = "User name for user/password authentication" )
+    public final void setUser( String user )
+    {
+        this.user = user;
+    }
+
+    /**
+     * @param password Password for user authentication
+     */
+    @Option( name = "p", longName = "password", description = "Password for user/password authentication" )
+    public final void setPassword( String password )
+    {
+        this.password = password;
+    }
 
     /**
      * @inheritDoc
@@ -42,7 +69,17 @@ public class OpenCommand
             }
             return;
         }
-        session.connect( url );
+        Map<String, Object> env;
+        if ( user != null )
+        {
+            env = new HashMap<String, Object>( 1 );
+            env.put( JMXConnector.CREDENTIALS, new String[] { user, password } );
+        }
+        else
+        {
+            env = null;
+        }
+        session.connect( url, env );
         session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
 
     }

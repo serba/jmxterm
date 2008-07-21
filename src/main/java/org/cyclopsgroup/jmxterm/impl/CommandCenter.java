@@ -3,6 +3,7 @@ package org.cyclopsgroup.jmxterm.impl;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -75,13 +76,14 @@ public class CommandCenter
 
     /**
      * @param url MBeanServer location. It can be <code>AAA:###</code> or full JMX server URL
+     * @param env Environment variables
      * @throws IOException Thrown when connection can't be established
      */
-    public void connect( String url )
+    public void connect( String url, Map<String, Object> env )
         throws IOException
     {
         Validate.notNull( url, "URL can't be NULL" );
-        session.connect( url );
+        session.connect( url, env );
     }
 
     private void doExecute( String command )

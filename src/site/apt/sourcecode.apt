@@ -1,3 +1,11 @@
+Build from source code
+
+   jmxterm source code is built by {{{http://maven.apache.org}Apache Maven}}. After source code is {{{source-repository.html}checked out from subversion}}, if JDK1.5+ and {{{http://maven.apache.org}Apache Maven2}} has been installed, you can build the executable uberjar from source code by executing mvn package goal from project root directory
+
++--------------------------------------------------------------------------------+
+mvn package
++--------------------------------------------------------------------------------+
+
 Fisheye hosting
 
   Atlassian provides fisheye hosting for all CyclopsGroup.org open source projects. jmxterm is a small project but it's under very active development recently.

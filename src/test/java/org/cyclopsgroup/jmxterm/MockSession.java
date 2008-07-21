@@ -4,9 +4,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
+import java.util.Map;
 
 import javax.management.MBeanServerConnection;
 
+/**
+ * Mocked version of {@link Session} implementation for testing purpose only
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class MockSession
     extends Session
 {
@@ -23,7 +29,7 @@ public class MockSession
     }
 
     @Override
-    public void connect( String url )
+    public void connect( String url, Map<String, Object> env )
         throws IOException
     {
         connected = true;
