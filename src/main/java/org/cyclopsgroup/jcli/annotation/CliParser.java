@@ -15,7 +15,7 @@ public interface CliParser
      * 
      * @param args String array of arguments
      * @param bean Java bean where result is set
-     * @return True if everything looks good
+     * @return True if anything has been changed
      * @throws IntrospectionException Thrown when Java bean structure has problem
      */
     boolean parse( String[] args, Object bean )

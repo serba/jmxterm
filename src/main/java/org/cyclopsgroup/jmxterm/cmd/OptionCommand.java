@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.MalformedArgException;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -21,7 +22,7 @@ public class OptionCommand
     /**
      * @param abbreviated Option <code>abbreviated</code>
      */
-    @Option( name = "a", longName = "abbreviated", description = "yes|no" )
+    @Option( name = "a", longName = "abbreviated", description = "true|false" )
     public final void setAbbreviated( String abbreviated )
     {
         this.abbreviated = abbreviated;
@@ -30,7 +31,7 @@ public class OptionCommand
     /**
      * @param verbose Verbose level of session
      */
-    @Option( name = "v", longName = "verbose", description = "yes|no" )
+    @Option( name = "v", longName = "verbose", description = "true|false" )
     public final void setVerbose( String verbose )
     {
         this.verbose = verbose;
@@ -42,17 +43,17 @@ public class OptionCommand
         {
             return null;
         }
-        if ( value.equalsIgnoreCase( "yes" ) )
+        if ( value.equalsIgnoreCase( Boolean.toString( true ) ) )
         {
             return Boolean.TRUE;
         }
-        else if ( value.equalsIgnoreCase( "no" ) )
+        else if ( value.equalsIgnoreCase( Boolean.toString( false ) ) )
         {
             return Boolean.FALSE;
         }
         else
         {
-            throw new IllegalArgumentException( "Boolean option value has to be yes|no, " + value + " is invalid" );
+            throw new MalformedArgException( "Boolean option value has to be yes|no, " + value + " is invalid" );
         }
     }
 
