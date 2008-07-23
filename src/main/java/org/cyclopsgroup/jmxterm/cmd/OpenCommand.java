@@ -6,13 +6,16 @@ import java.util.Map;
 
 import javax.management.remote.JMXConnector;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
+import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.jdk6.Jdk6JavaProcessManager;
 
 /**
  * Command to open JMX connection
@@ -23,29 +26,38 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class OpenCommand
     extends Command
 {
-    private String url;
-
-    private String user;
+    private static String tryGettingUrlForPid( int pid )
+    {
+        JavaProcess p;
+        try
+        {
+            p = new Jdk6JavaProcessManager().get( pid );
+        }
+        catch ( Exception e )
+        {
+            throw new IllegalStateException( "This feature is specific to JDK6, JDK6 environment is not found", e );
+        }
+        if ( p == null )
+        {
+            throw new NullPointerException( "No such PID " + pid );
+        }
+        if ( !p.isManageable() )
+        {
+            p.startManagementAgent();
+            if ( !p.isManageable() )
+            {
+                throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
+                    + " is not manageable" );
+            }
+        }
+        return p.toUrl();
+    }
 
     private String password;
 
-    /**
-     * @param user User name for user authentication
-     */
-    @Option( name = "u", longName = "user", description = "User name for user/password authentication" )
-    public final void setUser( String user )
-    {
-        this.user = user;
-    }
+    private String url;
 
-    /**
-     * @param password Password for user authentication
-     */
-    @Option( name = "p", longName = "password", description = "Password for user/password authentication" )
-    public final void setPassword( String password )
-    {
-        this.password = password;
-    }
+    private String user;
 
     /**
      * @inheritDoc
@@ -78,9 +90,26 @@ public class OpenCommand
         {
             env = null;
         }
-        session.connect( SyntaxUtils.getUrl( url ), env );
+        String u;
+        if ( NumberUtils.isDigits( url ) )
+        {
+            u = tryGettingUrlForPid( Integer.parseInt( url ) );
+        }
+        else
+        {
+            u = url;
+        }
+        session.connect( SyntaxUtils.getUrl( u ), env );
         session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
+    }
 
+    /**
+     * @param password Password for user authentication
+     */
+    @Option( name = "p", longName = "password", description = "Password for user/password authentication" )
+    public final void setPassword( String password )
+    {
+        this.password = password;
     }
 
     /**
@@ -90,5 +119,14 @@ public class OpenCommand
     public final void setUrl( String url )
     {
         this.url = url;
+    }
+
+    /**
+     * @param user User name for user authentication
+     */
+    @Option( name = "u", longName = "user", description = "User name for user/password authentication" )
+    public final void setUser( String user )
+    {
+        this.user = user;
     }
 }

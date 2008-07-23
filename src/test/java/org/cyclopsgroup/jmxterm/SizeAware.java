@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jcli;
+package org.cyclopsgroup.jmxterm;
 
 public interface SizeAware
 {

@@ -1,10 +1,11 @@
-package org.cyclopsgroup.jcli;
+package org.cyclopsgroup.jmxterm;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.cyclopsgroup.jmxterm.WeakCastUtils;
 import org.junit.Test;
 
 public class WeakCastUtilsTest

@@ -30,7 +30,7 @@ public abstract class Session
      */
     public final PrintWriter output;
 
-    private boolean verbose = true;
+    private boolean verbose;
 
     /**
      * @param output Output destination
