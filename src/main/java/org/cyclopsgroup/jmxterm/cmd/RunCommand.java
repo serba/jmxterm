@@ -25,7 +25,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "run", description = "Invocate MBean action" )
+@Cli( name = "run", description = "Invoke an MBean operation" )
 public class RunCommand
     extends Command
 {

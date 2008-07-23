@@ -31,7 +31,7 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "info", description = "Display detail about an MBean" )
+@Cli( name = "info", description = "Display detail information about an MBean", note = "If -b option is not specified, current selected MBean is applied" )
 public class InfoCommand
     extends Command
 {

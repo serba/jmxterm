@@ -20,7 +20,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "bean", description = "Display or set current bean" )
+@Cli( name = "bean", description = "Display or set current selected MBean" )
 public class BeanCommand
     extends Command
 {

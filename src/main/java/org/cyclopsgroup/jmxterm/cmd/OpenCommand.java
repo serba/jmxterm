@@ -22,7 +22,7 @@ import org.cyclopsgroup.jmxterm.jdk6.Jdk6JavaProcessManager;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "open", description = "Open JMX session", note = "eg. open localhost:9991, or open jmx:service:..." )
+@Cli( name = "open", description = "Open JMX session", note = "URL can be a <PID>, <hostname>:<port> or full qualified JMX service URL. For example\n open localhost:9991,\n open jmx:service:..." )
 public class OpenCommand
     extends Command
 {
@@ -115,7 +115,7 @@ public class OpenCommand
     /**
      * @param url URL of MBean service to open
      */
-    @Argument
+    @Argument( )
     public final void setUrl( String url )
     {
         this.url = url;

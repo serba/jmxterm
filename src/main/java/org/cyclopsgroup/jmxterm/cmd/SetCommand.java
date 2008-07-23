@@ -24,7 +24,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "set", description = "Set value of an attribute" )
+@Cli( name = "set", description = "Set value of an MBean attribute" )
 public class SetCommand
     extends Command
 {
