@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.util.Map;
 
 import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXServiceURL;
 
 /**
  * Mocked version of {@link Session} implementation for testing purpose only
@@ -29,7 +30,7 @@ public class MockSession
     }
 
     @Override
-    public void connect( String url, Map<String, Object> env )
+    public void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {
         connected = true;

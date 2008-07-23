@@ -20,11 +20,6 @@ public interface Connection
         throws IOException;
 
     /**
-     * @return The URL user manually input
-     */
-    String getDisplayUrl();
-
-    /**
      * @return MBean server connection
      * @throws IOException Thrown for communication problem
      */

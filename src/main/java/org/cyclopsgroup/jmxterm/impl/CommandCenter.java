@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -79,7 +81,7 @@ public class CommandCenter
      * @param env Environment variables
      * @throws IOException Thrown when connection can't be established
      */
-    public void connect( String url, Map<String, Object> env )
+    public void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {
         Validate.notNull( url, "URL can't be NULL" );
@@ -89,13 +91,13 @@ public class CommandCenter
     private void doExecute( String command )
         throws Exception
     {
+        command = StringUtils.trimToNull( command );
         // Ignore empty line
-        if ( command == null || command.trim().length() == 0 )
+        if ( command == null )
         {
             return;
         }
         // Ignore line comment
-        command = command.trim();
         if ( command.startsWith( "#" ) )
         {
             return;

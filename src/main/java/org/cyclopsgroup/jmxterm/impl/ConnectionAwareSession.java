@@ -11,7 +11,6 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Implementation of {@link Session} which keeps a {@link ConnectionImpl}
@@ -57,14 +56,13 @@ public class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public void connect( String url, Map<String, Object> env )
+    public void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {
         Validate.isTrue( connection == null, "Session is already opened" );
         Validate.notNull( url, "URL can't be NULL" );
-        JMXServiceURL u = SyntaxUtils.getUrl( url );
-        JMXConnector connector = doConnect( u, env );
-        connection = new ConnectionImpl( connector, u, url );
+        JMXConnector connector = doConnect( url, env );
+        connection = new ConnectionImpl( connector, url );
     }
 
     protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )

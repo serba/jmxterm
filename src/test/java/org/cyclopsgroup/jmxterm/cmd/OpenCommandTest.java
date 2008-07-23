@@ -39,6 +39,6 @@ public class OpenCommandTest
         StringWriter output = new StringWriter();
         Session session = new MockSession( output, null );
         command.execute( session );
-        assertEquals( "url,id,service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
+        assertEquals( "id,service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
     }
 }

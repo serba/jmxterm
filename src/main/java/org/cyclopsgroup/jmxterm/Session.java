@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
@@ -58,7 +60,7 @@ public abstract class Session
      * @param env Environment variables
      * @throws IOException
      */
-    public abstract void connect( String url, Map<String, Object> env )
+    public abstract void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException;
 
     /**

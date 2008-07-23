@@ -63,9 +63,8 @@ public class OpenCommand
             }
             else
             {
-                session.output.println( String.format( session.isAbbreviated() ? "%s,%s,%s"
-                                : "connected to: expr=%s, id=%s, url=%s", con.getDisplayUrl(), con.getConnectorId(),
-                                                       con.getUrl() ) );
+                session.output.println( String.format( session.isAbbreviated() ? "%s,%s"
+                                : "connected to: id=%s, url=%s", con.getConnectorId(), con.getUrl() ) );
             }
             return;
         }
@@ -79,7 +78,7 @@ public class OpenCommand
         {
             env = null;
         }
-        session.connect( url, env );
+        session.connect( SyntaxUtils.getUrl( url ), env );
         session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
 
     }

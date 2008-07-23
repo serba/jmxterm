@@ -12,6 +12,7 @@ import java.io.Reader;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.impl.CommandCenter;
 
 /**
@@ -66,7 +67,7 @@ public class Main
         commandCenter.setAbbreviated( options.isAbbreviated() );
         if ( options.getUrl() != null )
         {
-            commandCenter.connect( options.getUrl(), null );
+            commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), null );
         }
 
         Reader input;

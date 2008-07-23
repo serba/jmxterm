@@ -20,9 +20,8 @@ public class ConnectionImplTest
     {
         Mockery context = new Mockery();
         final JMXConnector con = context.mock( JMXConnector.class );
-        ConnectionImpl c = new ConnectionImpl( con, SyntaxUtils.getUrl( "localhost:9991" ), "testId" );
+        ConnectionImpl c = new ConnectionImpl( con, SyntaxUtils.getUrl( "localhost:9991" ) );
         assertSame( con, c.getConnector() );
-        assertEquals( "testId", c.getDisplayUrl() );
 
         context.checking( new Expectations()
         {

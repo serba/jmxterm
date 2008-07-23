@@ -19,8 +19,6 @@ class ConnectionImpl
 {
     private final JMXConnector connector;
 
-    private final String displayUrl;
-
     private final JMXServiceURL url;
 
     /**
@@ -28,14 +26,12 @@ class ConnectionImpl
      * @param url JMX service URL object
      * @param displayUrl The URL user manually input
      */
-    ConnectionImpl( JMXConnector connector, JMXServiceURL url, String displayUrl )
+    ConnectionImpl( JMXConnector connector, JMXServiceURL url )
     {
         Validate.notNull( connector, "JMX connector can't be NULL" );
         Validate.notNull( url, "JMX service URL can't be NULL" );
-        Validate.notNull( displayUrl, "Display URL can't be NULL" );
         this.connector = connector;
         this.url = url;
-        this.displayUrl = displayUrl;
     }
 
     void close()
@@ -59,14 +55,6 @@ class ConnectionImpl
         throws IOException
     {
         return connector.getConnectionId();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public final String getDisplayUrl()
-    {
-        return displayUrl;
     }
 
     /**

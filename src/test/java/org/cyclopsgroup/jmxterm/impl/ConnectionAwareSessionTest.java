@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +42,6 @@ public class ConnectionAwareSessionTest
     public void testConnect()
         throws IOException
     {
-        session.connect( "localhost:9991", null );
+        session.connect( SyntaxUtils.getUrl( "localhost:9991" ), null );
     }
 }
