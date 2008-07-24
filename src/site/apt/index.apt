@@ -4,90 +4,34 @@ What is JMXTERM
   
   jmxterm is an open source Java project under {{{http://www.cyclopsgroup.org}CyclopsGroup.org}}.
 
-Why should I be interested?
+Features
 
   There are several reasons why jmxterm exists in this cruel world. Firstly if you are looking for a pure command line based JMX client software, there are not many good options. Besides, what make jmxterm interesting are:
-
-  * <<Independent>> - jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} package. You don't need to worry about how to setup dependencies.
-
-  * <<Download and run>> - The executable jmxterm is wrapped with a JAR file, which can be immediately used by calling <<<java -jar jmxterm-#-uber.jar>>> once it's downloaded. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details.
   
-  * <<Interactive>> - Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is interactive and user friendly. User can do complicated series of operations in a session.
-
-  * <<Self documented>> - In jmxterm, every command is explained with usage page and examples. <<<-h>>> and <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}.
-
-User experience
-
-+--------------------------------------------------------------------------------+
-jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar 
-Welcome to JMX terminal. Type "help" for available commands.
-?$ open localhost:9991
-Connection to localhost:9991 is opened
->$ domains
-following domains are available
-%0   - JMImplementation
-%1   - com.sun.management
-%2   - java.lang
-%3   - java.util.logging
->$ beans -d java.lang
-domain = java.lang:
-  %0   - java.lang:name=Code Cache,type=MemoryPool
-  %1   - java.lang:name=CodeCacheManager,type=MemoryManager
-  %2   - java.lang:name=PS Eden Space,type=MemoryPool
-  %3   - java.lang:name=PS MarkSweep,type=GarbageCollector
-  %4   - java.lang:name=PS Old Gen,type=MemoryPool
-  %5   - java.lang:name=PS Perm Gen,type=MemoryPool
-  %6   - java.lang:name=PS Scavenge,type=GarbageCollector
-  %7   - java.lang:name=PS Survivor Space,type=MemoryPool
-  %8   - java.lang:type=ClassLoading
-  %9   - java.lang:type=Compilation
-  %10  - java.lang:type=Memory
-  %11  - java.lang:type=OperatingSystem
-  %12  - java.lang:type=Runtime
-  %13  - java.lang:type=Threading
->$ bean java.lang:type=OperatingSystem
-bean is set to java.lang:type=OperatingSystem
->$ info
-mbean = java.lang:type=OperatingSystem
-class name = com.sun.management.UnixOperatingSystem
-# attributes
-  %0   - Arch (java.lang.String, r)
-  %1   - AvailableProcessors (int, r)
-  %2   - CommittedVirtualMemorySize (long, r)
-  %3   - FreePhysicalMemorySize (long, r)
-  %4   - FreeSwapSpaceSize (long, r)
-  %5   - MaxFileDescriptorCount (long, r)
-  %6   - Name (java.lang.String, r)
-  %7   - OpenFileDescriptorCount (long, r)
-  %8   - ProcessCpuTime (long, r)
-  %9   - SystemLoadAverage (double, r)
-  %10  - TotalPhysicalMemorySize (long, r)
-  %11  - TotalSwapSpaceSize (long, r)
-  %12  - Version (java.lang.String, r)
-there's no operations
-there's no notifications
->$ get *
-mbean = java.lang:type=OperatingSystem:
-  "MaxFileDescriptorCount" = 1024;
-  "OpenFileDescriptorCount" = 273;
-  "CommittedVirtualMemorySize" = 1634246656;
-  "FreePhysicalMemorySize" = 292585472;
-  "FreeSwapSpaceSize" = 5140758528;
-  "ProcessCpuTime" = 164850000000;
-  "TotalPhysicalMemorySize" = 2123792384;
-  "TotalSwapSpaceSize" = 5140758528;
-  "Name" = "Linux";
-  "AvailableProcessors" = 2;
-  "Arch" = "i386";
-  "SystemLoadAverage" = 0.04;
-  "Version" = "2.6.24-19-generic";
->$ get Name Arch Version     
-mbean = java.lang:type=OperatingSystem:
-  "Name" = "Linux";
-  "Arch" = "i386";
-  "Version" = "2.6.24-19-generic";
->$ close
-JMX connection is closed
-?$ bye
-bye
-+--------------------------------------------------------------------------------+
+*----------------------+-----------+-------------+
+|                      | <<Since>> | <<Explain>> |
+*----------------------+-----------+-------------+
+| <<Standalone>>       | 0.1       | jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} package. You don't need to worry about how to setup dependencies. |
+*----------------------+-----------+-------------+
+| <<Platform neutral>> | 0.1       | Similar to most Java applications, jmxterm is platform independent |
+*----------------------+-----------+-------------+
+| <<Download and run>> | 0.1       | The executable jmxterm is wrapped with {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} file, which runs out of box with <<<java -jar jmxterm-#-uber.jar>>> command once it's downloaded. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details. |
+*----------------------+-----------+-------------+
+| <<Interactive>>      | 0.1       | Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is called interactive. User can do complicated series of small operations in interactive console.|
+*----------------------+-----------+-------------+
+| <<Self documented>>  | 0.1       | In jmxterm, every command is explained with usage page and examples. <<<-h>>> and <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}. |
+*----------------------+-----------+-------------+
+| <<Shebang>>          | 0.1       | jmxterm can be used as a script interpreter under unix environment. Take a look at {{{manual.html}Manual}} for more details. |
+*----------------------+-----------+-------------+
+| <<Local processes>>  | 0.2       | jmxterm is aware of all local JVM processes running on localhost and is able to connect to them even if the process isn't started with JMX arguments. For now, this feature only works when jmxterm is called with jdk6 and the process to monitor runs from jdk6. |
+*----------------------+-----------+-------------+
+| <<Password auth>>    | 0.2       | jmxterm allows user/password based authentication for JMX login |
+*----------------------+-----------+-------------+
+| <<Script embed>>     | 0.2       | For complex logic, jmxterm itself doesn't support any sequence control expression but it can be integrated with script language such as Perl |
+*----------------------+-----------+-------------+
+| <<SSL auth>>         | planning  | SSL based authentication |
+*----------------------+-----------+-------------+
+| <<Embed API>>        | planning  | jmxterm can be embedded into other software such as desktop application or applet through an embed API |
+*----------------------+-----------+-------------+
+| <<I18N>>             | planning  | UI will be internationalized and messages will be externalized into ResourceBundle |
+*----------------------+-----------+-------------+

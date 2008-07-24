@@ -13,9 +13,9 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.JavaProcess;
+import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
-import org.cyclopsgroup.jmxterm.jdk6.Jdk6JavaProcessManager;
 
 /**
  * Command to open JMX connection
@@ -28,15 +28,7 @@ public class OpenCommand
 {
     private static String tryGettingUrlForPid( int pid )
     {
-        JavaProcess p;
-        try
-        {
-            p = new Jdk6JavaProcessManager().get( pid );
-        }
-        catch ( Exception e )
-        {
-            throw new IllegalStateException( "This feature is specific to JDK6, JDK6 environment is not found", e );
-        }
+        JavaProcess p = JavaProcessManager.getInstance().get( pid );
         if ( p == null )
         {
             throw new NullPointerException( "No such PID " + pid );

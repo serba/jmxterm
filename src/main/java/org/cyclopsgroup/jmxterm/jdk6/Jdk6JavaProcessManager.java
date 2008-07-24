@@ -14,7 +14,7 @@ import org.cyclopsgroup.jmxterm.WeakCastUtils;
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class Jdk6JavaProcessManager
-    implements JavaProcessManager
+    extends JavaProcessManager
 {
     private static final String CLASS_LOCAL_VIRTUAL_MACHINE = "sun.tools.jconsole.LocalVirtualMachine";
 
@@ -35,6 +35,7 @@ public class Jdk6JavaProcessManager
     /**
      * @inheritDoc
      */
+    @Override
     public JavaProcess get( int pid )
     {
         Map<Integer, Object> lvms = staticVm.getAllVirtualMachines();
@@ -60,6 +61,7 @@ public class Jdk6JavaProcessManager
     /**
      * @inheritDoc
      */
+    @Override
     public List<JavaProcess> list()
     {
         Map<Integer, Object> lvms = staticVm.getAllVirtualMachines();
