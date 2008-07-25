@@ -90,25 +90,14 @@ public abstract class JavaProcessManager
     private String name;
 
     /**
-     * @return Name of this implementation
-     */
-    public final String getName()
-    {
-        return name;
-    }
-
-    private void setName( String name )
-    {
-        this.name = name;
-    }
-
-    /**
      * Get JVM process
      * 
      * @param pid Process ID
      * @return Process or NULL
+     * @throws IOException
      */
-    public abstract JavaProcess get( int pid );
+    public abstract JavaProcess get( int pid )
+        throws IOException;
 
     /**
      * @return Description of this implementation
@@ -119,14 +108,29 @@ public abstract class JavaProcessManager
     }
 
     /**
+     * @return Name of this implementation
+     */
+    public final String getName()
+    {
+        return name;
+    }
+
+    /**
      * List all running Java processes
      * 
      * @return List of running processes
+     * @throws IOException
      */
-    public abstract List<JavaProcess> list();
+    public abstract List<JavaProcess> list()
+        throws IOException;
 
     private void setDescription( String description )
     {
         this.description = description;
+    }
+
+    private void setName( String name )
+    {
+        this.name = name;
     }
 }

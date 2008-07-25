@@ -17,7 +17,7 @@ import org.cyclopsgroup.jmxterm.Session;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-public class ConnectionAwareSession
+class ConnectionAwareSession
     extends Session
 {
     private ConnectionImpl connection;
@@ -25,7 +25,7 @@ public class ConnectionAwareSession
     /**
      * @param output Output result
      */
-    public ConnectionAwareSession( PrintWriter output )
+    ConnectionAwareSession( PrintWriter output )
     {
         super( output );
     }

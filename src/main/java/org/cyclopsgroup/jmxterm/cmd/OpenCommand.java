@@ -27,6 +27,7 @@ public class OpenCommand
     extends Command
 {
     private static String tryGettingUrlForPid( int pid )
+        throws IOException
     {
         JavaProcess p = JavaProcessManager.getInstance().get( pid );
         if ( p == null )
@@ -76,7 +77,8 @@ public class OpenCommand
         if ( user != null )
         {
             env = new HashMap<String, Object>( 1 );
-            env.put( JMXConnector.CREDENTIALS, new String[] { user, password } );
+            String[] credentials = { user, password };
+            env.put( JMXConnector.CREDENTIALS, credentials );
         }
         else
         {

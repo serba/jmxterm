@@ -16,8 +16,6 @@ import org.cyclopsgroup.jmxterm.WeakCastUtils;
 public class Jdk6JavaProcessManager
     extends JavaProcessManager
 {
-    private static final String CLASS_LOCAL_VIRTUAL_MACHINE = "sun.tools.jconsole.LocalVirtualMachine";
-
     private final StaticLocalVirtualMachine staticVm;
 
     /**
@@ -29,7 +27,8 @@ public class Jdk6JavaProcessManager
         throws SecurityException, NoSuchMethodException, ClassNotFoundException
     {
         staticVm =
-            WeakCastUtils.staticCast( Class.forName( CLASS_LOCAL_VIRTUAL_MACHINE ), StaticLocalVirtualMachine.class );
+            WeakCastUtils.staticCast( Class.forName( LocalVirtualMachine.ORIGINAL_CLASS_NAME ),
+                                      StaticLocalVirtualMachine.class );
     }
 
     /**

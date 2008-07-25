@@ -16,7 +16,7 @@ import org.cyclopsgroup.jmxterm.ExtendedPropertiesUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-public class PredefinedCommandFactory
+class PredefinedCommandFactory
     implements CommandFactory
 {
     private final CommandFactory delegate;
@@ -27,7 +27,7 @@ public class PredefinedCommandFactory
      * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
-    public PredefinedCommandFactory()
+    PredefinedCommandFactory()
         throws ClassNotFoundException, IOException
     {
         this( "META-INF/cyclopsgroup/jmxterm.properties" );

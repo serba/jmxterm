@@ -8,6 +8,11 @@ package org.cyclopsgroup.jmxterm.jdk6;
 public interface LocalVirtualMachine
 {
     /**
+     * Name of original class this interface reflects
+     */
+    String ORIGINAL_CLASS_NAME = "sun.tools.jconsole.LocalVirtualMachine";
+
+    /**
      * @return Address of JMX connector
      */
     String connectorAddress();

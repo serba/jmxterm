@@ -1,25 +1,26 @@
-package org.cyclopsgroup.jmxterm.jdk6;
+package org.cyclopsgroup.jmxterm.jdk5;
 
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 
 /**
- * JDK6 specific implementation of {@link JavaProcess}
+ * JDK5 specific implementation of {@link JavaProcess}
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-class Jdk6JavaProcess
+class Jdk5JavaProcess
     implements JavaProcess
 {
-    private final LocalVirtualMachine vm;
+    private final int processId;
 
-    /**
-     * @param vm Local VM
-     */
-    Jdk6JavaProcess( LocalVirtualMachine vm )
+    private final String url;
+
+    Jdk5JavaProcess( int processId, String url )
     {
-        Validate.notNull( vm, "VM can't be NULL" );
-        this.vm = vm;
+        Validate.isTrue( processId > 0, "Invalid process ID " + processId );
+        Validate.notNull( url, "URL can't be NULL" );
+        this.processId = processId;
+        this.url = url;
     }
 
     /**
@@ -27,7 +28,8 @@ class Jdk6JavaProcess
      */
     public String getDisplayName()
     {
-        return vm.displayName();
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
@@ -35,7 +37,7 @@ class Jdk6JavaProcess
      */
     public int getProcessId()
     {
-        return vm.vmid();
+        return processId;
     }
 
     /**
@@ -43,7 +45,7 @@ class Jdk6JavaProcess
      */
     public boolean isManageable()
     {
-        return vm.isManageable();
+        return true;
     }
 
     /**
@@ -51,7 +53,7 @@ class Jdk6JavaProcess
      */
     public void startManagementAgent()
     {
-        vm.startManagementAgent();
+
     }
 
     /**
@@ -59,7 +61,6 @@ class Jdk6JavaProcess
      */
     public String toUrl()
     {
-        return vm.connectorAddress();
+        return url;
     }
-
 }
