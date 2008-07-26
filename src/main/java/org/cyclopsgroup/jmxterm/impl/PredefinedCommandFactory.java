@@ -54,7 +54,7 @@ class PredefinedCommandFactory
             String type = props.getString( name + ".type" );
             Class<? extends Command> commandType = (Class<? extends Command>) classLoader.loadClass( type );
             commands.put( name, commandType );
-            String[] aliases = props.getStringArray( name + "alias" );
+            String[] aliases = props.getStringArray( name + ".alias" );
             if ( !ArrayUtils.isEmpty( aliases ) )
             {
                 for ( String alias : aliases )
