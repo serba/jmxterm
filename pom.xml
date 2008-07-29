@@ -62,9 +62,15 @@
             <version>1.1</version>
         </dependency>
         <dependency>
+            <groupId>org.cyclopsgroup</groupId>
+            <artifactId>jcli</artifactId>
+            <version>1.0-alpha-1</version>
+        </dependency>
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.15</version>
+            <scope>runtime</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.sun.jdmk</groupId>
