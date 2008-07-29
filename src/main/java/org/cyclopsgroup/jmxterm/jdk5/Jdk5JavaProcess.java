@@ -1,5 +1,7 @@
 package org.cyclopsgroup.jmxterm.jdk5;
 
+import java.io.IOException;
+
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 
@@ -13,14 +15,20 @@ class Jdk5JavaProcess
 {
     private final int processId;
 
-    private final String url;
+    private final ConnectorAddressLink connectorAddressLink;
 
-    Jdk5JavaProcess( int processId, String url )
+    private final String command;
+
+    private String url;
+
+    Jdk5JavaProcess( int processId, String command, ConnectorAddressLink connectorAddressLink )
     {
         Validate.isTrue( processId > 0, "Invalid process ID " + processId );
-        Validate.notNull( url, "URL can't be NULL" );
+        Validate.notNull( command, "Command line can't be NULL" );
+        Validate.notNull( connectorAddressLink, "connectorAddressLink can't be NULL" );
         this.processId = processId;
-        this.url = url;
+        this.command = command;
+        this.connectorAddressLink = connectorAddressLink;
     }
 
     /**
@@ -28,8 +36,7 @@ class Jdk5JavaProcess
      */
     public String getDisplayName()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return command;
     }
 
     /**
@@ -45,15 +52,20 @@ class Jdk5JavaProcess
      */
     public boolean isManageable()
     {
-        return true;
+        return url != null;
     }
 
     /**
      * @inheritDoc
      */
     public void startManagementAgent()
+        throws IOException
     {
-
+        if ( url != null )
+        {
+            return;
+        }
+        url = connectorAddressLink.importFrom( processId );
     }
 
     /**

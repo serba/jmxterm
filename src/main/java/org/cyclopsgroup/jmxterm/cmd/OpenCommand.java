@@ -1,6 +1,5 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class OpenCommand
     extends Command
 {
     private static String tryGettingUrlForPid( int pid )
-        throws IOException
+        throws Exception
     {
         JavaProcess p = JavaProcessManager.getInstance().get( pid );
         if ( p == null )
@@ -57,7 +56,7 @@ public class OpenCommand
      */
     @Override
     public void execute( Session session )
-        throws IOException
+        throws Exception
     {
         if ( url == null )
         {

@@ -94,10 +94,10 @@ public abstract class JavaProcessManager
      * 
      * @param pid Process ID
      * @return Process or NULL
-     * @throws IOException
+     * @throws Exception All any exception
      */
     public abstract JavaProcess get( int pid )
-        throws IOException;
+        throws Exception;
 
     /**
      * @return Description of this implementation
@@ -119,10 +119,8 @@ public abstract class JavaProcessManager
      * List all running Java processes
      * 
      * @return List of running processes
-     * @throws IOException
      */
-    public abstract List<JavaProcess> list()
-        throws IOException;
+    public abstract List<JavaProcess> list();
 
     private void setDescription( String description )
     {

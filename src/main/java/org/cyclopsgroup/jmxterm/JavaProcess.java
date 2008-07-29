@@ -1,5 +1,7 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.io.IOException;
+
 /**
  * Identifies a running JVM process
  * 
@@ -24,8 +26,11 @@ public interface JavaProcess
 
     /**
      * Start management agent
+     * 
+     * @throws IOException Thrown when management agent couldn't be started
      */
-    void startManagementAgent();
+    void startManagementAgent()
+        throws IOException;
 
     /**
      * @return Get connector URL

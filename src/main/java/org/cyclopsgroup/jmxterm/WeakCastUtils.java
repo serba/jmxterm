@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
@@ -55,13 +56,20 @@ public final class WeakCastUtils
                     throw new OperationNotSupportedException( "Method " + method + " isn't implemented in "
                         + from.getClass() );
                 }
-                if ( ( toMethod.getModifiers() & Modifier.STATIC ) == 0 )
+                try
                 {
-                    return toMethod.invoke( from, args );
+                    if ( ( toMethod.getModifiers() & Modifier.STATIC ) == 0 )
+                    {
+                        return toMethod.invoke( from, args );
+                    }
+                    else
+                    {
+                        return toMethod.invoke( null, args );
+                    }
                 }
-                else
+                catch ( InvocationTargetException e )
                 {
-                    return toMethod.invoke( null, args );
+                    throw e.getCause();
                 }
             }
         } );
@@ -143,7 +151,14 @@ public final class WeakCastUtils
                     throw new OperationNotSupportedException( "Method " + method + " isn't implemented in "
                         + from.getClass() );
                 }
-                return toMethod.invoke( null, args );
+                try
+                {
+                    return toMethod.invoke( null, args );
+                }
+                catch ( InvocationTargetException e )
+                {
+                    throw e.getCause();
+                }
             }
         } );
     }

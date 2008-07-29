@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import org.cyclopsgroup.jmxterm.MockSession;
@@ -23,7 +22,7 @@ public class OpenCommandTest
 
     @Test
     public void testExecuteWithUrl()
-        throws IOException
+        throws Exception
     {
         command.setUrl( "xyz.cyclopsgroup.org:12345" );
         Session session = new MockSession( new StringWriter(), null );
@@ -34,7 +33,7 @@ public class OpenCommandTest
 
     @Test
     public void testExecuteWithoutUrl()
-        throws IOException
+        throws Exception
     {
         StringWriter output = new StringWriter();
         Session session = new MockSession( output, null );

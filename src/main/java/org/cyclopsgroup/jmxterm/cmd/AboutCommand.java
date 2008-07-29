@@ -1,12 +1,15 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.management.JMException;
 
+import org.apache.commons.collections.ExtendedProperties;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.ExtendedPropertiesUtils;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
@@ -25,10 +28,32 @@ public class AboutCommand
     /**
      * @inheritDoc
      */
+    @SuppressWarnings( "unchecked" )
     @Override
     public void execute( Session session )
         throws IOException, JMException
     {
+        // output predefined about properties
+        ExtendedProperties props =
+            ExtendedPropertiesUtils.loadFromOverlappingResources( "META-INF/cyclopsgroup/jmxterm.properties",
+                                                                  getClass().getClassLoader() );
+        for ( Object entryObject : props.subset( "jmxterm.about" ).entrySet() )
+        {
+            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) entryObject;
+            SyntaxUtils.printExpression( session.output, entry.getKey(), entry.getValue(), null, 0, false );
+        }
+
+        // output Java runtime properties
+        for ( Map.Entry<Object, Object> entry : System.getProperties().entrySet() )
+        {
+            String keyName = entry.toString();
+            if ( keyName.startsWith( "java." ) )
+            {
+                SyntaxUtils.printExpression( session.output, keyName, entry.getValue(), null, 0, false );
+            }
+        }
+
+        // output runtime JPM configurations
         JavaProcessManager jpm = JavaProcessManager.getInstance();
         SyntaxUtils.printExpression( session.output, "jpm.type", jpm.getClass().getName(),
                                      "Type of JavaProcessManager implementation", 0, showDescription );
