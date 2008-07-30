@@ -3,7 +3,7 @@ It actually takes about 20 seconds
   The downloaded UBER jar runs out of box with java -jar command. Yes, there's no dependency, installation, user configuration, file structure, permission or log directory to setup. Just {{{download.html} Download And Run}}. <<<java -jar jmxterm-##-uber.jar>>> without any option opens an interactive command line console where commands are self-explained. You will never get lost. 
 
 +--------------------------------------------------------------------------------+
-jiaqi@rattlesnake:~$ <<java -jar jmxterm-0.2-uber.jar>>
+jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar
 Welcome to JMX terminal. Type "help" for available commands.
 ?$
 +--------------------------------------------------------------------------------+

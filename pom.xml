@@ -12,7 +12,7 @@
     <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
     <name>jmxterm</name>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <description>Command line based interactive JMX client</description>
     <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
     <inceptionYear>2008</inceptionYear>
