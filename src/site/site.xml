@@ -34,20 +34,21 @@
             <item name="Download and Run" href="download.html" />
             <item name="1 Minute Tutorial" href="tutorial.html" />
             <item name="User Manual" href="manual.html" />
-            <item name="Road Map" href="roadmap.html" />
             <item name="What do you think" href="feedback.html" />
             <item name="Source Code" href="sourcecode.html"
                 collapse="true">
-                <item name="Browse"
-                    href="http://fisheye3.atlassian.com/browse/cyclops-group" />
-                <item name="Search"
-                    href="http://fisheye3.atlassian.com/search/cyclops-group" />
+                <item name="Browse Fisheye"
+                    href="http://fisheye3.atlassian.com/browse/cyclops-group/jmxterm" />
+                <item name="Search Fisheye"
+                    href="http://fisheye3.atlassian.com/search/cyclops-group/jmxterm" />
                 <item name="Change Log"
-                    href="http://fisheye3.atlassian.com/changelog/cyclops-group" />
-                <item name="Chart"
-                    href="http://fisheye3.atlassian.com/chart/cyclops-group" />
-                <item name="Checkout Code"
-                    href="source-repository.html" />
+                    href="http://fisheye3.atlassian.com/changelog/cyclops-group/jmxterm" />
+                <item name="Activity Chart"
+                    href="http://fisheye3.atlassian.com/chart/cyclops-group/jmxterm" />
+            </item>
+            <item name="Release note" href="release/index.html"
+                collapse="true">
+                <item name="0.2" href="release/0.2.html" />
             </item>
         </menu>
         <menu ref="reports" />

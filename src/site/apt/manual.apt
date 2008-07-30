@@ -1,18 +1,21 @@
 jmxterm executable jar
 
-  The executable jar jmxterm-#-uber.jar can be called using <<<java -jar jmxterm-#-uber.jar>>> command. There are several self documented options for it. <<<-h>>> option shows the usage of these options.
+  The executable jar jmxterm-#-uber.jar can be called using <<<java -jar jmxterm-#-uber.jar>>> command which opens an interactive command line console. There are several optional options for this command, option -h(--help) explains the detail of these options. For example
 
 +--------------------------------------------------------------------------------+
-jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar -h
+jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar -h
 Welcome to JMX terminal. Type "help" for available commands.
-usage: jmxterm [-a] [-h] [-i <val>] [-o <val>] [-u <val>]
+usage: jmxterm [-a] [-h] [-i <val>] [-l <val>] [-o <val>] [-p <val>] [-u <val>]
 Main executable of JMX terminal CLI tool
-  -a,--abbreviated   Flag for printing abbreviated version
-  -h,--help          Show usage of this command line
-  -i,--input <val>   Input script file. There can only be one input file.
-                   "stdin" is the default value which means console input
-  -o,--output <val>  Output file
-  -u,--url <val>     JMX connection URL
+  -a,--abbreviated     Flag for printing abbreviated version
+  -h,--help            Show usage of this command line
+  -i,--input <val>     Input script file. There can only be one input file.
+                     "stdin" is the default value which means console input
+  -l,--url <val>       Location of MBean service. It can be <host>:<port> or
+                     full service URL.
+  -o,--output <val>    Output file, stdout or stderr. Default value is stdout
+  -p,--password <val>  Password for user/password authentication
+  -u,--user <val>      User name for user/password authentication
 Without any option, this command opens an interactive command line based
 console. With a given input file, commands in file will be executed and process
 ends after file is processed
@@ -31,37 +34,33 @@ Commands and options
   Once the console is open, all available commands and options are self explained with <<<help>>> command. For example:
 
 +--------------------------------------------------------------------------------+
-jiaqi@rattlesnake:~$ java -jar jmxterm-0.1-uber.jar
+jiaqi@rattlesnake:~$ java -jar jmxterm-0.2-uber.jar
 Welcome to JMX terminal. Type "help" for available commands.
 ?$ help
 following commands are available to use:
-- bean             Display or set current bean
-- beans            List available beans
-- bye              Terminate console
-- close            Close JMX session
-- domain           Display or set current domain
+- about            Display about page
+- bean             Display or set current selected MBean
+- beans            List available beans under a domain or all domains
+- bye              Terminate console and exit
+- close            Close JMX connection
+- domain           Display or set current selected domain
 - domains          List all available domain names
-- exit             Terminate console
-- get              Get value of attribute(s)
+- exit             Terminate console and exit
+- get              Get value of MBean attribute(s)
 - help             Display available commands or usage of a command
-- info             Display detail about an MBean
+- info             Display detail information about an MBean
+- jvms             List all running local JVM processes
 - open             Open JMX session
 - option           Set options for command session
-- quit             Terminate console
-- run              Invocate MBean action
-- set              Set value of an attribute
-?$ help open
-usage: open [-h]
-Open JMX session
-  -h,--help  Display usage
-eg. open localhost:9991, or open jmx:service:...
-?$ help info
-usage: info [-b <val>] [-d <val>] [-e] [-h] [-t <val>]
-Display detail about an MBean
-  -b,--bean <val>    Name of MBean
-  -d,--domain <val>  Domain for bean
-  -e,--detail        Show description
+- quit             Terminate console and exit
+- run              Invoke an MBean operation
+- set              Set value of an MBean attribute
+?$ help get
+usage: get [-b <val>] [-d <val>] [-h] [-i]
+Get value of MBean attribute(s)
+  -b,--bean <val>    MBean name where the attribute is. Optional if bean has
+                   been set
+  -d,--domain <val>  Domain of bean, optional
   -h,--help          Display usage
-  -t,--type <val>    Types(a|o|u) to display, for example aon for all
-                   attributes, operations and notifications
+  -i,--info          Show detail information of each attribute
 +--------------------------------------------------------------------------------+

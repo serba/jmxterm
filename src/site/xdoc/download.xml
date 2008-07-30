@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document SYSTEM "http://maven.apache.org/maven-1.x/plugins/xdoc/maven-xdoc.dtd" >
+<document>
+    <properties>
+        <author email="jiaqi.guo@gmail.com">Jiaqi Guo</author>
+        <title>Download and Run</title>
+    </properties>
+    <body>
+        <section name="Download">
+            <p>
+                Download from
+                <a
+                    href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
+                    SourceForge.net download page
+                </a>
+                . Jar file with name
+                <b>UBER</b>
+                is the one that runs out of box.
+            </p>
+            <p>
+                <a
+                    href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
+                    <img src="images/down.png"
+                        alt="Download the jar file now" />
+                </a>
+            </p>
+        </section>
+        <section name="Make sure JDK 1.5+ is installed">
+            <p>
+                To run jmxterm, JDK 1.5 or later version is required. If
+                you don't have JDK installed, please goto
+                <a
+                    href="http://java.sun.com/javase/downloads/index.jsp">
+                    Java SE download page
+                </a>
+                , download latest JDK and install it. In order to verify
+                if JDK is installed as expected, run java -version
+                command, for example.
+            </p>
+            <source>jiaqi@happycow:~$ java -version
+java version "1.6.0_03"
+Java(TM) SE Runtime Environment (build 1.6.0_03-b05)
+Java HotSpot(TM) Client VM (build 1.6.0_03-b05, mixed mode, sharing)</source>
+        </section>
+        <section name="And Run">
+            <p>
+                Run java -jar command with downloaded jar file to open
+                an interactive command line console. (Replace ## with
+                the version that you download). For example
+            </p>
+            <source>jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar 
+Welcome to JMX terminal. Type "help" for available commands.
+?$</source>
+            <p>
+                With --help or -h option, jmxterm shows a usage page of
+                command line options. To find out more about how jxmterm
+                uber jar can be called, please go to
+                <a href="manual.html">User Manual</a>
+                page.
+            </p>
+        </section>
+    </body>
+</document>
