@@ -21,7 +21,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to set an attribute
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "set", description = "Set value of an MBean attribute" )
@@ -74,7 +74,7 @@ public class SetCommand
     /**
      * @param arguments Argument list. The first argument is attribute name
      */
-    @Argument( requires = 2, description = "name, value, value2..." )
+    @Argument( description = "name, value, value2..." )
     public final void setArguments( List<String> arguments )
     {
         Validate.notNull( arguments, "Arguments can't be NULL" );

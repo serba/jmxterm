@@ -64,3 +64,17 @@ Get value of MBean attribute(s)
   -h,--help          Display usage
   -i,--info          Show detail information of each attribute
 +--------------------------------------------------------------------------------+
+
+Questions and Answers
+
+  * Q: I just opened an console, what can I do next?
+
+    A: Type <<<help>>> to see available commands. Usually the first thing is to open a connection with open command. For example, <<<open localhost:9991>>>.
+
+  * Q: I can see process X using <<<jvms>>> command, but <<<open X>>> gives me an error. Why?
+
+    A: The feature that connects to any running local Java process is very JDK specific since Java doesn't officially expose API to do such thing. Based on the version of JDK that runs jmxterm as well as version of JDK that runs the process to monitor, it's possible <<<open X>>> doesn't work well.
+    
+  * Q: How to pass a parameter containing special character such as a white space?
+    
+    A: Use quots. For example: <<<bean "java.lang:name=Code Cache,type=MemoryPool">>>. Quoted string is always considerred as one parameter.

@@ -25,7 +25,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "get", description = "Get value of MBean attribute(s)" )
+@Cli( name = "get", description = "Get value of MBean attribute(s)", note = "* stands for all attributes. eg. get Attribute1 Attribute2 or get *" )
 public class GetCommand
     extends Command
 {
@@ -129,7 +129,7 @@ public class GetCommand
     /**
      * @param attributes List of attribute names
      */
-    @Argument( requires = 1 )
+    @Argument( description = "Name of attributes to select" )
     public final void setAttributes( List<String> attributes )
     {
         Validate.notNull( attributes, "Attributes can't be NULL" );

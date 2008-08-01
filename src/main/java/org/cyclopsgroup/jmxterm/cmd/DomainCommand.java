@@ -15,7 +15,8 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "domain", description = "Display or set current selected domain" )
+@Cli( name = "domain", description = "Display or set current selected domain. ", note = "With a parameter, parameter defined domain is selected, otherwise it displays current selected domain."
+    + " eg. domain java.lang" )
 public class DomainCommand
     extends Command
 {

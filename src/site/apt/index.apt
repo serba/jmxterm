@@ -35,3 +35,9 @@ Features
 *----------------------+-----------+-------------+
 | <<I18N>>             | planning  | UI will be internationalized and messages will be externalized into ResourceBundle |
 *----------------------+-----------+-------------+
+
+Q & A
+
+  * Which version is recommended? Answer: 0.2 is latest stable version which is recommended.
+
+  * Why does this website look ugly? Answer: It's because you are browsing it with internet explorer. Use firefox!

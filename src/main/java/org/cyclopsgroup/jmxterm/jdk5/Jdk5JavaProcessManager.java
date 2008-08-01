@@ -85,7 +85,6 @@ public class Jdk5JavaProcessManager
 
         Object vmid = vmIdentifierConstructor.newInstance( String.valueOf( pid ) );
         Object vm = getMonitoredVm.invoke( localhostDelegate, vmid );
-        System.out.println( vm.getClass().getName() );
         String cmd = (String) toCommandLine.invoke( vm );
         return new Jdk5JavaProcess( pid, cmd, connectorAddressLink );
     }

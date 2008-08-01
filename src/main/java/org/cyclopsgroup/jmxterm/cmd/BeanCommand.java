@@ -20,7 +20,8 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "bean", description = "Display or set current selected MBean" )
+@Cli( name = "bean", description = "Display or set current selected MBean. ", note = "Without any parameter, it displays current selected bean, "
+    + "otherwise it selects the bean defined by the first parameter. eg. bean java.lang:type=Memory" )
 public class BeanCommand
     extends Command
 {
