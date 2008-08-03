@@ -126,7 +126,7 @@ public class CommandCenter
         String[] commandArgs = new String[args.length - 1];
         System.arraycopy( args, 1, commandArgs, 0, args.length - 1 );
         // Call command with parsed command name and arguments
-        doExecute( commandName, commandArgs );
+        doExecute( commandName, commandArgs, command );
     }
 
     void printUsage( Class<? extends Command> commandType )
@@ -135,7 +135,7 @@ public class CommandCenter
         cliParser.printUsage( commandType, session.output );
     }
 
-    private void doExecute( String commandName, String[] commandArgs )
+    private void doExecute( String commandName, String[] commandArgs, String originalCommand )
         throws Exception
     {
         Command cmd = commandFactory.createCommand( commandName );
@@ -156,6 +156,10 @@ public class CommandCenter
         lock.lock();
         try
         {
+            if ( !cmd.isIgnoredByHistory() )
+            {
+                session.getCommandHistoryManager().append( originalCommand );
+            }
             cmd.execute( session );
         }
         finally

@@ -13,6 +13,26 @@ public abstract class Command
 {
     private boolean help;
 
+    private final boolean ignoredByHistory;
+
+    /**
+     * Default constructor with mark command not ignored by history recording
+     */
+    protected Command()
+    {
+        this( false );
+    }
+
+    /**
+     * Constructor with explict ignoredByHistory flag
+     * 
+     * @param ignoredByHistory True if command is ignored by history recording
+     */
+    protected Command( boolean ignoredByHistory )
+    {
+        this.ignoredByHistory = ignoredByHistory;
+    }
+
     /**
      * Execute command logic
      * 
@@ -28,6 +48,14 @@ public abstract class Command
     public final boolean isHelp()
     {
         return help;
+    }
+
+    /**
+     * @return Command is ignored by history recording
+     */
+    public final boolean isIgnoredByHistory()
+    {
+        return ignoredByHistory;
     }
 
     /**

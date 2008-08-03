@@ -21,27 +21,16 @@ import org.cyclopsgroup.jmxterm.Session;
 public class HelpCommand
     extends Command
 {
-    private CommandCenter commandCenter = null;
-
     private String[] argNames = {};
 
-    /**
-     * @param argNames Array of arguments
-     */
-    @Argument
-    public final void setArgNames( String[] argNames )
-    {
-        Validate.notNull( argNames, "argNames can't be NULL" );
-        this.argNames = argNames;
-    }
+    private CommandCenter commandCenter = null;
 
     /**
-     * @param commandCenter CommandCenter object that calls this help command
+     * Default constructor
      */
-    final void setCommandCenter( CommandCenter commandCenter )
+    public HelpCommand()
     {
-        Validate.notNull( commandCenter, "commandCenter can't be NULL" );
-        this.commandCenter = commandCenter;
+        super( true );
     }
 
     /**
@@ -91,5 +80,24 @@ public class HelpCommand
                 }
             }
         }
+    }
+
+    /**
+     * @param argNames Array of arguments
+     */
+    @Argument
+    public final void setArgNames( String[] argNames )
+    {
+        Validate.notNull( argNames, "argNames can't be NULL" );
+        this.argNames = argNames;
+    }
+
+    /**
+     * @param commandCenter CommandCenter object that calls this help command
+     */
+    final void setCommandCenter( CommandCenter commandCenter )
+    {
+        Validate.notNull( commandCenter, "commandCenter can't be NULL" );
+        this.commandCenter = commandCenter;
     }
 }
