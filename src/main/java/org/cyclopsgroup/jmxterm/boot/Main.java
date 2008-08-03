@@ -2,12 +2,13 @@ package org.cyclopsgroup.jmxterm.boot;
 
 import java.beans.IntrospectionException;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
+
+import jline.ConsoleReader;
 
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.Validate;
@@ -70,32 +71,30 @@ public class Main
             commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), null );
         }
 
-        Reader input;
+        InputStream input;
         boolean closeInputFinally;
         if ( options.getInput().equals( MainOptions.STDIN ) )
         {
-            input = new InputStreamReader( System.in );
+            input = System.in;
             closeInputFinally = false;
         }
         else
         {
-            input = new FileReader( new File( options.getInput() ) );
+            input = new FileInputStream( new File( options.getInput() ) );
             closeInputFinally = true;
         }
         try
         {
-            LineNumberReader in = new LineNumberReader( input );
-            commandCenter.prompt();
-            String line = in.readLine();
-            while ( line != null )
+            ConsoleReader console = new ConsoleReader( input, new OutputStreamWriter( System.out ) );
+            console.addCompletor( new ConsoleCompletor( commandCenter, console ) );
+            String line;
+            while ( ( line = console.readLine( "$ " ) ) != null )
             {
                 commandCenter.execute( line );
                 if ( commandCenter.isClosed() )
                 {
                     break;
                 }
-                commandCenter.prompt();
-                line = in.readLine();
             }
             commandCenter.close();
         }

@@ -21,7 +21,8 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-@Cli( name = "open", description = "Open JMX session", note = "URL can be a <PID>, <hostname>:<port> or full qualified JMX service URL. For example\n open localhost:9991,\n open jmx:service:..." )
+@Cli( name = "open", description = "Open JMX session or display current connection", note = "Without argument this command display current connection. "
+    + "URL can be a <PID>, <hostname>:<port> or full qualified JMX service URL. For example\n open localhost:9991,\n open jmx:service:..." )
 public class OpenCommand
     extends Command
 {

@@ -218,21 +218,6 @@ public class CommandCenter
     }
 
     /**
-     * Print out a prompt waiting for command input
-     * 
-     * @throws IOException Thrown for communication error
-     */
-    public void prompt()
-        throws IOException
-    {
-        if ( !session.isAbbreviated() )
-        {
-            session.output.print( ( session.isConnected() ? ">" : "?" ) + "$ " );
-            session.output.flush();
-        }
-    }
-
-    /**
      * Set <code>abbreviated</code> option
      * 
      * @param abbreviated Value of <code>abbreviated</code> option

@@ -1,5 +1,8 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.cyclopsgroup.jcli.annotation.Option;
 
 /**
@@ -41,6 +44,18 @@ public abstract class Command
      */
     public abstract void execute( Session session )
         throws Exception;
+
+    /**
+     * Get candidates of input values
+     * 
+     * @param optionName Name of option or NULL for arguments
+     * @param session Current session
+     * @return List of candidates
+     */
+    public List<String> getInputCandidate( String optionName, Session session )
+    {
+        return Collections.emptyList();
+    }
 
     /**
      * @return True if help option is on
