@@ -15,6 +15,7 @@ import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.impl.CommandCenter;
+import org.cyclopsgroup.jmxterm.impl.ConsoleCompletor;
 
 /**
  * Main class invoked directly from command line
@@ -86,7 +87,7 @@ public class Main
         try
         {
             ConsoleReader console = new ConsoleReader( input, new OutputStreamWriter( System.out ) );
-            console.addCompletor( new ConsoleCompletor( commandCenter, console ) );
+            console.addCompletor( new ConsoleCompletor( commandCenter ) );
             String line;
             while ( ( line = console.readLine( "$ " ) ) != null )
             {

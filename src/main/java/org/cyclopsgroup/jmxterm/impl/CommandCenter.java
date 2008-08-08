@@ -30,15 +30,15 @@ public class CommandCenter
 {
     private static final String COMMAND_DELIMITER = "&&";
 
+    final QuotedStringTokenizer argTokenizer = new QuotedStringTokenizer();
+
     private final CliParser cliParser = new JakartaCommonsCliParser( new GnuParser() );
 
-    private final CommandFactory commandFactory;
+    final CommandFactory commandFactory;
 
     private final Lock lock = new ReentrantLock();
 
-    private final Session session;
-
-    private final QuotedStringTokenizer argTokenizer = new QuotedStringTokenizer();
+    final Session session;
 
     /**
      * Constructor with given output {@link PrintWriter}
@@ -129,12 +129,6 @@ public class CommandCenter
         doExecute( commandName, commandArgs, command );
     }
 
-    void printUsage( Class<? extends Command> commandType )
-        throws IntrospectionException
-    {
-        cliParser.printUsage( commandType, session.output );
-    }
-
     private void doExecute( String commandName, String[] commandArgs, String originalCommand )
         throws Exception
     {
@@ -151,15 +145,11 @@ public class CommandCenter
             printUsage( cmd.getClass() );
             return;
         }
-
+        cmd.setSession( session );
         // Make sure concurrency and run command
         lock.lock();
         try
         {
-            if ( !cmd.isIgnoredByHistory() )
-            {
-                session.getCommandHistoryManager().append( originalCommand );
-            }
             cmd.execute( session );
         }
         finally
@@ -181,14 +171,7 @@ public class CommandCenter
         }
         catch ( Exception e )
         {
-            if ( session.isVerbose() )
-            {
-                e.printStackTrace( session.output );
-            }
-            else
-            {
-                session.output.println( e.getClass().getSimpleName() + ":" + e.getMessage() );
-            }
+            session.log( e );
         }
     }
 
@@ -217,6 +200,12 @@ public class CommandCenter
         return session.isClosed();
     }
 
+    void printUsage( Class<? extends Command> commandType )
+        throws IntrospectionException
+    {
+        cliParser.printUsage( commandType, session.output );
+    }
+
     /**
      * Set <code>abbreviated</code> option
      * 
@@ -226,4 +215,5 @@ public class CommandCenter
     {
         session.setAbbreviated( abbreviated );
     }
+
 }

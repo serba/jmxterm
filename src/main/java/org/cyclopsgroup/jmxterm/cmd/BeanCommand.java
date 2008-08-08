@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.management.JMException;
@@ -8,6 +9,7 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -24,39 +26,14 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
     + "otherwise it selects the bean defined by the first parameter. eg. bean java.lang:type=Memory" )
 public class BeanCommand
     extends Command
+    implements AutoCompletable
 {
     private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
-
-    private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + STRING_PATTERN_PROPERTIES + "$" );
 
     private static final Pattern PATTERN_BEAN_NAME =
         Pattern.compile( "^(\\w|\\.)+\\:" + STRING_PATTERN_PROPERTIES + "$" );
 
-    private String bean;
-
-    private String domain;
-
-    /**
-     * Set domain option
-     * 
-     * @param domain Domain option to set
-     */
-    @Option( name = "d", longName = "domain", description = "Domain name" )
-    public final void setDomain( String domain )
-    {
-        this.domain = domain;
-    }
-
-    /**
-     * Set bean option
-     * 
-     * @param bean Bean to set
-     */
-    @Argument
-    public final void setBean( String bean )
-    {
-        this.bean = bean;
-    }
+    private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + STRING_PATTERN_PROPERTIES + "$" );
 
     /**
      * Get full MBean name with given bean name, domain and session
@@ -99,6 +76,10 @@ public class BeanCommand
         throw new IllegalArgumentException( "Bean name " + bean + " isn't valid" );
     }
 
+    private String bean;
+
+    private String domain;
+
     /**
      * @inheritDoc
      */
@@ -130,5 +111,63 @@ public class BeanCommand
         con.getMBeanInfo( name );
         session.setBean( beanName );
         session.msg( "bean is set to " + beanName, SyntaxUtils.OK );
+    }
+
+    /**
+     * Set bean option
+     * 
+     * @param bean Bean to set
+     */
+    @Argument
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
+    }
+
+    /**
+     * Set domain option
+     * 
+     * @param domain Domain option to set
+     */
+    @Option( name = "d", longName = "domain", description = "Domain name" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestArgument( String partialArgument )
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestOption( String optionName, String partialOption )
+    {
+        if ( partialOption != null )
+        {
+            return null;
+        }
+        if ( optionName.equals( "d" ) )
+        {
+            try
+            {
+                return DomainsCommand.getDomains( getSession() );
+            }
+            catch ( IOException e )
+            {
+                getSession().log( e );
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 }

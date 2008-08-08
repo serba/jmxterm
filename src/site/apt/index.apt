@@ -29,6 +29,10 @@ Features
 *----------------------+-----------+-------------+
 | <<Script embed>>     | 0.2       | For complex logic, jmxterm itself doesn't support any sequence control expression but it can be integrated with script language such as Perl |
 *----------------------+-----------+-------------+
+| <<Auto completion>>  | 0.3       | Console auto complete options, values and arguments as you type |
+*----------------------+-----------+-------------+
+| <<History>>          | 0.3       | Bring out commands from history using arrow key |
+*----------------------+-----------+-------------+
 | <<SSL auth>>         | planning  | SSL based authentication |
 *----------------------+-----------+-------------+
 | <<Embed API>>        | planning  | jmxterm can be embedded into other software such as desktop application or applet through an embed API |

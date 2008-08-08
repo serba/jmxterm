@@ -3,6 +3,7 @@ package org.cyclopsgroup.jmxterm;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Option;
 
 /**
@@ -16,24 +17,17 @@ public abstract class Command
 {
     private boolean help;
 
-    private final boolean ignoredByHistory;
+    private Session session;
 
     /**
-     * Default constructor with mark command not ignored by history recording
-     */
-    protected Command()
-    {
-        this( false );
-    }
-
-    /**
-     * Constructor with explict ignoredByHistory flag
+     * Execute command
      * 
-     * @param ignoredByHistory True if command is ignored by history recording
+     * @throws Exception Allow to throw anything
      */
-    protected Command( boolean ignoredByHistory )
+    public void execute()
+        throws Exception
     {
-        this.ignoredByHistory = ignoredByHistory;
+        execute( getSession() );
     }
 
     /**
@@ -42,8 +36,10 @@ public abstract class Command
      * @param session Current console session
      * @throws Exception Allow any exception
      */
-    public abstract void execute( Session session )
-        throws Exception;
+    public void execute( Session session )
+        throws Exception
+    {
+    }
 
     /**
      * Get candidates of input values
@@ -58,19 +54,19 @@ public abstract class Command
     }
 
     /**
+     * @return Session where command runs
+     */
+    public final Session getSession()
+    {
+        return session;
+    }
+
+    /**
      * @return True if help option is on
      */
     public final boolean isHelp()
     {
         return help;
-    }
-
-    /**
-     * @return Command is ignored by history recording
-     */
-    public final boolean isIgnoredByHistory()
-    {
-        return ignoredByHistory;
     }
 
     /**
@@ -80,5 +76,14 @@ public abstract class Command
     public final void setHelp( boolean help )
     {
         this.help = help;
+    }
+
+    /**
+     * @param session Session where command runs
+     */
+    public final void setSession( Session session )
+    {
+        Validate.notNull( session, "Session can't be NULL" );
+        this.session = session;
     }
 }

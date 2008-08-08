@@ -132,6 +132,23 @@ public abstract class Session
     }
 
     /**
+     * Log an error
+     * 
+     * @param e Error to log
+     */
+    public void log( Throwable e )
+    {
+        if ( verbose )
+        {
+            e.printStackTrace( output );
+        }
+        else
+        {
+            output.println( e.getClass().getSimpleName() + ":" + e.getMessage() );
+        }
+    }
+
+    /**
      * Output a message based on abbreviated option
      * 
      * @param msg Message to output

@@ -2,8 +2,10 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
@@ -19,7 +21,36 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
     + " eg. domain java.lang" )
 public class DomainCommand
     extends Command
+    implements AutoCompletable
 {
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestArgument( String partialArgument )
+    {
+        if ( partialArgument != null )
+        {
+            return null;
+        }
+        try
+        {
+            return DomainsCommand.getDomains( getSession() );
+        }
+        catch ( IOException e )
+        {
+            getSession().log( e );
+            return null;
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestOption( String optionName, String partialOption )
+    {
+        return null;
+    }
+
     /**
      * Get domain name from given domain expression
      * 

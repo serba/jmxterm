@@ -26,14 +26,6 @@ public class HelpCommand
     private CommandCenter commandCenter = null;
 
     /**
-     * Default constructor
-     */
-    public HelpCommand()
-    {
-        super( true );
-    }
-
-    /**
      * @inheritDoc
      */
     @Override
