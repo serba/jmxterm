@@ -126,9 +126,10 @@ public class InfoCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException, JMException
     {
+        Session session = getSession();
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         if ( beanName == null )
         {

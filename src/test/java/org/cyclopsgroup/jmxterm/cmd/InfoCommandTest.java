@@ -21,6 +21,11 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test for {@link InfoCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class InfoCommandTest
 {
     private InfoCommand command;
@@ -29,6 +34,9 @@ public class InfoCommandTest
 
     private Mockery context;
 
+    /**
+     * Set up objects to test
+     */
     @Before
     public void setUp()
     {
@@ -38,6 +46,12 @@ public class InfoCommandTest
         context.setImposteriser( ClassImposteriser.INSTANCE );
     }
 
+    /**
+     * Test how attributes are displayed
+     * 
+     * @throws IOException
+     * @throws JMException
+     */
     @Test
     public void testExecuteWithShowingAttributes()
         throws IOException, JMException
@@ -69,11 +83,18 @@ public class InfoCommandTest
                 will( returnValue( "bingo" ) );
             }
         } );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "# attributes\nb\n", output.toString() );
     }
 
+    /**
+     * Test execution and show available options
+     * 
+     * @throws IOException
+     * @throws JMException
+     */
     @Test
     public void testExecuteWithShowingOperations()
         throws IOException, JMException
@@ -108,7 +129,8 @@ public class InfoCommandTest
                 will( returnValue( "x" ) );
             }
         } );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "# operations\nx\n", output.toString() );
     }

@@ -13,12 +13,20 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case of {@link DomainsCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class DomainsCommandTest
 {
     private Mockery context;
 
     private DomainsCommand command;
 
+    /**
+     * Set up objects to test
+     */
     @Before
     public void setUp()
     {
@@ -26,6 +34,11 @@ public class DomainsCommandTest
         context = new Mockery();
     }
 
+    /**
+     * Test normal execution
+     * 
+     * @throws IOException
+     */
     @Test
     public void testExecution()
         throws IOException
@@ -39,7 +52,8 @@ public class DomainsCommandTest
                 will( returnValue( new String[] { "a", "b" } ) );
             }
         } );
-        command.execute( new MockSession( output, con ) );
+        command.setSession( new MockSession( output, con ) );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "a\nb\n", output.toString() );
     }

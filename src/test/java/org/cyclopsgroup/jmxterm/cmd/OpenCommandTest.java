@@ -10,16 +10,27 @@ import org.cyclopsgroup.jmxterm.Session;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case to test {@link OpenCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class OpenCommandTest
 {
     private OpenCommand command;
 
+    /**
+     * Set up command to test
+     */
     @Before
     public void setUp()
     {
         command = new OpenCommand();
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     public void testExecuteWithUrl()
         throws Exception
@@ -27,17 +38,24 @@ public class OpenCommandTest
         command.setUrl( "xyz.cyclopsgroup.org:12345" );
         Session session = new MockSession( new StringWriter(), null );
         session.disconnect();
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         assertTrue( session.isConnected() );
     }
 
+    /**
+     * Test execution without URL
+     * 
+     * @throws Exception
+     */
     @Test
     public void testExecuteWithoutUrl()
         throws Exception
     {
         StringWriter output = new StringWriter();
         Session session = new MockSession( output, null );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         assertEquals( "id,service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
     }
 }

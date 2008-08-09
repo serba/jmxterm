@@ -78,9 +78,10 @@ public class RunCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws MalformedObjectNameException, IOException, JMException
     {
+        Session session = getSession();
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         if ( beanName == null )
         {

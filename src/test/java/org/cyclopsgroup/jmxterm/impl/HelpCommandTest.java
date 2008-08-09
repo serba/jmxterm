@@ -16,6 +16,11 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case for {@link HelpCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class HelpCommandTest
 {
     private HelpCommand command;
@@ -24,6 +29,9 @@ public class HelpCommandTest
 
     private Mockery context;
 
+    /**
+     * Set up objects to test
+     */
     @Before
     public void setUp()
     {
@@ -33,6 +41,11 @@ public class HelpCommandTest
         context.setImposteriser( ClassImposteriser.INSTANCE );
     }
 
+    /**
+     * Test execution without option
+     * 
+     * @throws MalformedURLException
+     */
     @Test
     public void testExecuteWithoutOption()
         throws MalformedURLException
@@ -51,10 +64,17 @@ public class HelpCommandTest
                 will( returnValue( SelfRecordingCommand.class ) );
             }
         } );
-        command.execute( new MockSession( output, null ) );
+        command.setSession( new MockSession( output, null ) );
+        command.execute();
         assertEquals( "a:desc\nb:desc\n", output.toString() );
     }
 
+    /**
+     * Test execution with several options
+     * 
+     * @throws MalformedURLException
+     * @throws IntrospectionException
+     */
     @Test
     public void testExecuteWithOption()
         throws MalformedURLException, IntrospectionException
@@ -74,7 +94,8 @@ public class HelpCommandTest
                 one( cc ).printUsage( SelfRecordingCommand.class );
             }
         } );
-        command.execute( new MockSession( output, null ) );
+        command.setSession( new MockSession( output, null ) );
+        command.execute();
         context.assertIsSatisfied();
     }
 }

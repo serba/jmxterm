@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
@@ -22,18 +23,8 @@ import org.cyclopsgroup.jmxterm.Session;
 @Cli( name = "beans", description = "List available beans under a domain or all domains", note = "Without -d option, current select domain is applied. If there's no domain specified, all beans are listed. Example:\n beans\n beans -d java.lang" )
 public class BeansCommand
     extends Command
+    implements AutoCompletable
 {
-    private String domain;
-
-    /**
-     * @param domain Domain under which beans are listed
-     */
-    @Option( name = "d", longName = "domain", description = "Domain name or %N domain index" )
-    public final void setDomain( String domain )
-    {
-        this.domain = domain;
-    }
-
     /**
      * Get list of bean names under current domain
      * 
@@ -62,13 +53,16 @@ public class BeansCommand
         return results;
     }
 
+    private String domain;
+
     /**
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws MalformedObjectNameException, IOException
     {
+        Session session = getSession();
         String domainName = DomainCommand.getDomainName( domain, session );
         List<String> domains = new ArrayList<String>();
         if ( domainName == null )
@@ -88,5 +82,41 @@ public class BeansCommand
                 session.msg( String.format( "  %%%-3d - %s", i++, bean ), bean );
             }
         }
+    }
+
+    /**
+     * @param domain Domain under which beans are listed
+     */
+    @Option( name = "d", longName = "domain", description = "Name of domain under which beans are listed" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestArgument( String partialArgument )
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestOption( String optionName, String partialValue )
+    {
+        if ( optionName.equals( "d" ) && partialValue == null )
+        {
+            try
+            {
+                return DomainsCommand.getDomains( getSession() );
+            }
+            catch ( IOException e )
+            {
+                getSession().log( e );
+            }
+        }
+        return null;
     }
 }

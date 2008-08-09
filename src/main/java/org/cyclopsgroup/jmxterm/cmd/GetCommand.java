@@ -13,6 +13,7 @@ import javax.management.ObjectName;
 
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -28,11 +29,47 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 @Cli( name = "get", description = "Get value of MBean attribute(s)", note = "* stands for all attributes. eg. get Attribute1 Attribute2 or get *" )
 public class GetCommand
     extends Command
+    implements AutoCompletable
 {
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestArgument( String partialArgument )
+    {
+        if ( partialArgument == null && getSession().getBean() != null )
+        {
+            try
+            {
+                MBeanServerConnection con = getSession().getConnection().getServerConnection();
+                MBeanAttributeInfo[] ais = con.getMBeanInfo( new ObjectName( getSession().getBean() ) ).getAttributes();
+                List<String> results = new ArrayList<String>( ais.length );
+                for ( MBeanAttributeInfo ai : ais )
+                {
+                    results.add( ai.getName() );
+                }
+                return results;
+            }
+            catch ( Exception e )
+            {
+                getSession().log( e );
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> suggestOption( String optionName, String partialValue )
+    {
+        return null;
+    }
+
     @SuppressWarnings( "unchecked" )
-    private void displayAttributes( Session session )
+    private void displayAttributes()
         throws IOException, JMException
     {
+        Session session = getSession();
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         ObjectName name = new ObjectName( beanName );
         session.msg( "mbean = " + beanName + ":" );
@@ -116,14 +153,14 @@ public class GetCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws JMException, IOException
     {
         if ( attributes.isEmpty() )
         {
             throw new IllegalArgumentException( "Please specify at least one attribute" );
         }
-        displayAttributes( session );
+        displayAttributes();
     }
 
     /**

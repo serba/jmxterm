@@ -30,9 +30,10 @@ public class AboutCommand
      */
     @SuppressWarnings( "unchecked" )
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException, JMException
     {
+        Session session = getSession();
         // output predefined about properties
         ExtendedProperties props =
             ExtendedPropertiesUtils.loadFromOverlappingResources( "META-INF/cyclopsgroup/jmxterm.properties",

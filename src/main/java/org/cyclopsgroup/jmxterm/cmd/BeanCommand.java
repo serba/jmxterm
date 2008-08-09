@@ -84,9 +84,10 @@ public class BeanCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException, JMException
     {
+        Session session = getSession();
         if ( bean == null )
         {
             if ( session.getBean() == null )

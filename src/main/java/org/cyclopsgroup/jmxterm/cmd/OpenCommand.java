@@ -56,9 +56,10 @@ public class OpenCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws Exception
     {
+        Session session = getSession();
         if ( url == null )
         {
             Connection con = session.getConnection();

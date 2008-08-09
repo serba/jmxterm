@@ -38,10 +38,11 @@ public class SetCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws JMException, IOException
     {
         Validate.isTrue( arguments.size() >= 2, "At least two arguments are required" );
+        Session session = getSession();
         String attributeName = arguments.get( 0 );
 
         String beanName = BeanCommand.getBeanName( bean, domain, session );

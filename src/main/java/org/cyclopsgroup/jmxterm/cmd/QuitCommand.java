@@ -20,9 +20,10 @@ public class QuitCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException
     {
+        Session session = getSession();
         session.disconnect();
         session.close();
         session.msg( "bye", SyntaxUtils.OK );

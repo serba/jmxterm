@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -39,10 +38,10 @@ public class DomainsCommand
     /**
      * @inheritDoc
      */
-    public void execute( Session session )
+    public void execute()
         throws IOException
     {
-        Validate.notNull( session, "Session can't be NULL" );
+        Session session = getSession();
         if ( !session.isAbbreviated() )
         {
             session.msg( "following domains are available" );

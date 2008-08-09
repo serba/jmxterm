@@ -20,6 +20,11 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case of {@link SetCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class SetCommandTest
 {
     private SetCommand command;
@@ -28,6 +33,9 @@ public class SetCommandTest
 
     private Mockery context;
 
+    /**
+     * Set up objects to test
+     */
     @Before
     public void setUp()
     {
@@ -37,6 +45,12 @@ public class SetCommandTest
         context.setImposteriser( ClassImposteriser.INSTANCE );
     }
 
+    /**
+     * Test normal execution
+     * 
+     * @throws IOException
+     * @throws JMException
+     */
     @Test
     public void testExecuteNormally()
         throws IOException, JMException
@@ -64,7 +78,8 @@ public class SetCommandTest
             }
         } );
 
-        command.execute( new MockSession( output, con ) );
+        command.setSession( new MockSession( output, con ) );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "ok\n", output.toString() );
     }

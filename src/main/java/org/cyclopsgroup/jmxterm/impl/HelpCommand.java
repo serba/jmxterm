@@ -10,7 +10,6 @@ import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.spi.CliUtils;
 import org.cyclopsgroup.jmxterm.Command;
-import org.cyclopsgroup.jmxterm.Session;
 
 /**
  * Command that display a help message
@@ -29,14 +28,14 @@ public class HelpCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
     {
         Validate.notNull( commandCenter, "Command center hasn't been set yet" );
         if ( argNames.length == 0 )
         {
             List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
             Collections.sort( commandNames );
-            session.msg( "following commands are available to use:" );
+            getSession().msg( "following commands are available to use:" );
             for ( String commandName : commandNames )
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
@@ -44,8 +43,8 @@ public class HelpCommand
                 try
                 {
                     cli = CliUtils.defineCli( commandType ).getCli();
-                    session.msg( String.format( "- %-16s %s", commandName, cli.description() ), commandName + ":"
-                        + cli.description() );
+                    getSession().msg( String.format( "- %-16s %s", commandName, cli.description() ),
+                                      commandName + ":" + cli.description() );
                 }
                 catch ( IntrospectionException e )
                 {

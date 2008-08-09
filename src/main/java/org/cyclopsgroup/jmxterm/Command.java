@@ -24,22 +24,8 @@ public abstract class Command
      * 
      * @throws Exception Allow to throw anything
      */
-    public void execute()
-        throws Exception
-    {
-        execute( getSession() );
-    }
-
-    /**
-     * Execute command logic
-     * 
-     * @param session Current console session
-     * @throws Exception Allow any exception
-     */
-    public void execute( Session session )
-        throws Exception
-    {
-    }
+    public abstract void execute()
+        throws Exception;
 
     /**
      * Get candidates of input values

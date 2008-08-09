@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
-import org.cyclopsgroup.jmxterm.Session;
 
 /**
  * Command to close current connection
@@ -19,9 +18,9 @@ public class CloseCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException
     {
-        session.disconnect();
+        getSession().disconnect();
     }
 }

@@ -17,22 +17,39 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case for {@link BeansCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class BeansCommandTest
 {
-    private BeansCommand command = new BeansCommand();
+    private BeansCommand command;
 
     private MBeanServerConnection conn;
 
-    private Mockery context = new Mockery();
+    private Mockery context;
 
-    private StringWriter output = new StringWriter();
+    private StringWriter output;
 
+    /**
+     * Set up testing connection
+     */
     @Before
     public void setUp()
     {
+        output = new StringWriter();
+        context = new Mockery();
+        command = new BeansCommand();
         conn = context.mock( MBeanServerConnection.class );
     }
 
+    /**
+     * Test execution and get all beans
+     * 
+     * @throws JMException
+     * @throws IOException
+     */
     @Test
     public void testExecuteWithAllBeans()
         throws JMException, IOException
@@ -49,13 +66,20 @@ public class BeansCommandTest
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
             }
         } );
-        command.execute( new MockSession( output, conn ) );
+        command.setSession( new MockSession( output, conn ) );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "a:type=1\na:type=2\nb:type=1\n", output.toString() );
     }
 
+    /**
+     * Test execution with an domain option
+     * 
+     * @throws JMException
+     * @throws IOException
+     */
     @Test
-    public void testExecuteWithDomainInArgument()
+    public void testExecuteWithDomainOption()
         throws JMException, IOException
     {
         command.setDomain( "b" );
@@ -68,11 +92,18 @@ public class BeansCommandTest
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
             }
         } );
-        command.execute( new MockSession( output, conn ) );
+        command.setSession( new MockSession( output, conn ) );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "b:type=1\n", output.toString() );
     }
 
+    /**
+     * Test execution where domain is set in session
+     * 
+     * @throws JMException
+     * @throws IOException
+     */
     @Test
     public void testExecuteWithDomainInSession()
         throws JMException, IOException
@@ -88,11 +119,18 @@ public class BeansCommandTest
         } );
         MockSession session = new MockSession( output, conn );
         session.setDomain( "b" );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "b:type=1\n", output.toString() );
     }
 
+    /**
+     * Test execution with domain NULL
+     * 
+     * @throws JMException
+     * @throws IOException
+     */
     @Test
     public void testExecuteWithNullDomain()
         throws JMException, IOException
@@ -112,7 +150,8 @@ public class BeansCommandTest
         } );
         MockSession session = new MockSession( output, conn );
         session.setDomain( "b" );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "a:type=1\na:type=2\nb:type=1\n", output.toString() );
     }

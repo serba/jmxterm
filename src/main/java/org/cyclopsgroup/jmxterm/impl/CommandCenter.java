@@ -150,7 +150,7 @@ public class CommandCenter
         lock.lock();
         try
         {
-            cmd.execute( session );
+            cmd.execute();
         }
         finally
         {

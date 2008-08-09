@@ -11,12 +11,20 @@ import org.cyclopsgroup.jmxterm.Session;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case for {@link QuitCommand}
+ *
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class QuitCommandTest
 {
     private QuitCommand command;
 
     private StringWriter output;
 
+    /**
+     * Setup objects to test
+     */
     @Before
     public void setUp()
     {
@@ -24,12 +32,16 @@ public class QuitCommandTest
         output = new StringWriter();
     }
 
+    /**
+     * @throws IOException
+     */
     @Test
     public void testExecute()
         throws IOException
     {
         Session session = new MockSession( output, null );
-        command.execute( session );
+        command.setSession( session );
+        command.execute();
         assertFalse( session.isConnected() );
         assertTrue( session.isClosed() );
     }

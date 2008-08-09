@@ -61,8 +61,9 @@ public class OptionCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
     {
+        Session session = getSession();
         Boolean v = toBoolean( verbose );
         if ( v != null )
         {

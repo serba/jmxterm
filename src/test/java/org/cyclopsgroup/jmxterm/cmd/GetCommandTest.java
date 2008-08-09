@@ -19,6 +19,11 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case of {@link GetCommand}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class GetCommandTest
 {
     private GetCommand command;
@@ -27,6 +32,9 @@ public class GetCommandTest
 
     private StringWriter output;
 
+    /**
+     * Set up class to test
+     */
     @Before
     public void setUp()
     {
@@ -36,6 +44,12 @@ public class GetCommandTest
         output = new StringWriter();
     }
 
+    /**
+     * Test normal execution
+     * 
+     * @throws IOException
+     * @throws JMException
+     */
     @Test
     public void testExecuteNormally()
         throws IOException, JMException
@@ -64,7 +78,8 @@ public class GetCommandTest
                 will( returnValue( "bingo" ) );
             }
         } );
-        command.execute( new MockSession( output, con ) );
+        command.setSession( new MockSession( output, con ) );
+        command.execute();
         context.assertIsSatisfied();
         assertEquals( "\"bingo\"\n", output.toString() );
     }

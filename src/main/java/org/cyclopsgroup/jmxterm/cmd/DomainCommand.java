@@ -86,10 +86,10 @@ public class DomainCommand
      * @inheritDoc
      */
     @Override
-    public void execute( Session session )
+    public void execute()
         throws IOException
     {
-        Validate.notNull( session, "Session can't be NULL" );
+        Session session = getSession();
         if ( domain == null )
         {
             if ( session.getDomain() == null )
