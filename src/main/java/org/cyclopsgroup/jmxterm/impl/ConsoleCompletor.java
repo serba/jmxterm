@@ -77,7 +77,8 @@ public class ConsoleCompletor
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( e );
+            commandCenter.session.log( e );
+            return position;
         }
     }
 

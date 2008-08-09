@@ -29,13 +29,13 @@ public class BeansCommand
      * Get list of bean names under current domain
      * 
      * @param session Current JMX session
-     * @param Full domain name
+     * @param domainName Full domain name
      * @return List of bean names
      * @throws MalformedObjectNameException
      * @throws IOException
      */
     @SuppressWarnings( "unchecked" )
-    private static List<String> getBeans( Session session, String domainName )
+    public static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {
         ObjectName queryName = null;
@@ -54,6 +54,19 @@ public class BeansCommand
     }
 
     private String domain;
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> doSuggestOption( String optionName )
+        throws IOException
+    {
+        if ( optionName.equals( "d" ) )
+        {
+            return DomainsCommand.getDomains( getSession() );
+        }
+        return null;
+    }
 
     /**
      * @inheritDoc
@@ -91,32 +104,5 @@ public class BeansCommand
     public final void setDomain( String domain )
     {
         this.domain = domain;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestArgument( String partialArgument )
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestOption( String optionName, String partialValue )
-    {
-        if ( optionName.equals( "d" ) && partialValue == null )
-        {
-            try
-            {
-                return DomainsCommand.getDomains( getSession() );
-            }
-            catch ( IOException e )
-            {
-                getSession().log( e );
-            }
-        }
-        return null;
     }
 }

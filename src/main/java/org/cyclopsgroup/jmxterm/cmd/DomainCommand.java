@@ -24,34 +24,6 @@ public class DomainCommand
     implements AutoCompletable
 {
     /**
-     * @inheritDoc
-     */
-    public List<String> suggestArgument( String partialArgument )
-    {
-        if ( partialArgument != null )
-        {
-            return null;
-        }
-        try
-        {
-            return DomainsCommand.getDomains( getSession() );
-        }
-        catch ( IOException e )
-        {
-            getSession().log( e );
-            return null;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestOption( String optionName, String partialOption )
-    {
-        return null;
-    }
-
-    /**
      * Get domain name from given domain expression
      * 
      * @param domain Domain expression, which can be a name or NULL
@@ -81,6 +53,15 @@ public class DomainCommand
     }
 
     private String domain;
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> doSuggestArgument()
+        throws IOException
+    {
+        return DomainsCommand.getDomains( getSession() );
+    }
 
     /**
      * @inheritDoc

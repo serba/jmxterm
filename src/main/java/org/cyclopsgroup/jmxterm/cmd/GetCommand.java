@@ -31,39 +31,13 @@ public class GetCommand
     extends Command
     implements AutoCompletable
 {
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestArgument( String partialArgument )
-    {
-        if ( partialArgument == null && getSession().getBean() != null )
-        {
-            try
-            {
-                MBeanServerConnection con = getSession().getConnection().getServerConnection();
-                MBeanAttributeInfo[] ais = con.getMBeanInfo( new ObjectName( getSession().getBean() ) ).getAttributes();
-                List<String> results = new ArrayList<String>( ais.length );
-                for ( MBeanAttributeInfo ai : ais )
-                {
-                    results.add( ai.getName() );
-                }
-                return results;
-            }
-            catch ( Exception e )
-            {
-                getSession().log( e );
-            }
-        }
-        return null;
-    }
+    private List<String> attributes = new ArrayList<String>();
 
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestOption( String optionName, String partialValue )
-    {
-        return null;
-    }
+    private String bean;
+
+    private String domain;
+
+    private boolean showDescription;
 
     @SuppressWarnings( "unchecked" )
     private void displayAttributes()
@@ -123,30 +97,24 @@ public class GetCommand
         }
     }
 
-    private List<String> attributes = new ArrayList<String>();
-
-    private String bean;
-
-    private String domain;
-
-    private boolean showDescription;
-
     /**
-     * @param showDescription True to show detail description
+     * @inheritDoc
      */
-    @Option( name = "i", longName = "info", description = "Show detail information of each attribute" )
-    public final void setShowDescription( boolean showDescription )
+    public List<String> doSuggestArgument()
+        throws IOException, JMException
     {
-        this.showDescription = showDescription;
-    }
-
-    /**
-     * @param domain Domain under which bean is selected
-     */
-    @Option( name = "d", longName = "domain", description = "Domain of bean, optional" )
-    public final void setDomain( String domain )
-    {
-        this.domain = domain;
+        if ( getSession().getBean() != null )
+        {
+            MBeanServerConnection con = getSession().getConnection().getServerConnection();
+            MBeanAttributeInfo[] ais = con.getMBeanInfo( new ObjectName( getSession().getBean() ) ).getAttributes();
+            List<String> results = new ArrayList<String>( ais.length );
+            for ( MBeanAttributeInfo ai : ais )
+            {
+                results.add( ai.getName() );
+            }
+            return results;
+        }
+        return null;
     }
 
     /**
@@ -180,5 +148,23 @@ public class GetCommand
     public final void setBean( String bean )
     {
         this.bean = bean;
+    }
+
+    /**
+     * @param domain Domain under which bean is selected
+     */
+    @Option( name = "d", longName = "domain", description = "Domain of bean, optional" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
+    /**
+     * @param showDescription True to show detail description
+     */
+    @Option( name = "i", longName = "info", description = "Show detail information of each attribute" )
+    public final void setShowDescription( boolean showDescription )
+    {
+        this.showDescription = showDescription;
     }
 }

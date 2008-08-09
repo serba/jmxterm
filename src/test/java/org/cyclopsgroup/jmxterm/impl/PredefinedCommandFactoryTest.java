@@ -4,8 +4,18 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+/**
+ * Test case of {@link PredefinedCommandFactory}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class PredefinedCommandFactoryTest
 {
+    /**
+     * Test that object is constructed
+     * 
+     * @throws Exception
+     */
     @Test
     public void testConstruction()
         throws Exception

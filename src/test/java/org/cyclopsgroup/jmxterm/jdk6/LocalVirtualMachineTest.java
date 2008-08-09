@@ -9,8 +9,20 @@ import java.util.Map;
 import org.cyclopsgroup.jmxterm.WeakCastUtils;
 import org.junit.Test;
 
+/**
+ * Test of LocalVirtualMachine
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class LocalVirtualMachineTest
 {
+    /**
+     * Test run
+     * 
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws ClassNotFoundException
+     */
     @Test
     public void testRun()
         throws SecurityException, NoSuchMethodException, ClassNotFoundException

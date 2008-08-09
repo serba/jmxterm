@@ -1,5 +1,11 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.MalformedArgException;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -14,28 +20,9 @@ import org.cyclopsgroup.jmxterm.Session;
 @Cli( name = "option", description = "Set options for command session" )
 public class OptionCommand
     extends Command
+    implements AutoCompletable
 {
-    private String verbose;
-
-    private String abbreviated;
-
-    /**
-     * @param abbreviated Option <code>abbreviated</code>
-     */
-    @Option( name = "a", longName = "abbreviated", description = "true|false" )
-    public final void setAbbreviated( String abbreviated )
-    {
-        this.abbreviated = abbreviated;
-    }
-
-    /**
-     * @param verbose Verbose level of session
-     */
-    @Option( name = "v", longName = "verbose", description = "true|false" )
-    public final void setVerbose( String verbose )
-    {
-        this.verbose = verbose;
-    }
+    private static final List<String> BOOLEAN_VALUES = Collections.unmodifiableList( Arrays.asList( "true", "false" ) );
 
     private static Boolean toBoolean( String value )
     {
@@ -55,6 +42,18 @@ public class OptionCommand
         {
             throw new MalformedArgException( "Boolean option value has to be yes|no, " + value + " is invalid" );
         }
+    }
+
+    private String abbreviated;
+
+    private String verbose;
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> doSuggestOption( String name )
+    {
+        return new ArrayList<String>( BOOLEAN_VALUES );
     }
 
     /**
@@ -86,5 +85,23 @@ public class OptionCommand
             session.msg( "no change for abbreviated, abbreviated = " + ( session.isAbbreviated() ? "yes" : "no" ) );
         }
         session.ok();
+    }
+
+    /**
+     * @param abbreviated Option <code>abbreviated</code>
+     */
+    @Option( name = "a", longName = "abbreviated", description = "true|false" )
+    public final void setAbbreviated( String abbreviated )
+    {
+        this.abbreviated = abbreviated;
+    }
+
+    /**
+     * @param verbose Verbose level of session
+     */
+    @Option( name = "v", longName = "verbose", description = "true|false" )
+    public final void setVerbose( String verbose )
+    {
+        this.verbose = verbose;
     }
 }

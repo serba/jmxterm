@@ -12,8 +12,18 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
+/**
+ * Test case of {@link ConnectionImpl}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class ConnectionImplTest
 {
+    /**
+     * Test the object is constructed correctly
+     * 
+     * @throws IOException
+     */
     @Test
     public void testConstruction()
         throws IOException

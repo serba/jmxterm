@@ -13,6 +13,11 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case of {@link ConnectionAwareSession}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class ConnectionAwareSessionTest
 {
     private ConnectionAwareSession session;
@@ -21,6 +26,9 @@ public class ConnectionAwareSessionTest
 
     private JMXConnector con;
 
+    /**
+     * Set up objects to test
+     */
     @Before
     public void setUp()
     {
@@ -38,6 +46,11 @@ public class ConnectionAwareSessionTest
         };
     }
 
+    /**
+     * Verify connect() runs correctly
+     * 
+     * @throws IOException
+     */
     @Test
     public void testConnect()
         throws IOException

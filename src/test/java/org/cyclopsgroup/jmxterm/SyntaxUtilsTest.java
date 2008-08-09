@@ -11,8 +11,20 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+/**
+ * Test case of {@link SyntaxUtils}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class SyntaxUtilsTest
 {
+    private static String printValue( Object v )
+    {
+        StringWriter output = new StringWriter();
+        SyntaxUtils.printValue( new PrintWriter( output, true ), v, 0, false );
+        return output.toString();
+    }
+
     /**
      * Test how getUrl() figure out MBeanServer URL based on various pattern of input
      * 
@@ -51,6 +63,20 @@ public class SyntaxUtilsTest
         SyntaxUtils.parse( "x", "x" );
     }
 
+    /**
+     * Print an equation expression
+     */
+    @Test
+    public void testPrintExpression()
+    {
+        StringWriter output = new StringWriter();
+        SyntaxUtils.printExpression( new PrintWriter( output, true ), "a", 123, null, 0, false );
+        assertEquals( "\"a\"=123;", output.toString().replaceAll( "\\s", "" ) );
+    }
+
+    /**
+     * Verify values are correctly printed out
+     */
     @Test
     public void testPrintValue()
     {
@@ -63,20 +89,5 @@ public class SyntaxUtilsTest
         map.put( "a", "qqq" );
         assertEquals( "[1,2,3]", printValue( new int[] { 1, 2, 3 } ).replaceAll( "\\s", "" ) );
         assertEquals( "{\"a\"=\"qqq\";}", printValue( map ).replaceAll( "\\s", "" ) );
-    }
-
-    @Test
-    public void testPrintExpression()
-    {
-        StringWriter output = new StringWriter();
-        SyntaxUtils.printExpression( new PrintWriter( output, true ), "a", 123, null, 0, false );
-        assertEquals( "\"a\"=123;", output.toString().replaceAll( "\\s", "" ) );
-    }
-
-    private static String printValue( Object v )
-    {
-        StringWriter output = new StringWriter();
-        SyntaxUtils.printValue( new PrintWriter( output, true ), v, 0, false );
-        return output.toString();
     }
 }

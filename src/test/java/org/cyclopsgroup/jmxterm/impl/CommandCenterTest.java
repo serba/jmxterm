@@ -15,13 +15,18 @@ import org.cyclopsgroup.jmxterm.SelfRecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test case of {@link CommandCenter}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class CommandCenterTest
 {
     private CommandCenter cc;
 
-    private List<Command> executedCommands = new ArrayList<Command>();
+    private List<Command> executedCommands;
 
-    private StringWriter output = new StringWriter();
+    private StringWriter output;
 
     private String getArgsFromList( int index )
     {
@@ -29,10 +34,18 @@ public class CommandCenterTest
         return c.getArgs();
     }
 
+    /**
+     * Set up objects to test
+     * 
+     * @throws IOException
+     */
     @Before
     public void setUp()
         throws IOException
     {
+        executedCommands = new ArrayList<Command>();
+        output = new StringWriter();
+
         Map<String, Class<? extends Command>> commandTypes = new HashMap<String, Class<? extends Command>>();
         commandTypes.put( "test", SelfRecordingCommand.class );
         cc = new CommandCenter( new PrintWriter( output, true ), new TypeMapCommandFactory( commandTypes )
@@ -46,6 +59,9 @@ public class CommandCenterTest
         } );
     }
 
+    /**
+     * Verify the execution
+     */
     @Test
     public void testExecute()
     {

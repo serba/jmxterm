@@ -1,9 +1,9 @@
 package org.cyclopsgroup.jmxterm;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Option;
 
 /**
@@ -14,10 +14,23 @@ import org.cyclopsgroup.jcli.annotation.Option;
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public abstract class Command
+    implements AutoCompletable
 {
     private boolean help;
 
     private Session session;
+
+    protected List<String> doSuggestArgument()
+        throws Exception
+    {
+        return null;
+    }
+
+    protected List<String> doSuggestOption( String optionName )
+        throws Exception
+    {
+        return null;
+    }
 
     /**
      * Execute command
@@ -26,18 +39,6 @@ public abstract class Command
      */
     public abstract void execute()
         throws Exception;
-
-    /**
-     * Get candidates of input values
-     * 
-     * @param optionName Name of option or NULL for arguments
-     * @param session Current session
-     * @return List of candidates
-     */
-    public List<String> getInputCandidate( String optionName, Session session )
-    {
-        return Collections.emptyList();
-    }
 
     /**
      * @return Session where command runs
@@ -71,5 +72,45 @@ public abstract class Command
     {
         Validate.notNull( session, "Session can't be NULL" );
         this.session = session;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public final List<String> suggestArgument( String partialArg )
+    {
+        if ( partialArg != null )
+        {
+            return null;
+        }
+        try
+        {
+            return doSuggestArgument();
+        }
+        catch ( Exception e )
+        {
+            getSession().log( e );
+            return null;
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public final List<String> suggestOption( String name, String partialValue )
+    {
+        if ( partialValue != null )
+        {
+            return null;
+        }
+        try
+        {
+            return doSuggestOption( name );
+        }
+        catch ( Exception e )
+        {
+            getSession().log( e );
+            return null;
+        }
     }
 }

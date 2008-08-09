@@ -1,15 +1,16 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
+import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -26,7 +27,6 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
     + "otherwise it selects the bean defined by the first parameter. eg. bean java.lang:type=Memory" )
 public class BeanCommand
     extends Command
-    implements AutoCompletable
 {
     private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
 
@@ -83,6 +83,42 @@ public class BeanCommand
     /**
      * @inheritDoc
      */
+    public List<String> doSuggestArgument()
+        throws IOException, MalformedObjectNameException
+    {
+        Session session = getSession();
+        ArrayList<String> results = new ArrayList<String>( BeansCommand.getBeans( session, null ) );
+        String domain = session.getDomain();
+        if ( domain != null )
+        {
+            List<String> beans = BeansCommand.getBeans( session, domain );
+            for ( String bean : beans )
+            {
+                results.add( bean.substring( domain.length() + 1 ) );
+            }
+        }
+        return results;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> doSuggestOption( String optionName )
+        throws IOException
+    {
+        if ( optionName.equals( "d" ) )
+        {
+            return DomainsCommand.getDomains( getSession() );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
     @Override
     public void execute()
         throws IOException, JMException
@@ -134,41 +170,5 @@ public class BeanCommand
     public final void setDomain( String domain )
     {
         this.domain = domain;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestArgument( String partialArgument )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public List<String> suggestOption( String optionName, String partialOption )
-    {
-        if ( partialOption != null )
-        {
-            return null;
-        }
-        if ( optionName.equals( "d" ) )
-        {
-            try
-            {
-                return DomainsCommand.getDomains( getSession() );
-            }
-            catch ( IOException e )
-            {
-                getSession().log( e );
-                return null;
-            }
-        }
-        else
-        {
-            return null;
-        }
     }
 }

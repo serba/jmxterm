@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -28,50 +30,36 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 @Cli( name = "run", description = "Invoke an MBean operation", note = "Syntax is \n run <operationName> [parameter1] [parameter2]" )
 public class RunCommand
     extends Command
+    implements AutoCompletable
 {
-    private List<String> parameters = Collections.emptyList();
-
     private String bean;
 
     private String domain;
 
     private boolean measure;
 
-    /**
-     * @param measure True if you want to display latency
-     */
-    @Option( name = "m", longName = "measure", description = "Measure the time spent on the invocation of operation" )
-    public final void setMeasure( boolean measure )
-    {
-        this.measure = measure;
-    }
+    private List<String> parameters = Collections.emptyList();
 
     /**
-     * @param domain Domain under which is bean is
+     * @inheritDoc
      */
-    @Option( name = "d", longName = "domain", description = "Domain of MBean to invoke" )
-    public final void setDomain( String domain )
+    public List<String> doSuggestArgument()
+        throws Exception
     {
-        this.domain = domain;
-    }
-
-    /**
-     * @param bean Bean under which the operation is
-     */
-    @Option( name = "b", longName = "bean", description = "MBean to invoke" )
-    public final void setBean( String bean )
-    {
-        this.bean = bean;
-    }
-
-    /**
-     * @param parameters List of parameters. The first parameter is operation name
-     */
-    @Argument( description = "The first parameter is operation name, which is followed by list of arguments" )
-    public final void setParameters( List<String> parameters )
-    {
-        Validate.notNull( parameters, "Parameters can't be NULL" );
-        this.parameters = parameters;
+        Session session = getSession();
+        if ( getSession().getBean() != null )
+        {
+            MBeanInfo info =
+                session.getConnection().getServerConnection().getMBeanInfo( new ObjectName( session.getBean() ) );
+            MBeanOperationInfo[] operationInfos = info.getOperations();
+            List<String> ops = new ArrayList<String>( operationInfos.length );
+            for ( MBeanOperationInfo op : operationInfos )
+            {
+                ops.add( op.getName() );
+            }
+            return ops;
+        }
+        return null;
     }
 
     /**
@@ -141,5 +129,42 @@ public class RunCommand
         session.msg( "operation returns: " );
         SyntaxUtils.printValue( session.output, result, 0, false );
         session.output.println();
+    }
+
+    /**
+     * @param bean Bean under which the operation is
+     */
+    @Option( name = "b", longName = "bean", description = "MBean to invoke" )
+    public final void setBean( String bean )
+    {
+        this.bean = bean;
+    }
+
+    /**
+     * @param domain Domain under which is bean is
+     */
+    @Option( name = "d", longName = "domain", description = "Domain of MBean to invoke" )
+    public final void setDomain( String domain )
+    {
+        this.domain = domain;
+    }
+
+    /**
+     * @param measure True if you want to display latency
+     */
+    @Option( name = "m", longName = "measure", description = "Measure the time spent on the invocation of operation" )
+    public final void setMeasure( boolean measure )
+    {
+        this.measure = measure;
+    }
+
+    /**
+     * @param parameters List of parameters. The first parameter is operation name
+     */
+    @Argument( description = "The first parameter is operation name, which is followed by list of arguments" )
+    public final void setParameters( List<String> parameters )
+    {
+        Validate.notNull( parameters, "Parameters can't be NULL" );
+        this.parameters = parameters;
     }
 }

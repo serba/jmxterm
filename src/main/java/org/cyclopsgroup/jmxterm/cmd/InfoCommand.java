@@ -49,8 +49,9 @@ public class InfoCommand
         }
     };
 
-    private void displayAttributes( Session session, MBeanInfo info )
+    private void displayAttributes( MBeanInfo info )
     {
+        Session session = getSession();
         MBeanAttributeInfo[] attrInfos = info.getAttributes();
         if ( attrInfos.length == 0 )
         {
@@ -69,8 +70,9 @@ public class InfoCommand
         }
     }
 
-    private void displayNotifications( Session session, MBeanInfo info )
+    private void displayNotifications( MBeanInfo info )
     {
+        Session session = getSession();
         MBeanNotificationInfo[] notificationInfos = info.getNotifications();
         if ( notificationInfos.length == 0 )
         {
@@ -88,8 +90,9 @@ public class InfoCommand
 
     }
 
-    private void displayOperations( Session session, MBeanInfo info )
+    private void displayOperations( MBeanInfo info )
     {
+        Session session = getSession();
         MBeanOperationInfo[] operationInfos = info.getOperations();
         if ( operationInfos.length == 0 )
         {
@@ -145,13 +148,13 @@ public class InfoCommand
             switch ( t )
             {
                 case 'a':
-                    displayAttributes( session, info );
+                    displayAttributes( info );
                     break;
                 case 'o':
-                    displayOperations( session, info );
+                    displayOperations( info );
                     break;
                 case 'n':
-                    displayNotifications( session, info );
+                    displayNotifications( info );
                     break;
                 default:
                     throw new IllegalArgumentException( "Unrecognizable character " + t + " in type option " + type );

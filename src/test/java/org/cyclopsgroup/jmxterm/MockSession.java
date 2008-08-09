@@ -21,6 +21,11 @@ public class MockSession
 
     private MockConnection connection;
 
+    /**
+     * @param output Output writer
+     * @param con MBean service connection
+     * @throws MalformedURLException
+     */
     public MockSession( Writer output, MBeanServerConnection con )
         throws MalformedURLException
     {
@@ -29,6 +34,9 @@ public class MockSession
         connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
@@ -36,6 +44,9 @@ public class MockSession
         connected = true;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void disconnect()
         throws IOException
@@ -43,12 +54,18 @@ public class MockSession
         connected = false;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public Connection getConnection()
     {
         return connection;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public boolean isConnected()
     {

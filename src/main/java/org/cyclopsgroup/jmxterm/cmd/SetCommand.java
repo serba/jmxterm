@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,40 @@ public class SetCommand
     private String bean;
 
     private String domain;
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected List<String> doSuggestArgument()
+        throws IOException, JMException
+    {
+        Session session = getSession();
+        if ( session.getBean() != null )
+        {
+            MBeanServerConnection conn = getSession().getConnection().getServerConnection();
+            MBeanInfo info = conn.getMBeanInfo( new ObjectName( session.getBean() ) );
+            MBeanAttributeInfo[] attrs = info.getAttributes();
+            List<String> attributeNames = new ArrayList<String>( attrs.length );
+            for ( MBeanAttributeInfo attr : attrs )
+            {
+                attributeNames.add( attr.getName() );
+            }
+            return attributeNames;
+        }
+        return null;
+    }
+
+    @Override
+    protected List<String> doSuggestOption( String optionName )
+        throws IOException
+    {
+        if ( optionName.equals( "d" ) )
+        {
+            return DomainsCommand.getDomains( getSession() );
+        }
+        return null;
+    }
 
     /**
      * @inheritDoc
