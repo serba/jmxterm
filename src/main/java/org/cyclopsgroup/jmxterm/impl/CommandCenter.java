@@ -14,7 +14,8 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.QuotedStringTokenizer;
+import org.cyclopsgroup.jcli.EscapedStringTokenizer;
+import org.cyclopsgroup.jcli.StringTokenizer;
 import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
@@ -30,7 +31,7 @@ public class CommandCenter
 {
     private static final String COMMAND_DELIMITER = "&&";
 
-    final QuotedStringTokenizer argTokenizer = new QuotedStringTokenizer();
+    final StringTokenizer argTokenizer = new EscapedStringTokenizer();
 
     private final CliParser cliParser = new JakartaCommonsCliParser( new GnuParser() );
 

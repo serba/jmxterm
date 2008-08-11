@@ -59,5 +59,15 @@ Welcome to JMX terminal. Type "help" for available commands.
                 page.
             </p>
         </section>
+        <section name="Try latest build">
+            <p>
+                Alternatively, you may want to try out the latest
+                version built from source repository with all wacky
+                ideas that haven't been officially released yet.
+                Download the latest executable jar file
+                <a href="jmxterm-1.0-SNAPSHOT-uber.jar">here</a>
+                .
+            </p>
+        </section>
     </body>
 </document>

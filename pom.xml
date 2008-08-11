@@ -12,7 +12,7 @@
     <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
     <name>jmxterm</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <description>Command line based interactive JMX client</description>
     <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
     <inceptionYear>2008</inceptionYear>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.cyclopsgroup</groupId>
             <artifactId>jcli</artifactId>
-            <version>1.0-alpha-2</version>
+            <version>1.0-alpha-3</version>
         </dependency>
         <dependency>
             <groupId>jline</groupId>
@@ -163,6 +163,27 @@
                         <exclude>org.cyclopsgroup.jmxterm.jdk*</exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <configuration>
+                            <tasks>
+                                <echo message="Copy file..." />
+                                <copy todir="${basedir}/target/site">
+                                    <fileset dir="${basedir}/target"
+                                        includes="jmxterm-*-uber.jar" />
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

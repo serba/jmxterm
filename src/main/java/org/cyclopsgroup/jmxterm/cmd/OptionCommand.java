@@ -1,6 +1,5 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +52,7 @@ public class OptionCommand
      */
     public List<String> doSuggestOption( String name )
     {
-        return new ArrayList<String>( BOOLEAN_VALUES );
+        return BOOLEAN_VALUES;
     }
 
     /**
