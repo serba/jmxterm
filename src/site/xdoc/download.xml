@@ -2,8 +2,8 @@
 <!DOCTYPE document SYSTEM "http://maven.apache.org/maven-1.x/plugins/xdoc/maven-xdoc.dtd" >
 <document>
     <properties>
-        <author email="jiaqi.guo@gmail.com">Jiaqi Guo</author>
         <title>Download and Run</title>
+        <author email="jiaqi.guo@gmail.com">Jiaqi Guo</author>
     </properties>
     <body>
         <section name="Download">
