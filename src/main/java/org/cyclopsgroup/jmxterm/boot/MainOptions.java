@@ -31,6 +31,8 @@ public class MainOptions
 
     private boolean abbreviated;
 
+    private boolean exitOnFailure;
+
     private boolean help;
 
     private String input = STDIN;
@@ -92,6 +94,14 @@ public class MainOptions
     }
 
     /**
+     * @return True if terminal exits on any failure
+     */
+    public final boolean isExitOnFailure()
+    {
+        return exitOnFailure;
+    }
+
+    /**
      * @return {@link #setHelp(boolean)}
      */
     public final boolean isHelp()
@@ -106,6 +116,15 @@ public class MainOptions
     public final void setAbbreviated( boolean abbreviated )
     {
         this.abbreviated = abbreviated;
+    }
+
+    /**
+     * @param exitOnFailure True if terminal exits on any failure
+     */
+    @Option( name = "e", longName = "exitonfailure", description = "With this flag, terminal exits for any Exception" )
+    public final void setExitOnFailure( boolean exitOnFailure )
+    {
+        this.exitOnFailure = exitOnFailure;
     }
 
     /**

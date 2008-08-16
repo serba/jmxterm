@@ -163,16 +163,19 @@ public class CommandCenter
      * Execute a command. Command can be a valid full command, a comment, command followed by comment or empty
      * 
      * @param command String command to execute
+     * @return True if successful
      */
-    public void execute( String command )
+    public boolean execute( String command )
     {
         try
         {
             doExecute( command );
+            return true;
         }
         catch ( Exception e )
         {
             session.log( e );
+            return false;
         }
     }
 

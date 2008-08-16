@@ -51,11 +51,10 @@ public class Main
     public static final void main( String[] args )
         throws IntrospectionException, IOException, ClassNotFoundException
     {
-        Main main = new Main();
-        main.execute( args );
+        System.exit( new Main().execute( args ) );
     }
 
-    void execute( String[] args )
+    int execute( String[] args )
         throws IntrospectionException, IOException
     {
         MainOptions options = new MainOptions();
@@ -64,7 +63,7 @@ public class Main
         if ( options.isHelp() )
         {
             parser.printUsage( MainOptions.class, STDOUT_WRITER );
-            return;
+            return 0;
         }
         commandCenter.setAbbreviated( options.isAbbreviated() );
         if ( options.getUrl() != null )
@@ -89,15 +88,23 @@ public class Main
             ConsoleReader console = new ConsoleReader( input, new OutputStreamWriter( System.out ) );
             console.addCompletor( new ConsoleCompletor( commandCenter ) );
             String line;
+            int exitCode = 0;
+            int lineNumber = 0;
             while ( ( line = console.readLine( "$ " ) ) != null )
             {
-                commandCenter.execute( line );
+                lineNumber++;
+                if ( !commandCenter.execute( line ) && options.isExitOnFailure() )
+                {
+                    exitCode = -lineNumber;
+                    break;
+                }
                 if ( commandCenter.isClosed() )
                 {
                     break;
                 }
             }
             commandCenter.close();
+            return exitCode;
         }
         finally
         {
