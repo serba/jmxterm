@@ -23,8 +23,6 @@ public abstract class Session
 
     private boolean closed;
 
-    private final CommandHistoryManager commandHistoryManager = new CommandHistoryManager();
-
     private String domain;
 
     /**
@@ -79,14 +77,6 @@ public abstract class Session
     public final String getBean()
     {
         return bean;
-    }
-
-    /**
-     * @return Get history manager
-     */
-    public final CommandHistoryManager getCommandHistoryManager()
-    {
-        return commandHistoryManager;
     }
 
     /**

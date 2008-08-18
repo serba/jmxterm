@@ -49,6 +49,8 @@
             <item name="Release note" href="release/index.html"
                 collapse="true">
                 <item name="0.2" href="release/0.2.html" />
+                <item name="1.0-alpha-1"
+                    href="release/1.0-alpha-1.html" />
             </item>
         </menu>
         <menu ref="reports" />

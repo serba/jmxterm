@@ -8,7 +8,7 @@
     <body>
         <section name="Download">
             <p>
-                Download from
+                Download latest release jmxterm-1.0-alpha-1 from
                 <a
                     href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
                     SourceForge.net download page
@@ -37,10 +37,12 @@
                 if JDK is installed as expected, run java -version
                 command, for example.
             </p>
-            <source>jiaqi@happycow:~$ java -version
-java version "1.6.0_03"
-Java(TM) SE Runtime Environment (build 1.6.0_03-b05)
-Java HotSpot(TM) Client VM (build 1.6.0_03-b05, mixed mode, sharing)</source>
+            <source>
+                jiaqi@happycow:~$ java -version java version "1.6.0_03"
+                Java(TM) SE Runtime Environment (build 1.6.0_03-b05)
+                Java HotSpot(TM) Client VM (build 1.6.0_03-b05, mixed
+                mode, sharing)
+            </source>
         </section>
         <section name="And Run">
             <p>
@@ -48,25 +50,16 @@ Java HotSpot(TM) Client VM (build 1.6.0_03-b05, mixed mode, sharing)</source>
                 an interactive command line console. (Replace ## with
                 the version that you download). For example
             </p>
-            <source>jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar 
-Welcome to JMX terminal. Type "help" for available commands.
-?$</source>
+            <source>
+                jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar Welcome
+                to JMX terminal. Type "help" for available commands. ?$
+            </source>
             <p>
                 With --help or -h option, jmxterm shows a usage page of
                 command line options. To find out more about how jxmterm
                 uber jar can be called, please go to
                 <a href="manual.html">User Manual</a>
                 page.
-            </p>
-        </section>
-        <section name="Try latest build">
-            <p>
-                Alternatively, you may want to try out the latest
-                version built from source repository with all wacky
-                ideas that haven't been officially released yet.
-                Download the latest executable jar file
-                <a href="jmxterm-1.0-SNAPSHOT-uber.jar">here</a>
-                .
             </p>
         </section>
     </body>
