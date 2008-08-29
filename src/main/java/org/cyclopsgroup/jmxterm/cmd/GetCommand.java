@@ -117,6 +117,24 @@ public class GetCommand
         return null;
     }
 
+    @Override
+    protected List<String> doSuggestOption( String optionName )
+        throws Exception
+    {
+        if ( optionName.equals( "d" ) )
+        {
+            return DomainsCommand.getCandidateDomains( getSession() );
+        }
+        else if ( optionName.equals( "b" ) )
+        {
+            return BeanCommand.getCandidateBeanNames( getSession() );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     /**
      * @inheritDoc
      */

@@ -63,7 +63,7 @@ public class BeansCommand
     {
         if ( optionName.equals( "d" ) )
         {
-            return DomainsCommand.getDomains( getSession() );
+            return DomainsCommand.getCandidateDomains( getSession() );
         }
         return null;
     }
@@ -80,7 +80,7 @@ public class BeansCommand
         List<String> domains = new ArrayList<String>();
         if ( domainName == null )
         {
-            domains.addAll( DomainsCommand.getDomains( session ) );
+            domains.addAll( DomainsCommand.getCandidateDomains( session ) );
         }
         else
         {

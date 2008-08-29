@@ -28,12 +28,12 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class BeanCommand
     extends Command
 {
-    private static final String STRING_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
+    private static final String PARTIAL_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
 
     private static final Pattern PATTERN_BEAN_NAME =
-        Pattern.compile( "^(\\w|\\.)+\\:" + STRING_PATTERN_PROPERTIES + "$" );
+        Pattern.compile( "^(\\w|\\.)+\\:" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
-    private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + STRING_PATTERN_PROPERTIES + "$" );
+    private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
     /**
      * Get full MBean name with given bean name, domain and session
@@ -76,17 +76,17 @@ public class BeanCommand
         throw new IllegalArgumentException( "Bean name " + bean + " isn't valid" );
     }
 
-    private String bean;
-
-    private String domain;
-
     /**
-     * @inheritDoc
+     * Get list of candidate beans
+     * 
+     * @param session Session
+     * @return List of bean names
+     * @throws MalformedObjectNameException
+     * @throws IOException
      */
-    public List<String> doSuggestArgument()
-        throws IOException, MalformedObjectNameException
+    static List<String> getCandidateBeanNames( Session session )
+        throws MalformedObjectNameException, IOException
     {
-        Session session = getSession();
         ArrayList<String> results = new ArrayList<String>( BeansCommand.getBeans( session, null ) );
         String domain = session.getDomain();
         if ( domain != null )
@@ -100,6 +100,19 @@ public class BeanCommand
         return results;
     }
 
+    private String bean;
+
+    private String domain;
+
+    /**
+     * @inheritDoc
+     */
+    public List<String> doSuggestArgument()
+        throws IOException, MalformedObjectNameException
+    {
+        return getCandidateBeanNames( getSession() );
+    }
+
     /**
      * @inheritDoc
      */
@@ -108,7 +121,7 @@ public class BeanCommand
     {
         if ( optionName.equals( "d" ) )
         {
-            return DomainsCommand.getDomains( getSession() );
+            return DomainsCommand.getCandidateDomains( getSession() );
         }
         else
         {

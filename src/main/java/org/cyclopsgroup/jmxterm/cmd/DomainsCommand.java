@@ -26,7 +26,7 @@ public class DomainsCommand
      * @return Sorted list of domain names
      * @throws IOException
      */
-    public static List<String> getDomains( Session session )
+    static List<String> getCandidateDomains( Session session )
         throws IOException
     {
         String[] domains = session.getConnection().getServerConnection().getDomains();
@@ -47,7 +47,7 @@ public class DomainsCommand
             session.msg( "following domains are available" );
         }
         int i = 0;
-        for ( String domain : getDomains( session ) )
+        for ( String domain : getCandidateDomains( session ) )
         {
             session.msg( String.format( "%%%-3d - %s", i++, domain ), domain );
         }

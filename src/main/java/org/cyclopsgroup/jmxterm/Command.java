@@ -20,12 +20,25 @@ public abstract class Command
 
     private Session session;
 
+    /**
+     * Provide a list of possible arguments for auto completion
+     * 
+     * @return List of possible arguments used by auto completion or NULL
+     * @throws Exception Any exception is handle'able
+     */
     protected List<String> doSuggestArgument()
         throws Exception
     {
         return null;
     }
 
+    /**
+     * Provide a list of possible option values for auto completion
+     * 
+     * @param optionName Name of option
+     * @return List of possible arguments used by auto completion or NULL
+     * @throws Exception Any exception is handle'able
+     */
     protected List<String> doSuggestOption( String optionName )
         throws Exception
     {

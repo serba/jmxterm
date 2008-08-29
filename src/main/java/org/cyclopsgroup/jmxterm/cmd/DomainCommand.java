@@ -31,7 +31,7 @@ public class DomainCommand
      * @return String name of domain coming from given parameter or current session
      * @throws IOException
      */
-    public static String getDomainName( String domain, Session session )
+    static String getDomainName( String domain, Session session )
         throws IOException
     {
         Validate.notNull( session, "Session can't be NULL" );
@@ -44,7 +44,7 @@ public class DomainCommand
         {
             return null;
         }
-        HashSet<String> domains = new HashSet<String>( DomainsCommand.getDomains( session ) );
+        HashSet<String> domains = new HashSet<String>( DomainsCommand.getCandidateDomains( session ) );
         if ( !domains.contains( domain ) )
         {
             throw new IllegalArgumentException( "Domain " + domain + " doesn't exist, check your spelling" );
@@ -60,7 +60,7 @@ public class DomainCommand
     public List<String> doSuggestArgument()
         throws IOException
     {
-        return DomainsCommand.getDomains( getSession() );
+        return DomainsCommand.getCandidateDomains( getSession() );
     }
 
     /**

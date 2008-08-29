@@ -60,13 +60,20 @@ public class SetCommand
 
     @Override
     protected List<String> doSuggestOption( String optionName )
-        throws IOException
+        throws Exception
     {
         if ( optionName.equals( "d" ) )
         {
-            return DomainsCommand.getDomains( getSession() );
+            return DomainsCommand.getCandidateDomains( getSession() );
         }
-        return null;
+        else if ( optionName.equals( "b" ) )
+        {
+            return BeanCommand.getCandidateBeanNames( getSession() );
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
