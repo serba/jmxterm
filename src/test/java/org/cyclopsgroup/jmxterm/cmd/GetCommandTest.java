@@ -2,11 +2,9 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
 
-import javax.management.JMException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServerConnection;
@@ -47,12 +45,11 @@ public class GetCommandTest
     /**
      * Test normal execution
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteNormally()
-        throws IOException, JMException
+        throws Exception
     {
         command.setDomain( "a" );
         command.setBean( "type=x" );

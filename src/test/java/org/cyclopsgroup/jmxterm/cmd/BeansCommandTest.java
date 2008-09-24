@@ -2,12 +2,10 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
@@ -47,12 +45,11 @@ public class BeansCommandTest
     /**
      * Test execution and get all beans
      * 
-     * @throws JMException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithAllBeans()
-        throws JMException, IOException
+        throws Exception
     {
         context.checking( new Expectations()
         {
@@ -75,12 +72,11 @@ public class BeansCommandTest
     /**
      * Test execution with an domain option
      * 
-     * @throws JMException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithDomainOption()
-        throws JMException, IOException
+        throws Exception
     {
         command.setDomain( "b" );
         context.checking( new Expectations()
@@ -101,12 +97,11 @@ public class BeansCommandTest
     /**
      * Test execution where domain is set in session
      * 
-     * @throws JMException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithDomainInSession()
-        throws JMException, IOException
+        throws Exception
     {
         context.checking( new Expectations()
         {
@@ -128,12 +123,11 @@ public class BeansCommandTest
     /**
      * Test execution with domain NULL
      * 
-     * @throws JMException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithNullDomain()
-        throws JMException, IOException
+        throws Exception
     {
         command.setDomain( "*" );
         context.checking( new Expectations()

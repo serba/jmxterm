@@ -2,7 +2,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.management.MBeanServerConnection;
@@ -37,11 +36,11 @@ public class DomainCommandTest
     /**
      * Test execution and get empty result
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithGettingNull()
-        throws IOException
+        throws Exception
     {
         command.setSession( new MockSession( output, null ) );
         command.execute();
@@ -51,11 +50,11 @@ public class DomainCommandTest
     /**
      * Test execution and get valid result
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithGettingSomething()
-        throws IOException
+        throws Exception
     {
         MockSession session = new MockSession( output, null );
         session.setDomain( "something" );
@@ -67,11 +66,11 @@ public class DomainCommandTest
     /**
      * Test execution and set valid value
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithSettingSomethingValid()
-        throws IOException
+        throws Exception
     {
         Mockery context = new Mockery();
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
@@ -93,11 +92,11 @@ public class DomainCommandTest
     /**
      * Test the case where invalid value is declined
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test( expected = IllegalArgumentException.class )
     public void testExecuteWithSettingSomethingInvalid()
-        throws IOException
+        throws Exception
     {
         Mockery context = new Mockery();
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );

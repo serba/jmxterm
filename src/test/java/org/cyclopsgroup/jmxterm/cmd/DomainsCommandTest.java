@@ -2,7 +2,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.management.MBeanServerConnection;
@@ -37,11 +36,11 @@ public class DomainsCommandTest
     /**
      * Test normal execution
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecution()
-        throws IOException
+        throws Exception
     {
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
         StringWriter output = new StringWriter();

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 
 import org.cyclopsgroup.jcli.annotation.MalformedArgException;
 import org.cyclopsgroup.jmxterm.MockSession;
@@ -35,11 +34,11 @@ public class OptionCommandTest
     }
 
     /**
-     * @throws MalformedURLException
+     * @throws Exception
      */
     @Test
     public void testExecuteNormally()
-        throws MalformedURLException
+        throws Exception
     {
         Session session = new MockSession( output, null );
         command.setAbbreviated( "false" );
@@ -56,11 +55,11 @@ public class OptionCommandTest
     }
 
     /**
-     * @throws MalformedURLException
+     * @throws Exception
      */
     @Test( expected = MalformedArgException.class )
     public void testExecuteWithInvalidVerbose()
-        throws MalformedURLException
+        throws Exception
     {
         Session session = new MockSession( output, null );
         command.setVerbose( "xyz" );

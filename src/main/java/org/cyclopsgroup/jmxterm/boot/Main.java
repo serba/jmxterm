@@ -1,16 +1,20 @@
 package org.cyclopsgroup.jmxterm.boot;
 
-import java.beans.IntrospectionException;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.management.remote.JMXConnector;
 
 import jline.ConsoleReader;
 
 import org.apache.commons.cli.GnuParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
@@ -44,18 +48,16 @@ public class Main
      * Main entry
      * 
      * @param args Main command
-     * @throws IntrospectionException
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws Exception
      */
     public static final void main( String[] args )
-        throws IntrospectionException, IOException, ClassNotFoundException
+        throws Exception
     {
         System.exit( new Main().execute( args ) );
     }
 
     int execute( String[] args )
-        throws IntrospectionException, IOException
+        throws Exception
     {
         MainOptions options = new MainOptions();
         JakartaCommonsCliParser parser = new JakartaCommonsCliParser( new GnuParser() );
@@ -66,31 +68,64 @@ public class Main
             return 0;
         }
         commandCenter.setAbbreviated( options.isAbbreviated() );
-        if ( options.getUrl() != null )
-        {
-            commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), null );
-        }
 
-        InputStream input;
-        boolean closeInputFinally;
-        if ( options.getInput().equals( MainOptions.STDIN ) )
+        Writer output;
+        if ( StringUtils.equals( options.getOutput(), MainOptions.STDOUT ) )
         {
-            input = System.in;
-            closeInputFinally = false;
+            output = new OutputStreamWriter( System.out )
+            {
+                @Override
+                public void close()
+                    throws IOException
+                {
+                }
+            };
         }
         else
         {
-            input = new FileInputStream( new File( options.getInput() ) );
-            closeInputFinally = true;
+            File outputFile = new File( options.getOutput() );
+            output = new FileWriter( outputFile );
+        }
+
+        ConsoleReader consoleReader = new ConsoleReader( System.in, output );
+        consoleReader.addCompletor( new ConsoleCompletor( commandCenter ) );
+
+        if ( options.getUrl() != null )
+        {
+            Map<String, Object> env;
+            if ( options.getUser() != null )
+            {
+                env = new HashMap<String, Object>( 1 );
+                String password = options.getPassword();
+                if ( password == null )
+                {
+                    password = consoleReader.readLine( "password:", '*' );
+                }
+                String[] credentials = { options.getUser(), password };
+                env.put( JMXConnector.CREDENTIALS, credentials );
+            }
+            else
+            {
+                env = null;
+            }
+            commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), env );
+        }
+
+        CommandInput input;
+        if ( options.getInput().equals( MainOptions.STDIN ) )
+        {
+            input = new JlineCommandInput( consoleReader, "$>" );
+        }
+        else
+        {
+            input = new FileCommandInput( new File( options.getInput() ) );
         }
         try
         {
-            ConsoleReader console = new ConsoleReader( input, new OutputStreamWriter( System.out ) );
-            console.addCompletor( new ConsoleCompletor( commandCenter ) );
             String line;
             int exitCode = 0;
             int lineNumber = 0;
-            while ( ( line = console.readLine( "$ " ) ) != null )
+            while ( ( line = input.readLine() ) != null )
             {
                 lineNumber++;
                 if ( !commandCenter.execute( line ) && options.isExitOnFailure() )
@@ -108,10 +143,9 @@ public class Main
         }
         finally
         {
-            if ( closeInputFinally )
-            {
-                input.close();
-            }
+            output.flush();
+            output.close();
+            input.close();
         }
     }
 }

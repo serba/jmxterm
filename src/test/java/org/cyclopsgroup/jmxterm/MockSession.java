@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.MalformedURLException;
 import java.util.Map;
 
 import javax.management.MBeanServerConnection;
@@ -24,10 +23,10 @@ public class MockSession
     /**
      * @param output Output writer
      * @param con MBean service connection
-     * @throws MalformedURLException
+     * @throws Exception
      */
     public MockSession( Writer output, MBeanServerConnection con )
-        throws MalformedURLException
+        throws Exception
     {
         super( new PrintWriter( output, true ) );
         setAbbreviated( true );

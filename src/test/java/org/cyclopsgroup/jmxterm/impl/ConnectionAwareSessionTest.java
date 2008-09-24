@@ -49,11 +49,11 @@ public class ConnectionAwareSessionTest
     /**
      * Verify connect() runs correctly
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testConnect()
-        throws IOException
+        throws Exception
     {
         session.connect( SyntaxUtils.getUrl( "localhost:9991" ), null );
     }

@@ -2,9 +2,7 @@ package org.cyclopsgroup.jmxterm.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.beans.IntrospectionException;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -44,11 +42,11 @@ public class HelpCommandTest
     /**
      * Test execution without option
      * 
-     * @throws MalformedURLException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithoutOption()
-        throws MalformedURLException
+        throws Exception
     {
         final CommandCenter cc = context.mock( CommandCenter.class );
         command.setCommandCenter( cc );
@@ -72,12 +70,11 @@ public class HelpCommandTest
     /**
      * Test execution with several options
      * 
-     * @throws MalformedURLException
-     * @throws IntrospectionException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithOption()
-        throws MalformedURLException, IntrospectionException
+        throws Exception
     {
         command.setArgNames( new String[] { "a", "b" } );
         final CommandCenter cc = context.mock( CommandCenter.class );

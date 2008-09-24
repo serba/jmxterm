@@ -2,7 +2,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertFalse;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import org.cyclopsgroup.jmxterm.MockSession;
@@ -33,11 +32,11 @@ public class CloseCommandTest
     /**
      * Test execution
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecute()
-        throws IOException
+        throws Exception
     {
         MockSession session = new MockSession( output, null );
         command.setSession( session );

@@ -22,5 +22,6 @@ public class CloseCommand
         throws IOException
     {
         getSession().disconnect();
+        getSession().msg( "disconnected" );
     }
 }

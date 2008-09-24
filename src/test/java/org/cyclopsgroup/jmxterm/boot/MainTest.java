@@ -1,8 +1,5 @@
 package org.cyclopsgroup.jmxterm.boot;
 
-import java.beans.IntrospectionException;
-import java.io.IOException;
-
 import org.cyclopsgroup.jmxterm.impl.CommandCenter;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -20,13 +17,12 @@ public class MainTest
     /**
      * Verify commands are parsed and passed to CommandCenter
      * 
-     * @throws IntrospectionException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     @Ignore
     public void testExecuteNormally()
-        throws IntrospectionException, IOException
+        throws Exception
     {
         Mockery context = new Mockery()
         {

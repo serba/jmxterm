@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm.cmd;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import org.cyclopsgroup.jmxterm.MockSession;
@@ -13,7 +12,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link QuitCommand}
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class QuitCommandTest
@@ -33,11 +32,11 @@ public class QuitCommandTest
     }
 
     /**
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testExecute()
-        throws IOException
+        throws Exception
     {
         Session session = new MockSession( output, null );
         command.setSession( session );

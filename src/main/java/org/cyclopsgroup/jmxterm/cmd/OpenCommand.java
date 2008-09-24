@@ -5,14 +5,11 @@ import java.util.Map;
 
 import javax.management.remote.JMXConnector;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
-import org.cyclopsgroup.jmxterm.JavaProcess;
-import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
@@ -26,26 +23,6 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 public class OpenCommand
     extends Command
 {
-    private static String tryGettingUrlForPid( int pid )
-        throws Exception
-    {
-        JavaProcess p = JavaProcessManager.getInstance().get( pid );
-        if ( p == null )
-        {
-            throw new NullPointerException( "No such PID " + pid );
-        }
-        if ( !p.isManageable() )
-        {
-            p.startManagementAgent();
-            if ( !p.isManageable() )
-            {
-                throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
-                    + " is not manageable" );
-            }
-        }
-        return p.toUrl();
-    }
-
     private String password;
 
     private String url;
@@ -77,6 +54,10 @@ public class OpenCommand
         Map<String, Object> env;
         if ( user != null )
         {
+            if ( password == null )
+            {
+                // FIXME Call console reader and ask for password interactively
+            }
             env = new HashMap<String, Object>( 1 );
             String[] credentials = { user, password };
             env.put( JMXConnector.CREDENTIALS, credentials );
@@ -85,16 +66,7 @@ public class OpenCommand
         {
             env = null;
         }
-        String u;
-        if ( NumberUtils.isDigits( url ) )
-        {
-            u = tryGettingUrlForPid( Integer.parseInt( url ) );
-        }
-        else
-        {
-            u = url;
-        }
-        session.connect( SyntaxUtils.getUrl( u ), env );
+        session.connect( SyntaxUtils.getUrl( url ), env );
         session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
     }
 

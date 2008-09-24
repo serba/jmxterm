@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,16 @@ class PredefinedCommandFactory
         Validate.notNull( configPath, "configPath can't be NULL" );
         ClassLoader classLoader = getClass().getClassLoader();
         ExtendedProperties props = ExtendedPropertiesUtils.loadFromOverlappingResources( configPath, classLoader );
+        if ( props == null )
+        {
+            throw new FileNotFoundException( "Couldn't load configuration from " + configPath +
+                ", classpath has problem" );
+        }
         props = props.subset( "jmxterm.commands" );
+        if ( props == null )
+        {
+            throw new IOException( "Expected configuration doesn't appear in " + configPath );
+        }
         HashMap<String, Class<? extends Command>> commands = new HashMap<String, Class<? extends Command>>();
         for ( String name : props.getStringArray( "name" ) )
         {

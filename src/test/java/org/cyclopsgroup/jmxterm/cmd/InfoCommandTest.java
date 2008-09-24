@@ -2,10 +2,8 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
-import javax.management.JMException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
@@ -49,12 +47,11 @@ public class InfoCommandTest
     /**
      * Test how attributes are displayed
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithShowingAttributes()
-        throws IOException, JMException
+        throws Exception
     {
         command.setBean( "a:type=x" );
         command.setType( "a" );
@@ -92,12 +89,11 @@ public class InfoCommandTest
     /**
      * Test execution and show available options
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithShowingOperations()
-        throws IOException, JMException
+        throws Exception
     {
         command.setBean( "a:type=x" );
         command.setType( "o" );

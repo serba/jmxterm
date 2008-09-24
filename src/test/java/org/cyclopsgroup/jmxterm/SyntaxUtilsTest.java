@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,11 +27,11 @@ public class SyntaxUtilsTest
     /**
      * Test how getUrl() figure out MBeanServer URL based on various pattern of input
      * 
-     * @throws MalformedURLException Thrown when syntax is invalid
+     * @throws Exception Thrown when syntax is invalid
      */
     @Test
     public void testGetUrl()
-        throws MalformedURLException
+        throws Exception
     {
         assertEquals( "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
                       SyntaxUtils.getUrl( "xyz-host.cyclopsgroup.org:12345" ).getURLPath() );

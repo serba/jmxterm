@@ -3,10 +3,8 @@ package org.cyclopsgroup.jmxterm.cmd;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
-import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
@@ -29,12 +27,11 @@ public class BeanCommandTest
     /**
      * Test execution with NULL result
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithGettingNull()
-        throws IOException, JMException
+        throws Exception
     {
         command.setSession( new MockSession( output, null ) );
         command.execute();
@@ -44,12 +41,11 @@ public class BeanCommandTest
     /**
      * Test execution with some result
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithGettingSomething()
-        throws IOException, JMException
+        throws Exception
     {
         MockSession s = new MockSession( output, null );
         s.setBean( "something" );
@@ -61,12 +57,11 @@ public class BeanCommandTest
     /**
      * Test the case where an illegal bean is requested
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test( expected = IllegalArgumentException.class )
     public void testExecuteWithInvalidBean()
-        throws IOException, JMException
+        throws Exception
     {
         command.setBean( "blablabla" );
         command.setSession( new MockSession( output, null ) );
@@ -76,12 +71,11 @@ public class BeanCommandTest
     /**
      * Test the case where NULL is get
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithSettingNull()
-        throws IOException, JMException
+        throws Exception
     {
         command.setBean( "null" );
         MockSession s = new MockSession( output, null );
@@ -95,12 +89,11 @@ public class BeanCommandTest
     /**
      * Test the case where domain is set
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithSettingSomething()
-        throws IOException, JMException
+        throws Exception
     {
         Mockery context = new Mockery();
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
@@ -121,12 +114,11 @@ public class BeanCommandTest
     /**
      * Test the case where a domain is set
      * 
-     * @throws IOException
-     * @throws JMException
+     * @throws Exception
      */
     @Test
     public void testExecuteWithSettingSomethingAndDomain()
-        throws IOException, JMException
+        throws Exception
     {
         Mockery context = new Mockery();
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );

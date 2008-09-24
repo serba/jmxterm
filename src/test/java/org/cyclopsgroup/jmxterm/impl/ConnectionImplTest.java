@@ -3,8 +3,6 @@ package org.cyclopsgroup.jmxterm.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import java.io.IOException;
-
 import javax.management.remote.JMXConnector;
 
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
@@ -22,11 +20,11 @@ public class ConnectionImplTest
     /**
      * Test the object is constructed correctly
      * 
-     * @throws IOException
+     * @throws Exception
      */
     @Test
     public void testConstruction()
-        throws IOException
+        throws Exception
     {
         Mockery context = new Mockery();
         final JMXConnector con = context.mock( JMXConnector.class );

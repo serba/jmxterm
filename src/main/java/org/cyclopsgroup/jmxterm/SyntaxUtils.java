@@ -2,7 +2,6 @@ package org.cyclopsgroup.jmxterm;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -13,6 +12,7 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * Utility class for syntax checking
@@ -36,16 +36,42 @@ public final class SyntaxUtils
     /**
      * @param url String expression of MBean server URL or abbreviation like localhost:9991
      * @return Parsed JMXServerURL
-     * @throws MalformedURLException Thrown when syntax is invalid
+     * @throws Exception Thrown when syntax is invalid
      */
     public static JMXServiceURL getUrl( String url )
-        throws MalformedURLException
+        throws Exception
     {
-        if ( PATTERN_HOST_PORT.matcher( url ).find() )
+        if ( StringUtils.isEmpty( url ) )
+        {
+            throw new IllegalArgumentException( "Empty URL is not allowed" );
+        }
+        else if ( NumberUtils.isDigits( url ) )
+        {
+            Integer pid = Integer.parseInt( url );
+            JavaProcess p = JavaProcessManager.getInstance().get( pid );
+            if ( p == null )
+            {
+                throw new NullPointerException( "No such PID " + pid );
+            }
+            if ( !p.isManageable() )
+            {
+                p.startManagementAgent();
+                if ( !p.isManageable() )
+                {
+                    throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid +
+                        " is not manageable" );
+                }
+            }
+            return new JMXServiceURL( p.toUrl() );
+        }
+        else if ( PATTERN_HOST_PORT.matcher( url ).find() )
         {
             return new JMXServiceURL( "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi" );
         }
-        return new JMXServiceURL( url );
+        else
+        {
+            return new JMXServiceURL( url );
+        }
     }
 
     /**
