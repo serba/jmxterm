@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.cyclopsgroup</groupId>
         <artifactId>cyclopsgroup-master</artifactId>
-        <version>0.1</version>
+        <version>0.2</version>
     </parent>
     <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
@@ -111,10 +111,10 @@
     </dependencies>
     <scm>
         <connection>
-            scm:svn:http://svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk/jmxterm
+            scm:svn:http://cyclops-group.svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk/jmxterm
         </connection>
         <developerConnection>
-            scm:svn:https://svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk/jmxterm
+            scm:svn:https://cyclops-group.svn.sourceforge.net/svnroot/cyclops-group/jmxterm/trunk/jmxterm
         </developerConnection>
         <url>
             http://fisheye3.atlassian.com/browse/cyclops-group/jmxterm
@@ -236,7 +236,7 @@
         <site>
             <id>cyclopsgroup.server.sourceforge</id>
             <url>
-                scpexe://shell.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/projects/jmxterm
+                sftp://web.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/projects/jmxterm
             </url>
         </site>
     </distributionManagement>

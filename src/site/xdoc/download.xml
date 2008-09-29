@@ -8,29 +8,36 @@
     <body>
         <section name="Download">
             <p>
-                Download latest release jmxterm-1.0-alpha-1 from
+                Download latest released jmxterm from
                 <a
                     href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
                     SourceForge.net download page
                 </a>
-                . Jar file with name
+                . The jar file with name
                 <b>UBER</b>
                 is the one that runs out of box.
             </p>
             <p>
                 <a
                     href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
-                    <img src="images/down.png"
-                        alt="Download the jar file now" />
+                    <img src="images/down.png" alt="Download the jar file now" />
                 </a>
+            </p>
+            <p>
+                Alternatively, you can
+                <a href="./jmxterm-1.0-SNAPSHOT-uber.jar">download the latest
+                    dev version</a>
+                built by CI engine. This version has all the
+                latest
+                unreleased change but it might not be well
+                tested.
             </p>
         </section>
         <section name="Make sure JDK 1.5+ is installed">
             <p>
                 To run jmxterm, JDK 1.5 or later version is required. If
                 you don't have JDK installed, please goto
-                <a
-                    href="http://java.sun.com/javase/downloads/index.jsp">
+                <a href="http://java.sun.com/javase/downloads/index.jsp">
                     Java SE download page
                 </a>
                 , download latest JDK and install it. In order to verify
@@ -47,8 +54,10 @@
         <section name="And Run">
             <p>
                 Run java -jar command with downloaded jar file to open
-                an interactive command line console. (Replace ## with
-                the version that you download). For example
+                an
+                interactive command line console. (Replace ## with
+                the
+                version that you download). For example
             </p>
             <source>
                 jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar Welcome
