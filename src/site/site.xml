@@ -33,7 +33,7 @@
             <item name="Download and Run" href="download.html" />
             <item name="1 Minute Tutorial" href="tutorial.html" />
             <item name="User Manual" href="manual.html" />
-            <item name="What do you think" href="feedback.html" />
+            <item name="Feedback and Support" href="discuss.html" />
             <item name="Source Code" href="sourcecode.html"
                 collapse="true">
                 <item name="Browse Fisheye"

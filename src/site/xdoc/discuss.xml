@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document SYSTEM "http://maven.apache.org/maven-1.x/plugins/xdoc/maven-xdoc.dtd" >
+<document>
+    <properties>
+        <title>Feedback and Support</title>
+        <author email="jiaqi.guo@gmail.com">Jiaqi Guo</author>
+    </properties>
+    <body>
+        <section name="Feedback and Support">
+            <script type="text/javascript" src="./forum.js"></script>
+        </section>
+    </body>
+</document>
