@@ -11,8 +11,8 @@ Scripting Feature
 open JMX, "| java -jar $jar";
 print JMX "help \n";
 
-my host = "localhost";
-my port = 9991;
+my $host = "localhost";
+my $port = 9991;
 
 print JMX "open $host:$port\n";
 print JMX "domains\n";
