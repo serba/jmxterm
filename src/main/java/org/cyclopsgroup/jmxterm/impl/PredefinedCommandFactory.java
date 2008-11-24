@@ -50,8 +50,8 @@ class PredefinedCommandFactory
         ExtendedProperties props = ExtendedPropertiesUtils.loadFromOverlappingResources( configPath, classLoader );
         if ( props == null )
         {
-            throw new FileNotFoundException( "Couldn't load configuration from " + configPath +
-                ", classpath has problem" );
+            throw new FileNotFoundException( "Couldn't load configuration from " + configPath
+                + ", classpath has problem" );
         }
         props = props.subset( "jmxterm.commands" );
         if ( props == null )
@@ -81,7 +81,6 @@ class PredefinedCommandFactory
      * @inheritDoc
      */
     public Command createCommand( String commandName )
-        throws Exception
     {
         return delegate.createCommand( commandName );
     }

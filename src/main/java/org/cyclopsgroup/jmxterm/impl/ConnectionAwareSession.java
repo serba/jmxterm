@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.impl;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.management.remote.JMXConnector;
@@ -11,6 +10,8 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.io.CommandInput;
+import org.cyclopsgroup.jmxterm.io.CommandOutput;
 
 /**
  * Implementation of {@link Session} which keeps a {@link ConnectionImpl}
@@ -25,9 +26,9 @@ class ConnectionAwareSession
     /**
      * @param output Output result
      */
-    ConnectionAwareSession( PrintWriter output )
+    ConnectionAwareSession( CommandOutput output, CommandInput input )
     {
-        super( output );
+        super( output, input );
     }
 
     /**

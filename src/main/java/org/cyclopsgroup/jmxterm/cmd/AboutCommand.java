@@ -12,7 +12,7 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.ExtendedPropertiesUtils;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 
 /**
  * Command to show about page
@@ -38,10 +38,11 @@ public class AboutCommand
         ExtendedProperties props =
             ExtendedPropertiesUtils.loadFromOverlappingResources( "META-INF/cyclopsgroup/jmxterm.properties",
                                                                   getClass().getClassLoader() );
+        ValueOutputFormat format = new ValueOutputFormat( 2, showDescription, true );
         for ( Object entryObject : props.subset( "jmxterm.about" ).entrySet() )
         {
             Map.Entry<String, Object> entry = (Map.Entry<String, Object>) entryObject;
-            SyntaxUtils.printExpression( session.output, entry.getKey(), entry.getValue(), null, 0, false );
+            format.printExpression( session.output, entry.getKey(), entry.getValue(), null );
         }
 
         // output Java runtime properties
@@ -50,18 +51,17 @@ public class AboutCommand
             String keyName = entry.toString();
             if ( keyName.startsWith( "java." ) )
             {
-                SyntaxUtils.printExpression( session.output, keyName, entry.getValue(), null, 0, false );
+                format.printExpression( session.output, keyName, entry.getValue(), null );
             }
         }
 
         // output runtime JPM configurations
         JavaProcessManager jpm = JavaProcessManager.getInstance();
-        SyntaxUtils.printExpression( session.output, "jpm.type", jpm.getClass().getName(),
-                                     "Type of JavaProcessManager implementation", 0, showDescription );
-        SyntaxUtils.printExpression( session.output, "jpm.name", jpm.getName(),
-                                     "Name of JavaProcessManager implementation", 0, showDescription );
-        SyntaxUtils.printExpression( session.output, "jpm.description", jpm.getDescription(),
-                                     "Description of JavaProcessManager implementation", 0, showDescription );
+        format.printExpression( session.output, "jpm.type", jpm.getClass().getName(),
+                                "Type of JavaProcessManager implementation" );
+        format.printExpression( session.output, "jpm.name", jpm.getName(), "Name of JavaProcessManager implementation" );
+        format.printExpression( session.output, "jpm.description", jpm.getDescription(),
+                                "Description of JavaProcessManager implementation" );
     }
 
     /**

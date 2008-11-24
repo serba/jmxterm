@@ -66,24 +66,24 @@ public class OptionCommand
         if ( v != null )
         {
             session.setVerbose( v );
-            session.msg( "verbose option is turned " + ( v ? "on" : "off" ) );
+            session.output.printMessage( "verbose option is turned " + ( v ? "on" : "off" ) );
         }
         else
         {
-            session.msg( "no change for verbose, verbose = " + ( session.isVerbose() ? "yes" : "no" ) );
+            session.output.printMessage( "no change for verbose, verbose = " + ( session.isVerbose() ? "yes" : "no" ) );
         }
 
         Boolean a = toBoolean( abbreviated );
         if ( a != null )
         {
             session.setAbbreviated( a );
-            session.msg( "abbreviated option is turned " + ( a ? "on" : "off" ) );
+            session.output.printMessage( "abbreviated option is turned " + ( a ? "on" : "off" ) );
         }
         else
         {
-            session.msg( "no change for abbreviated, abbreviated = " + ( session.isAbbreviated() ? "yes" : "no" ) );
+            session.output.printMessage( "no change for abbreviated, abbreviated = "
+                + ( session.isAbbreviated() ? "yes" : "no" ) );
         }
-        session.ok();
     }
 
     /**

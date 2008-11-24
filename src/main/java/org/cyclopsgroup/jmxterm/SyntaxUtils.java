@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -36,10 +37,10 @@ public final class SyntaxUtils
     /**
      * @param url String expression of MBean server URL or abbreviation like localhost:9991
      * @return Parsed JMXServerURL
-     * @throws Exception Thrown when syntax is invalid
+     * @throws IOException IO error
      */
     public static JMXServiceURL getUrl( String url )
-        throws Exception
+        throws IOException
     {
         if ( StringUtils.isEmpty( url ) )
         {
@@ -58,8 +59,8 @@ public final class SyntaxUtils
                 p.startManagementAgent();
                 if ( !p.isManageable() )
                 {
-                    throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid +
-                        " is not manageable" );
+                    throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
+                        + " is not manageable" );
                 }
             }
             return new JMXServiceURL( p.toUrl() );

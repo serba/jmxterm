@@ -96,8 +96,7 @@ public abstract class JavaProcessManager
      * @return Process or NULL
      * @throws Exception All any exception
      */
-    public abstract JavaProcess get( int pid )
-        throws Exception;
+    public abstract JavaProcess get( int pid );
 
     /**
      * @return Description of this implementation

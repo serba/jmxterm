@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.cyclopsgroup.jmxterm.Session;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -49,6 +50,7 @@ public class OpenCommandTest
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testExecuteWithoutUrl()
         throws Exception
     {

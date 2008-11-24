@@ -17,6 +17,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -50,6 +51,7 @@ public class InfoCommandTest
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testExecuteWithShowingAttributes()
         throws Exception
     {
@@ -92,6 +94,7 @@ public class InfoCommandTest
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testExecuteWithShowingOperations()
         throws Exception
     {

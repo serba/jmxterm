@@ -1,12 +1,13 @@
 package org.cyclopsgroup.jmxterm;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Map;
 
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXServiceURL;
+
+import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
 
 /**
  * Mocked version of {@link Session} implementation for testing purpose only
@@ -28,7 +29,7 @@ public class MockSession
     public MockSession( Writer output, MBeanServerConnection con )
         throws Exception
     {
-        super( new PrintWriter( output, true ) );
+        super( new WriterCommandOutput( output ), null );
         setAbbreviated( true );
         connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
     }

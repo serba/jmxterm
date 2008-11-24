@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class OpenCommand
      */
     @Override
     public void execute()
-        throws Exception
+        throws IOException
     {
         Session session = getSession();
         if ( url == null )
@@ -42,12 +43,20 @@ public class OpenCommand
             Connection con = session.getConnection();
             if ( con == null )
             {
-                session.msg( "not connected", SyntaxUtils.NULL );
+                session.output.printMessage( "not connected" );
+                session.output.println( SyntaxUtils.NULL );
             }
             else
             {
-                session.output.println( String.format( session.isAbbreviated() ? "%s,%s"
-                                : "connected to: id=%s, url=%s", con.getConnectorId(), con.getUrl() ) );
+                if ( session.isAbbreviated() )
+                {
+                    session.output.println( con.getUrl().toString() );
+                }
+                else
+                {
+                    session.output.println( String.format( session.isAbbreviated() ? "%s,%s"
+                                    : "connected to: id=%s, url=%s", con.getConnectorId() ) );
+                }
             }
             return;
         }
@@ -67,7 +76,7 @@ public class OpenCommand
             env = null;
         }
         session.connect( SyntaxUtils.getUrl( url ), env );
-        session.msg( "Connection to " + url + " is opened", SyntaxUtils.OK );
+        session.output.printMessage( "Connection to " + url + " is opened" );
     }
 
     /**

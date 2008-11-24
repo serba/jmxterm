@@ -19,7 +19,7 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 
 /**
  * Get value of MBean attribute(s)
@@ -39,6 +39,8 @@ public class GetCommand
 
     private boolean showDescription;
 
+    private boolean showQuotationMarks;
+
     @SuppressWarnings( "unchecked" )
     private void displayAttributes()
         throws IOException, JMException
@@ -46,7 +48,7 @@ public class GetCommand
         Session session = getSession();
         String beanName = BeanCommand.getBeanName( bean, domain, session );
         ObjectName name = new ObjectName( beanName );
-        session.msg( "mbean = " + beanName + ":" );
+        session.output.printMessage( "mbean = " + beanName + ":" );
         MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         Map<String, MBeanAttributeInfo> attributeNames =
@@ -72,6 +74,7 @@ public class GetCommand
                 }
             }
         }
+        ValueOutputFormat format = new ValueOutputFormat( 2, showDescription, showQuotationMarks );
         for ( Map.Entry<String, MBeanAttributeInfo> entry : attributeNames.entrySet() )
         {
             String attributeName = entry.getKey();
@@ -81,18 +84,16 @@ public class GetCommand
                 Object result = con.getAttribute( name, attributeName );
                 if ( session.isAbbreviated() )
                 {
-                    SyntaxUtils.printValue( session.output, result, 0, false );
-                    session.output.println();
+                    format.printValue( session.output, result );
                 }
                 else
                 {
-                    SyntaxUtils.printExpression( session.output, attributeName, result, i.getDescription(), 2,
-                                                 showDescription );
+                    format.printExpression( session.output, attributeName, result, i.getDescription() );
                 }
             }
             else
             {
-                session.msg( "  " + i.getName() + " is not readable", i.getName() + "=?" );
+                session.output.printMessage( i.getName() + " is not readable" );
             }
         }
     }
@@ -117,9 +118,12 @@ public class GetCommand
         return null;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected List<String> doSuggestOption( String optionName )
-        throws Exception
+        throws JMException
     {
         if ( optionName.equals( "d" ) )
         {
@@ -184,5 +188,14 @@ public class GetCommand
     public final void setShowDescription( boolean showDescription )
     {
         this.showDescription = showDescription;
+    }
+
+    /**
+     * @param noQuotationMarks True if value is not surrounded by quotation marsk
+     */
+    @Option( name = "q", longName = "quots", description = "Quotation marks around value" )
+    public final void setShowQuotationMarks( boolean noQuotationMarks )
+    {
+        this.showQuotationMarks = noQuotationMarks;
     }
 }

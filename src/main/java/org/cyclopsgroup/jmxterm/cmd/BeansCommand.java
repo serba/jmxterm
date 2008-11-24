@@ -89,10 +89,17 @@ public class BeansCommand
         int i = 0;
         for ( String d : domains )
         {
-            session.msg( "domain = " + d + ":" );
+            session.output.printMessage( "domain = " + d + ":" );
             for ( String bean : getBeans( session, d ) )
             {
-                session.msg( String.format( "  %%%-3d - %s", i++, bean ), bean );
+                if ( session.isAbbreviated() )
+                {
+                    session.output.println( bean );
+                }
+                else
+                {
+                    session.output.println( String.format( "  %%%-3d - %s", i++, bean ) );
+                }
             }
         }
     }

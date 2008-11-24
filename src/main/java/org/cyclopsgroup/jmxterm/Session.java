@@ -1,13 +1,16 @@
 package org.cyclopsgroup.jmxterm;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.management.remote.JMXServiceURL;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jmxterm.io.CommandInput;
+import org.cyclopsgroup.jmxterm.io.CommandOutput;
+import org.cyclopsgroup.jmxterm.io.UnimplementedCommandInput;
+import org.cyclopsgroup.jmxterm.io.VerboseCommandOutput;
+import org.cyclopsgroup.jmxterm.io.VerboseCommandOutputConfig;
 
 /**
  * JMX communication context. This class exists for the whole lifecycle of a command execution. It is NOT thread safe.
@@ -16,6 +19,7 @@ import org.apache.commons.lang.Validate;
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public abstract class Session
+    implements VerboseCommandOutputConfig
 {
     private boolean abbreviated;
 
@@ -26,19 +30,25 @@ public abstract class Session
     private String domain;
 
     /**
-     * Output field
+     * Public output field
      */
-    public final PrintWriter output;
+    public final CommandOutput output;
+
+    /**
+     * Public input field
+     */
+    public final CommandInput input;
 
     private boolean verbose;
 
     /**
      * @param output Output destination
      */
-    public Session( PrintWriter output )
+    protected Session( CommandOutput output, CommandInput input )
     {
         Validate.notNull( output, "Output can't be NULL" );
-        this.output = output;
+        this.output = new VerboseCommandOutput( output, this );
+        this.input = input == null ? new UnimplementedCommandInput() : input;
     }
 
     /**
@@ -119,68 +129,6 @@ public abstract class Session
     public final boolean isVerbose()
     {
         return verbose;
-    }
-
-    /**
-     * Log an error
-     * 
-     * @param e Error to log
-     */
-    public void log( Throwable e )
-    {
-        if ( verbose )
-        {
-            e.printStackTrace( output );
-        }
-        else
-        {
-            output.println( e.getClass().getSimpleName() + ":" + e.getMessage() );
-        }
-    }
-
-    /**
-     * Output a message based on abbreviated option
-     * 
-     * @param msg Message to output
-     */
-    public void msg( String msg )
-    {
-        msg( msg, null );
-    }
-
-    /**
-     * Output a string message
-     * 
-     * @param msg Message to output when <code>abbreviated</code> option is off
-     * @param abbr Message to output when <code>abbreviated</code> option is on
-     */
-    public void msg( String msg, String abbr )
-    {
-        if ( abbreviated )
-        {
-            if ( StringUtils.isNotEmpty( abbr ) )
-            {
-                output.println( abbr );
-            }
-        }
-        else
-        {
-            if ( StringUtils.isNotEmpty( msg ) )
-            {
-                output.println( msg );
-            }
-        }
-    }
-
-    /**
-     * Print out <code>ok</code> if abbreviated option is true
-     */
-    public void ok()
-    {
-        if ( abbreviated )
-        {
-            output.println( "ok" );
-        }
     }
 
     /**

@@ -21,6 +21,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 
 /**
  * Command to run an MBean operation
@@ -38,13 +39,15 @@ public class RunCommand
 
     private boolean measure;
 
+    private boolean showQuotationMarks;
+
     private List<String> parameters = Collections.emptyList();
 
     /**
      * @inheritDoc
      */
     public List<String> doSuggestArgument()
-        throws Exception
+        throws IOException, JMException
     {
         Session session = getSession();
         if ( getSession().getBean() != null )
@@ -107,7 +110,7 @@ public class RunCommand
             params[i] = SyntaxUtils.parse( parameters.get( i + 1 ), paramInfo.getType() );
             signatures[i] = paramInfo.getType();
         }
-        session.msg( String.format( "calling operation %s of mbean %s", operationName, beanName ) );
+        session.output.printMessage( String.format( "calling operation %s of mbean %s", operationName, beanName ) );
         Object result;
         if ( measure )
         {
@@ -119,16 +122,15 @@ public class RunCommand
             finally
             {
                 long latency = System.currentTimeMillis() - start;
-                session.msg( latency + "ms is taken by invocation" );
+                session.output.printMessage( latency + "ms is taken by invocation" );
             }
         }
         else
         {
             result = con.invoke( name, operationName, params, signatures );
         }
-        session.msg( "operation returns: " );
-        SyntaxUtils.printValue( session.output, result, 0, false );
-        session.output.println();
+        session.output.printMessage( "operation returns: " );
+        new ValueOutputFormat( 2, false, showQuotationMarks ).printValue( session.output, result );
     }
 
     /**
@@ -166,5 +168,14 @@ public class RunCommand
     {
         Validate.notNull( parameters, "Parameters can't be NULL" );
         this.parameters = parameters;
+    }
+
+    /**
+     * @param showQuotationMarks True if output is surrounded by quotation marks
+     */
+    @Option( name = "q", longName = "quots", description = "Flag for quotation marks" )
+    public final void setShowQuotationMarks( boolean showQuotationMarks )
+    {
+        this.showQuotationMarks = showQuotationMarks;
     }
 }

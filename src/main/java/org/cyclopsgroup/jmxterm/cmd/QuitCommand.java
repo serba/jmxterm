@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to terminate the console
@@ -26,6 +25,6 @@ public class QuitCommand
         Session session = getSession();
         session.disconnect();
         session.close();
-        session.msg( "bye", SyntaxUtils.OK );
+        session.output.printMessage( "bye" );
     }
 }

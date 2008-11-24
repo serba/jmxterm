@@ -79,14 +79,28 @@ public class Jdk5JavaProcessManager
      */
     @Override
     public JavaProcess get( int pid )
-        throws InstantiationException, IllegalAccessException, InvocationTargetException
     {
         Validate.isTrue( pid > 0, "PID " + pid + " isn't valid" );
-
-        Object vmid = vmIdentifierConstructor.newInstance( String.valueOf( pid ) );
-        Object vm = getMonitoredVm.invoke( localhostDelegate, vmid );
-        String cmd = (String) toCommandLine.invoke( vm );
-        return new Jdk5JavaProcess( pid, cmd, connectorAddressLink );
+        Object vmid;
+        try
+        {
+            vmid = vmIdentifierConstructor.newInstance( String.valueOf( pid ) );
+            Object vm = getMonitoredVm.invoke( localhostDelegate, vmid );
+            String cmd = (String) toCommandLine.invoke( vm );
+            return new Jdk5JavaProcess( pid, cmd, connectorAddressLink );
+        }
+        catch ( InstantiationException e )
+        {
+            throw new RuntimeException( "Couldn't get infomrmation about PID " + pid, e );
+        }
+        catch ( IllegalAccessException e )
+        {
+            throw new RuntimeException( "Couldn't get infomrmation about PID " + pid, e );
+        }
+        catch ( InvocationTargetException e )
+        {
+            throw new RuntimeException( "Couldn't get infomrmation about PID " + pid, e );
+        }
     }
 
     /**

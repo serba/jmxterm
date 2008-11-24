@@ -8,6 +8,7 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
+import org.cyclopsgroup.jmxterm.Session;
 
 /**
  * Command to list all running local JVM processes
@@ -25,12 +26,20 @@ public class JvmsCommand
     public void execute()
         throws IOException, JMException
     {
+        Session session = getSession();
         JavaProcessManager jpm = JavaProcessManager.getInstance();
         for ( JavaProcess p : jpm.list() )
         {
-            getSession().msg(
-                              String.format( "%-8d (%s) - %s", p.getProcessId(), p.isManageable() ? "m" : " ",
-                                             p.getDisplayName() ), String.valueOf( p.getProcessId() ) );
+            if ( session.isAbbreviated() )
+            {
+                session.output.println( String.valueOf( p.getProcessId() ) );
+            }
+            else
+            {
+
+                session.output.println( String.format( "%-8d (%s) - %s", p.getProcessId(),
+                                                       p.isManageable() ? "m" : " ", p.getDisplayName() ) );
+            }
         }
     }
 }

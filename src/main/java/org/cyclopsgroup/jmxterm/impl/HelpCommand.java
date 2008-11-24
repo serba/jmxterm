@@ -35,7 +35,7 @@ public class HelpCommand
         {
             List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
             Collections.sort( commandNames );
-            getSession().msg( "following commands are available to use:" );
+            getSession().output.printMessage( "following commands are available to use:" );
             for ( String commandName : commandNames )
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
@@ -43,8 +43,7 @@ public class HelpCommand
                 try
                 {
                     cli = CliUtils.defineCli( commandType ).getCli();
-                    getSession().msg( String.format( "- %-16s %s", commandName, cli.description() ),
-                                      commandName + ":" + cli.description() );
+                    getSession().output.println( commandName + ":" + cli.description() );
                 }
                 catch ( IntrospectionException e )
                 {

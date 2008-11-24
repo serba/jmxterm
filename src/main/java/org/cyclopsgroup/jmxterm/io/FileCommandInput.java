@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.boot;
+package org.cyclopsgroup.jmxterm.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +13,7 @@ import org.apache.commons.lang.Validate;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-class FileCommandInput
+public class FileCommandInput
     extends CommandInput
 {
     private final LineNumberReader in;
@@ -24,7 +24,7 @@ class FileCommandInput
      * @param inputFile Given input file
      * @throws FileNotFoundException Thrown when file doesn't exist
      */
-    FileCommandInput( File inputFile )
+    public FileCommandInput( File inputFile )
         throws FileNotFoundException
     {
         Validate.notNull( inputFile, "Input can't be NULL" );
@@ -49,5 +49,15 @@ class FileCommandInput
         throws IOException
     {
         in.close();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public String readMaskedString()
+        throws IOException
+    {
+        throw new UnsupportedOperationException( "Reading password from a file is not supported" );
     }
 }

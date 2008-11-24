@@ -9,6 +9,7 @@ import java.util.List;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * List domains for JMX connection
@@ -27,9 +28,16 @@ public class DomainsCommand
      * @throws IOException
      */
     static List<String> getCandidateDomains( Session session )
-        throws IOException
     {
-        String[] domains = session.getConnection().getServerConnection().getDomains();
+        String[] domains;
+        try
+        {
+            domains = session.getConnection().getServerConnection().getDomains();
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeIOException( "Couldn't get candate domains", e );
+        }
         List<String> result = new ArrayList<String>( Arrays.asList( domains ) );
         Collections.sort( result );
         return result;
@@ -44,12 +52,19 @@ public class DomainsCommand
         Session session = getSession();
         if ( !session.isAbbreviated() )
         {
-            session.msg( "following domains are available" );
+            session.output.printMessage( "following domains are available" );
         }
         int i = 0;
         for ( String domain : getCandidateDomains( session ) )
         {
-            session.msg( String.format( "%%%-3d - %s", i++, domain ), domain );
+            if ( session.isAbbreviated() )
+            {
+                session.output.println( domain );
+            }
+            else
+            {
+                session.output.println( String.format( "%%%-3d - %s", i++, domain ) );
+            }
         }
     }
 }

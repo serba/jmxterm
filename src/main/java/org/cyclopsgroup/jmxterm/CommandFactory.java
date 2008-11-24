@@ -16,8 +16,7 @@ public interface CommandFactory
      * @return New instance of command object
      * @throws Exception Allow any Exception
      */
-    Command createCommand( String name )
-        throws Exception;
+    Command createCommand( String name );
 
     /**
      * @return Map of command types

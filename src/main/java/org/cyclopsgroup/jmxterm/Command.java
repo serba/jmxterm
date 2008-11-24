@@ -1,8 +1,13 @@
 package org.cyclopsgroup.jmxterm;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.management.JMException;
+
 import org.apache.commons.lang.Validate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Option;
 
@@ -16,6 +21,8 @@ import org.cyclopsgroup.jcli.annotation.Option;
 public abstract class Command
     implements AutoCompletable
 {
+    private static final Log LOG = LogFactory.getLog( Command.class );
+
     private boolean help;
 
     private Session session;
@@ -24,10 +31,11 @@ public abstract class Command
      * Provide a list of possible arguments for auto completion
      * 
      * @return List of possible arguments used by auto completion or NULL
-     * @throws Exception Any exception is handle'able
+     * @throws IOException IO errors
+     * @thr
      */
     protected List<String> doSuggestArgument()
-        throws Exception
+        throws IOException, JMException
     {
         return null;
     }
@@ -40,7 +48,7 @@ public abstract class Command
      * @throws Exception Any exception is handle'able
      */
     protected List<String> doSuggestOption( String optionName )
-        throws Exception
+        throws IOException, JMException
     {
         return null;
     }
@@ -48,10 +56,11 @@ public abstract class Command
     /**
      * Execute command
      * 
-     * @throws Exception Allow to throw anything
+     * @throws IOException IO errors
+     * @throws JMException JMX errors
      */
     public abstract void execute()
-        throws Exception;
+        throws IOException, JMException;
 
     /**
      * @return Session where command runs
@@ -100,9 +109,20 @@ public abstract class Command
         {
             return doSuggestArgument();
         }
-        catch ( Exception e )
+        catch ( IOException e )
         {
-            getSession().log( e );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't suggest option", e );
+            }
+            return null;
+        }
+        catch ( JMException e )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't suggest option", e );
+            }
             return null;
         }
     }
@@ -120,9 +140,20 @@ public abstract class Command
         {
             return doSuggestOption( name );
         }
-        catch ( Exception e )
+        catch ( IOException e )
         {
-            getSession().log( e );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't suggest option", e );
+            }
+            return null;
+        }
+        catch ( JMException e )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't suggest option", e );
+            }
             return null;
         }
     }

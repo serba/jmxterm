@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.boot;
+package org.cyclopsgroup.jmxterm.io;
 
 import java.io.IOException;
 
@@ -7,13 +7,22 @@ import java.io.IOException;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-abstract class CommandInput
+public abstract class CommandInput
 {
     /**
      * @return A line of input
      * @throws IOException
      */
     public abstract String readLine()
+        throws IOException;
+
+    /**
+     * Read input without echo'ing back keyboard input
+     * 
+     * @return A line of input
+     * @throws IOException
+     */
+    public abstract String readMaskedString()
         throws IOException;
 
     /**

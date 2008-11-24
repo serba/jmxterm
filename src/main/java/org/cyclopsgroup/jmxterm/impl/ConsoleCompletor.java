@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,9 +76,20 @@ public class ConsoleCompletor
                     + separatorPos + 1;
             }
         }
-        catch ( Exception e )
+        catch ( IntrospectionException e )
         {
-            commandCenter.session.log( e );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't complete input", e );
+            }
+            return position;
+        }
+        catch ( IOException e )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't complete input", e );
+            }
             return position;
         }
     }

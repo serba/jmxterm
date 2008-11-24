@@ -75,11 +75,13 @@ public class DomainCommand
         {
             if ( session.getDomain() == null )
             {
-                session.msg( "domain is not set", SyntaxUtils.NULL );
+                session.output.printMessage( "domain is not set" );
+                session.output.println( SyntaxUtils.NULL );
             }
             else
             {
-                session.msg( "domain = " + session.getDomain(), session.getDomain() );
+                session.output.printMessage( "domain = " + session.getDomain() );
+                session.output.println( session.getDomain() );
             }
             return;
         }
@@ -87,12 +89,12 @@ public class DomainCommand
         if ( domainName == null )
         {
             session.unsetDomain();
-            session.msg( "domain is unset", SyntaxUtils.OK );
+            session.output.printMessage( "domain is unset" );
         }
         else
         {
             session.setDomain( domainName );
-            session.msg( "domain is set to " + session.getDomain(), SyntaxUtils.OK );
+            session.output.printMessage( "domain is set to " + session.getDomain() );
         }
     }
 

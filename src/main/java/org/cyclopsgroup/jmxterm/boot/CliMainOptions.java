@@ -12,7 +12,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "jmxterm", description = "Main executable of JMX terminal CLI tool", note = "Without any option, this command opens an interactive command line based console. With a given input file, commands in file will be executed and process ends after file is processed" )
-public class MainOptions
+public class CliMainOptions
 {
     /**
      * Constant <code>stderr</code> that identifies standard error output

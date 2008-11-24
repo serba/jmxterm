@@ -35,12 +35,6 @@ import org.cyclopsgroup.jmxterm.Session;
 public class InfoCommand
     extends Command
 {
-    private static final String TEXT_ATTRIBUTES = "# attributes";
-
-    private static final String TEXT_NOTIFICATIONS = "# notifications";
-
-    private static final String TEXT_OPERATIONS = "# operations";
-
     private static final Comparator<MBeanFeatureInfo> INFO_COMPARATOR = new Comparator<MBeanFeatureInfo>()
     {
         public int compare( MBeanFeatureInfo o1, MBeanFeatureInfo o2 )
@@ -49,24 +43,38 @@ public class InfoCommand
         }
     };
 
+    private static final String TEXT_ATTRIBUTES = "# attributes";
+
+    private static final String TEXT_NOTIFICATIONS = "# notifications";
+
+    private static final String TEXT_OPERATIONS = "# operations";
+
+    private String bean;
+
+    private String domain;
+
+    private boolean showDescription;
+
+    private String type = "aon";
+
     private void displayAttributes( MBeanInfo info )
     {
         Session session = getSession();
         MBeanAttributeInfo[] attrInfos = info.getAttributes();
         if ( attrInfos.length == 0 )
         {
-            session.msg( "there is no attribute" );
+            session.output.printMessage( "there is no attribute" );
             return;
         }
         int index = 0;
-        session.msg( TEXT_ATTRIBUTES, TEXT_ATTRIBUTES );
+        session.output.println( TEXT_ATTRIBUTES );
         List<MBeanAttributeInfo> infos = new ArrayList<MBeanAttributeInfo>( Arrays.asList( attrInfos ) );
         Collections.sort( infos, INFO_COMPARATOR );
         for ( MBeanAttributeInfo attr : infos )
         {
             String rw = "" + ( attr.isReadable() ? "r" : "" ) + ( attr.isWritable() ? "w" : "" );
-            session.msg( String.format( "  %%%-3d - %s (%s, %s)" + ( showDescription ? ", %s" : "" ), index++,
-                                        attr.getName(), attr.getType(), rw, attr.getDescription() ), attr.getName() );
+            session.output.println( String.format( "  %%%-3d - %s (%s, %s)" + ( showDescription ? ", %s" : "" ),
+                                                   index++, attr.getName(), attr.getType(), rw, attr.getDescription() ) );
         }
     }
 
@@ -76,16 +84,17 @@ public class InfoCommand
         MBeanNotificationInfo[] notificationInfos = info.getNotifications();
         if ( notificationInfos.length == 0 )
         {
-            session.msg( "there's no notifications" );
+            session.output.printMessage( "there's no notifications" );
             return;
         }
         int index = 0;
-        session.msg( TEXT_NOTIFICATIONS, TEXT_NOTIFICATIONS );
+        session.output.println( TEXT_NOTIFICATIONS );
         for ( MBeanNotificationInfo notification : notificationInfos )
         {
-            session.msg( String.format( "  %%%-3d - %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
-                                        notification.getName(), StringUtils.join( notification.getNotifTypes(), "," ),
-                                        notification.getDescription() ), notification.getName() );
+            session.output.println( String.format( "  %%%-3d - %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+                                                   notification.getName(),
+                                                   StringUtils.join( notification.getNotifTypes(), "," ),
+                                                   notification.getDescription() ) );
         }
 
     }
@@ -96,12 +105,12 @@ public class InfoCommand
         MBeanOperationInfo[] operationInfos = info.getOperations();
         if ( operationInfos.length == 0 )
         {
-            session.msg( "there's no operations" );
+            session.output.printMessage( "there's no operations" );
             return;
         }
         List<MBeanOperationInfo> operations = new ArrayList<MBeanOperationInfo>( Arrays.asList( operationInfos ) );
         Collections.sort( operations, INFO_COMPARATOR );
-        session.msg( TEXT_OPERATIONS, TEXT_OPERATIONS );
+        session.output.println( TEXT_OPERATIONS );
         int index = 0;
         for ( MBeanOperationInfo op : operations )
         {
@@ -111,19 +120,11 @@ public class InfoCommand
             {
                 paramTypes.add( paramInfo.getType() + " " + paramInfo.getName() );
             }
-            session.msg( String.format( "  %%%-3d - %s %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
-                                        op.getReturnType(), op.getName(), StringUtils.join( paramTypes, ',' ),
-                                        op.getDescription() ), op.getName() );
+            session.output.println( String.format( "  %%%-3d - %s %s(%s)" + ( showDescription ? ", %s" : "" ), index++,
+                                                   op.getReturnType(), op.getName(),
+                                                   StringUtils.join( paramTypes, ',' ), op.getDescription() ) );
         }
     }
-
-    private String bean;
-
-    private String domain;
-
-    private boolean showDescription;
-
-    private String type = "aon";
 
     /**
      * @inheritDoc
@@ -141,8 +142,8 @@ public class InfoCommand
         ObjectName name = new ObjectName( beanName );
         MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanInfo info = con.getMBeanInfo( name );
-        session.msg( "# mbean = " + beanName );
-        session.msg( "# class name = " + info.getClassName() );
+        session.output.println( "# mbean = " + beanName );
+        session.output.println( "# class name = " + info.getClassName() );
         for ( char t : type.toCharArray() )
         {
             switch ( t )

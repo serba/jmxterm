@@ -3,7 +3,6 @@ package org.cyclopsgroup.jmxterm.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.SelfRecordingCommand;
+import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,11 +48,10 @@ public class CommandCenterTest
 
         Map<String, Class<? extends Command>> commandTypes = new HashMap<String, Class<? extends Command>>();
         commandTypes.put( "test", SelfRecordingCommand.class );
-        cc = new CommandCenter( new PrintWriter( output, true ), new TypeMapCommandFactory( commandTypes )
+        cc = new CommandCenter( new WriterCommandOutput( output ), null, new TypeMapCommandFactory( commandTypes )
         {
             @Override
             public Command createCommand( String commandName )
-                throws InstantiationException, IllegalAccessException, IllegalArgumentException
             {
                 return new SelfRecordingCommand( executedCommands );
             }

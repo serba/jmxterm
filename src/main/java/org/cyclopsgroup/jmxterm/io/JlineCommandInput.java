@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.boot;
+package org.cyclopsgroup.jmxterm.io;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.apache.commons.lang.Validate;
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-class JlineCommandInput
+public class JlineCommandInput
     extends CommandInput
 {
     private final ConsoleReader console;
@@ -23,11 +23,19 @@ class JlineCommandInput
      * @param console Jline console reader
      * @param prompt Prompt string
      */
-    JlineCommandInput( ConsoleReader console, String prompt )
+    public JlineCommandInput( ConsoleReader console, String prompt )
     {
         Validate.notNull( console, "Jline console reader can't be NULL" );
         this.console = console;
         this.prompt = StringUtils.trimToEmpty( prompt );
+    }
+
+    /**
+     * @return Jline console
+     */
+    public final ConsoleReader getConsole()
+    {
+        return console;
     }
 
     /**
@@ -38,6 +46,16 @@ class JlineCommandInput
         throws IOException
     {
         return console.readLine( prompt );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public String readMaskedString()
+        throws IOException
+    {
+        return console.readLine( prompt, '*' );
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.management.JMException;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.cli.GnuParser;
@@ -21,6 +22,9 @@ import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.CommandFactory;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.io.CommandInput;
+import org.cyclopsgroup.jmxterm.io.CommandOutput;
+import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * Facade class where commands are maintained and executed
@@ -45,28 +49,32 @@ public class CommandCenter
      * Constructor with given output {@link PrintWriter}
      * 
      * @param output Message output. It can't be NULL
+     * @param input Command line input
      * @throws ClassNotFoundException Thrown when configured command can't be created
      * @throws IOException Thrown for file access failure
      */
-    public CommandCenter( PrintWriter output )
+    public CommandCenter( CommandOutput output, CommandInput input )
         throws IOException, ClassNotFoundException
     {
-        this( output, new PredefinedCommandFactory() );
+        this( output, input, new PredefinedCommandFactory() );
     }
 
     /**
      * This constructor is for testing purpose only
      * 
      * @param output Output result
+     * @param input Command input
      * @param commandFactory Given command factory
+     * @throws IOException IO problem
      */
-    public CommandCenter( PrintWriter output, CommandFactory commandFactory )
+    public CommandCenter( CommandOutput output, CommandInput input, CommandFactory commandFactory )
+        throws IOException
     {
         Validate.notNull( output, "Output can't be NULL" );
         Validate.notNull( commandFactory, "Command factory can't be NULL" );
-        this.session = new ConnectionAwareSession( output );
+        this.session = new ConnectionAwareSession( output, input );
         this.commandFactory = commandFactory;
-        session.msg( "Welcome to JMX terminal. Type \"help\" for available commands." );
+        session.output.printMessage( "Welcome to JMX terminal. Type \"help\" for available commands." );
     }
 
     /**
@@ -90,7 +98,7 @@ public class CommandCenter
     }
 
     private void doExecute( String command )
-        throws Exception
+        throws JMException
     {
         command = StringUtils.trimToNull( command );
         // Ignore empty line
@@ -127,24 +135,38 @@ public class CommandCenter
         String[] commandArgs = new String[args.length - 1];
         System.arraycopy( args, 1, commandArgs, 0, args.length - 1 );
         // Call command with parsed command name and arguments
-        doExecute( commandName, commandArgs, command );
+        try
+        {
+            doExecute( commandName, commandArgs, command );
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeIOException( "Runtime IO exception", e );
+        }
     }
 
     private void doExecute( String commandName, String[] commandArgs, String originalCommand )
-        throws Exception
+        throws JMException, IOException
     {
         Command cmd = commandFactory.createCommand( commandName );
         if ( cmd instanceof HelpCommand )
         {
             ( (HelpCommand) cmd ).setCommandCenter( this );
         }
-        cliParser.parse( commandArgs, cmd );
-
-        // Print out usage if help option is specified
-        if ( cmd.isHelp() )
+        try
         {
-            printUsage( cmd.getClass() );
-            return;
+            cliParser.parse( commandArgs, cmd );
+
+            // Print out usage if help option is specified
+            if ( cmd.isHelp() )
+            {
+                printUsage( cmd.getClass() );
+                return;
+            }
+        }
+        catch ( IntrospectionException e )
+        {
+            throw new RuntimeException( "Couldn't parse or print usage", e );
         }
         cmd.setSession( session );
         // Make sure concurrency and run command
@@ -172,9 +194,14 @@ public class CommandCenter
             doExecute( command );
             return true;
         }
-        catch ( Exception e )
+        catch ( JMException e )
         {
-            session.log( e );
+            e.printStackTrace( session.output.getMessageWriter() );
+            return false;
+        }
+        catch ( RuntimeException e )
+        {
+            e.printStackTrace( session.output.getMessageWriter() );
             return false;
         }
     }
@@ -207,7 +234,7 @@ public class CommandCenter
     void printUsage( Class<? extends Command> commandType )
         throws IntrospectionException
     {
-        cliParser.printUsage( commandType, session.output );
+        cliParser.printUsage( commandType, session.output.getMessageWriter() );
     }
 
     /**

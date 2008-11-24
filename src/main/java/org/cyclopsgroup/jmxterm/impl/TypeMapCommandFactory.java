@@ -9,7 +9,7 @@ import org.cyclopsgroup.jmxterm.CommandFactory;
 
 /**
  * CommandFactory implementation based on a Map of command types
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class TypeMapCommandFactory
@@ -30,7 +30,6 @@ public class TypeMapCommandFactory
      * @inheritDoc
      */
     public Command createCommand( String commandName )
-        throws InstantiationException, IllegalAccessException, IllegalArgumentException
     {
         Validate.notNull( commandName, "commandName can't be NULL" );
         Class<? extends Command> commandType = commandTypes.get( commandName );
@@ -39,7 +38,18 @@ public class TypeMapCommandFactory
             throw new IllegalArgumentException( "Command " + commandName
                 + " isn't valid, run help to see available commands" );
         }
-        return commandType.newInstance();
+        try
+        {
+            return commandType.newInstance();
+        }
+        catch ( InstantiationException e )
+        {
+            throw new RuntimeException( "Can't instantiate instance", e );
+        }
+        catch ( IllegalAccessException e )
+        {
+            throw new RuntimeException( "Illegal access", e );
+        }
     }
 
     /**

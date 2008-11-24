@@ -17,6 +17,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * Command to display or set current bean
@@ -85,19 +86,27 @@ public class BeanCommand
      * @throws IOException
      */
     static List<String> getCandidateBeanNames( Session session )
-        throws MalformedObjectNameException, IOException
+        throws MalformedObjectNameException
     {
-        ArrayList<String> results = new ArrayList<String>( BeansCommand.getBeans( session, null ) );
-        String domain = session.getDomain();
-        if ( domain != null )
+        try
         {
-            List<String> beans = BeansCommand.getBeans( session, domain );
-            for ( String bean : beans )
+            ArrayList<String> results = new ArrayList<String>( BeansCommand.getBeans( session, null ) );
+            String domain = session.getDomain();
+            if ( domain != null )
             {
-                results.add( bean.substring( domain.length() + 1 ) );
+                List<String> beans = BeansCommand.getBeans( session, domain );
+                for ( String bean : beans )
+                {
+                    results.add( bean.substring( domain.length() + 1 ) );
+                }
             }
+            return results;
         }
-        return results;
+        catch ( IOException e )
+        {
+            throw new RuntimeIOException( "Couldn't find candidate bean names", e );
+        }
+
     }
 
     private String bean;
@@ -141,11 +150,13 @@ public class BeanCommand
         {
             if ( session.getBean() == null )
             {
-                session.msg( "bean is not set", SyntaxUtils.NULL );
+                session.output.printMessage( "bean is not set" );
+                session.output.println( SyntaxUtils.NULL );
             }
             else
             {
-                session.msg( "bean = " + session.getBean(), session.getBean() );
+                session.output.printMessage( "bean = " + session.getBean() );
+                session.output.println( bean );
             }
             return;
         }
@@ -153,14 +164,14 @@ public class BeanCommand
         if ( beanName == null )
         {
             session.setBean( null );
-            session.msg( "bean is unset", SyntaxUtils.OK );
+            session.output.printMessage( "bean is unset" );
             return;
         }
         ObjectName name = new ObjectName( beanName );
         MBeanServerConnection con = session.getConnection().getServerConnection();
         con.getMBeanInfo( name );
         session.setBean( beanName );
-        session.msg( "bean is set to " + beanName, SyntaxUtils.OK );
+        session.output.printMessage( "bean is set to " + beanName );
     }
 
     /**

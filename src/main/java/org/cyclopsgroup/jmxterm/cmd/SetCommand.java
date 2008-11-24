@@ -60,7 +60,7 @@ public class SetCommand
 
     @Override
     protected List<String> doSuggestOption( String optionName )
-        throws Exception
+        throws JMException
     {
         if ( optionName.equals( "d" ) )
         {
@@ -111,7 +111,7 @@ public class SetCommand
         }
         Object value = SyntaxUtils.parse( arguments.get( 1 ), attributeInfo.getType() );
         con.setAttribute( name, new Attribute( attributeName, value ) );
-        session.msg( "Value of attribute " + attributeName + " is set to " + value, SyntaxUtils.OK );
+        session.output.printMessage( "Value of attribute " + attributeName + " is set to " + value );
     }
 
     /**

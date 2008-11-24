@@ -1,7 +1,5 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.StringWriter;
 import java.util.Arrays;
 
@@ -78,6 +76,5 @@ public class SetCommandTest
         command.setSession( new MockSession( output, con ) );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "ok\n", output.toString() );
     }
 }
