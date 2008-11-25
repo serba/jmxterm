@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cyclopsgroup.jmxterm.utils.ExtendedPropertiesUtils;
 
 /**
  * Java process manager

@@ -1,10 +1,11 @@
-package org.cyclopsgroup.jmxterm;
+package org.cyclopsgroup.jmxterm.utils;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
 import org.junit.Test;
 
 /**

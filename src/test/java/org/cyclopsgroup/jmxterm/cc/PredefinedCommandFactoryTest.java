@@ -1,7 +1,9 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertTrue;
 
+import org.cyclopsgroup.jmxterm.cc.HelpCommand;
+import org.cyclopsgroup.jmxterm.cc.PredefinedCommandFactory;
 import org.junit.Test;
 
 /**

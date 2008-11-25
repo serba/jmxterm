@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm;
+package org.cyclopsgroup.jmxterm.utils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

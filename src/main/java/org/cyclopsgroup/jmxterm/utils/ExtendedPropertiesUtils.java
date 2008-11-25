@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm;
+package org.cyclopsgroup.jmxterm.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

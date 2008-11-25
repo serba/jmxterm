@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.cyclopsgroup.jmxterm.WeakCastUtils;
+import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
 import org.junit.Test;
 
 /**

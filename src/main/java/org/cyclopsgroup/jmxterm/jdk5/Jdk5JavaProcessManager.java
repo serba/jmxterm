@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
-import org.cyclopsgroup.jmxterm.WeakCastUtils;
+import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
 
 /**
  * JDK5 specific implementation of {@link JavaProcessManager}

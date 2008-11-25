@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,8 +10,9 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.io.output.NullWriter;
 import org.cyclopsgroup.jmxterm.Connection;
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.cc.ConnectionAwareSession;
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
+import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;

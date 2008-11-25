@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.SelfRecordingCommand;
+import org.cyclopsgroup.jmxterm.cc.CommandCenter;
+import org.cyclopsgroup.jmxterm.cc.TypeMapCommandFactory;
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
 import org.junit.Before;
 import org.junit.Test;

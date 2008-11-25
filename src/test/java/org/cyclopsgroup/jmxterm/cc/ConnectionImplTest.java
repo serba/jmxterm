@@ -1,11 +1,12 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import javax.management.remote.JMXConnector;
 
-import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.cc.ConnectionImpl;
+import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;

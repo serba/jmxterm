@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.CommandFactory;
-import org.cyclopsgroup.jmxterm.ExtendedPropertiesUtils;
+import org.cyclopsgroup.jmxterm.utils.ExtendedPropertiesUtils;
 
 /**
  * Factory class of commands which knows how to create Command class with given command name

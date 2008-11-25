@@ -1,4 +1,6 @@
-package org.cyclopsgroup.jmxterm;
+package org.cyclopsgroup.jmxterm.utils;
+
+import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
 
 /**
  * A test interface to test {@link WeakCastUtils}

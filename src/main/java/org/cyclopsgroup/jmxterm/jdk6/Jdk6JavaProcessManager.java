@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
-import org.cyclopsgroup.jmxterm.WeakCastUtils;
+import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
 
 /**
  * JDK6 specific java process manager

@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.impl;
+package org.cyclopsgroup.jmxterm.cc;
 
 import java.util.Collections;
 import java.util.Map;

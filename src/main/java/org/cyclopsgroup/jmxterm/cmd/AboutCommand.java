@@ -9,10 +9,10 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
-import org.cyclopsgroup.jmxterm.ExtendedPropertiesUtils;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
+import org.cyclopsgroup.jmxterm.utils.ExtendedPropertiesUtils;
 
 /**
  * Command to show about page
