@@ -11,7 +11,6 @@ import javax.management.ObjectName;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -31,7 +30,6 @@ public class BeanCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithGettingNull()
         throws Exception
     {
@@ -46,7 +44,6 @@ public class BeanCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithGettingSomething()
         throws Exception
     {
@@ -54,7 +51,7 @@ public class BeanCommandTest
         s.setBean( "something" );
         command.setSession( s );
         command.execute();
-        assertEquals( "something\n", output.toString() );
+        assertEquals( "something", output.toString().trim() );
     }
 
     /**
@@ -77,7 +74,6 @@ public class BeanCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithSettingNull()
         throws Exception
     {
@@ -86,7 +82,6 @@ public class BeanCommandTest
         s.setBean( "something" );
         command.setSession( s );
         command.execute();
-        assertEquals( "ok\n", output.toString() );
         assertNull( s.getBean() );
     }
 
@@ -96,7 +91,6 @@ public class BeanCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithSettingSomething()
         throws Exception
     {
@@ -112,7 +106,6 @@ public class BeanCommandTest
         } );
         command.setSession( s );
         command.execute();
-        assertEquals( "ok\n", output.toString() );
         assertEquals( "something:type=x", s.getBean() );
     }
 
@@ -122,7 +115,6 @@ public class BeanCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithSettingSomethingAndDomain()
         throws Exception
     {
@@ -136,10 +128,10 @@ public class BeanCommandTest
             {
                 atLeast( 1 ).of( con ).getMBeanInfo( new ObjectName( "something:type=x" ) );
             }
+
         } );
         command.setSession( s );
         command.execute();
-        assertEquals( "ok\n", output.toString() );
         assertEquals( "something:type=x", s.getBean() );
     }
 }

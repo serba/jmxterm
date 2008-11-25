@@ -142,8 +142,8 @@ public class InfoCommand
         ObjectName name = new ObjectName( beanName );
         MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanInfo info = con.getMBeanInfo( name );
-        session.output.println( "# mbean = " + beanName );
-        session.output.println( "# class name = " + info.getClassName() );
+        session.output.printMessage( "mbean = " + beanName );
+        session.output.printMessage( "class name = " + info.getClassName() );
         for ( char t : type.toCharArray() )
         {
             switch ( t )

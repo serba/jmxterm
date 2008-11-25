@@ -10,6 +10,16 @@ import java.io.IOException;
 public abstract class CommandInput
 {
     /**
+     * Close this input
+     * 
+     * @throws IOException
+     */
+    public void close()
+        throws IOException
+    {
+    }
+
+    /**
      * @return A line of input
      * @throws IOException
      */
@@ -24,14 +34,4 @@ public abstract class CommandInput
      */
     public abstract String readMaskedString()
         throws IOException;
-
-    /**
-     * Close this input
-     * 
-     * @throws IOException
-     */
-    public void close()
-        throws IOException
-    {
-    }
 }

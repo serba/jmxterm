@@ -49,6 +49,15 @@ public class PrintStreamCommandOutput
      * @inheritDoc
      */
     @Override
+    public PrintWriter getMessageWriter()
+    {
+        return new PrintWriter( messageOutput, true );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void print( String output )
     {
         resultOutput.print( output );
@@ -61,14 +70,5 @@ public class PrintStreamCommandOutput
     public void printMessage( String message )
     {
         messageOutput.println( message );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public PrintWriter getMessageWriter()
-    {
-        return new PrintWriter( messageOutput, true );
     }
 }

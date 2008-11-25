@@ -1,5 +1,7 @@
 package org.cyclopsgroup.jmxterm.impl;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -7,11 +9,11 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.io.output.NullWriter;
+import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
 import org.jmock.Mockery;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -21,11 +23,11 @@ import org.junit.Test;
  */
 public class ConnectionAwareSessionTest
 {
-    private ConnectionAwareSession session;
+    private JMXConnector con;
 
     private Mockery context;
 
-    private JMXConnector con;
+    private ConnectionAwareSession session;
 
     /**
      * Set up objects to test
@@ -37,7 +39,6 @@ public class ConnectionAwareSessionTest
         con = context.mock( JMXConnector.class );
         session = new ConnectionAwareSession( new WriterCommandOutput( new NullWriter() ), null )
         {
-
             @Override
             protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
                 throws IOException
@@ -53,10 +54,11 @@ public class ConnectionAwareSessionTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testConnect()
         throws Exception
     {
         session.connect( SyntaxUtils.getUrl( "localhost:9991" ), null );
+        Connection con = session.getConnection();
+        assertEquals( "service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi", con.getUrl().toString() );
     }
 }

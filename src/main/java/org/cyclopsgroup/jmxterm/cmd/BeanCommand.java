@@ -150,13 +150,11 @@ public class BeanCommand
         {
             if ( session.getBean() == null )
             {
-                session.output.printMessage( "bean is not set" );
                 session.output.println( SyntaxUtils.NULL );
             }
             else
             {
-                session.output.printMessage( "bean = " + session.getBean() );
-                session.output.println( bean );
+                session.output.println( session.getBean() );
             }
             return;
         }

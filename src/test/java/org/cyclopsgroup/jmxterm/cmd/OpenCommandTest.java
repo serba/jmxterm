@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.cyclopsgroup.jmxterm.Session;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -30,6 +29,22 @@ public class OpenCommandTest
     }
 
     /**
+     * Test execution without URL
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteWithoutUrl()
+        throws Exception
+    {
+        StringWriter output = new StringWriter();
+        Session session = new MockSession( output, null );
+        command.setSession( session );
+        command.execute();
+        assertEquals( "service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
+    }
+
+    /**
      * @throws Exception
      */
     @Test
@@ -42,22 +57,5 @@ public class OpenCommandTest
         command.setSession( session );
         command.execute();
         assertTrue( session.isConnected() );
-    }
-
-    /**
-     * Test execution without URL
-     * 
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    public void testExecuteWithoutUrl()
-        throws Exception
-    {
-        StringWriter output = new StringWriter();
-        Session session = new MockSession( output, null );
-        command.setSession( session );
-        command.execute();
-        assertEquals( "id,service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
     }
 }

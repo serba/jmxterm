@@ -23,9 +23,9 @@ public class HelpCommandTest
 {
     private HelpCommand command;
 
-    private StringWriter output;
-
     private Mockery context;
+
+    private StringWriter output;
 
     /**
      * Set up objects to test
@@ -37,34 +37,6 @@ public class HelpCommandTest
         output = new StringWriter();
         context = new Mockery();
         context.setImposteriser( ClassImposteriser.INSTANCE );
-    }
-
-    /**
-     * Test execution without option
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testExecuteWithoutOption()
-        throws Exception
-    {
-        final CommandCenter cc = context.mock( CommandCenter.class );
-        command.setCommandCenter( cc );
-
-        context.checking( new Expectations()
-        {
-            {
-                one( cc ).getCommandNames();
-                will( returnValue( new HashSet<String>( Arrays.asList( "a", "b" ) ) ) );
-                one( cc ).getCommandType( "a" );
-                will( returnValue( SelfRecordingCommand.class ) );
-                one( cc ).getCommandType( "b" );
-                will( returnValue( SelfRecordingCommand.class ) );
-            }
-        } );
-        command.setSession( new MockSession( output, null ) );
-        command.execute();
-        assertEquals( "a:desc\nb:desc\n", output.toString() );
     }
 
     /**
@@ -94,5 +66,33 @@ public class HelpCommandTest
         command.setSession( new MockSession( output, null ) );
         command.execute();
         context.assertIsSatisfied();
+    }
+
+    /**
+     * Test execution without option
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteWithoutOption()
+        throws Exception
+    {
+        final CommandCenter cc = context.mock( CommandCenter.class );
+        command.setCommandCenter( cc );
+
+        context.checking( new Expectations()
+        {
+            {
+                one( cc ).getCommandNames();
+                will( returnValue( new HashSet<String>( Arrays.asList( "a", "b" ) ) ) );
+                one( cc ).getCommandType( "a" );
+                will( returnValue( SelfRecordingCommand.class ) );
+                one( cc ).getCommandType( "b" );
+                will( returnValue( SelfRecordingCommand.class ) );
+            }
+        } );
+        command.setSession( new MockSession( output, null ) );
+        command.execute();
+        assertEquals( "a:desc\nb:desc\n", output.toString() );
     }
 }

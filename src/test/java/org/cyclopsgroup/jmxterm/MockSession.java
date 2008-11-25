@@ -29,7 +29,7 @@ public class MockSession
     public MockSession( Writer output, MBeanServerConnection con )
         throws Exception
     {
-        super( new WriterCommandOutput( output ), null );
+        super( new WriterCommandOutput( output, null ), null );
         setAbbreviated( true );
         connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
     }

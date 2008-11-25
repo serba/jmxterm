@@ -17,7 +17,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,9 +28,9 @@ public class InfoCommandTest
 {
     private InfoCommand command;
 
-    private StringWriter output;
-
     private Mockery context;
+
+    private StringWriter output;
 
     /**
      * Set up objects to test
@@ -51,7 +50,6 @@ public class InfoCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithShowingAttributes()
         throws Exception
     {
@@ -61,6 +59,7 @@ public class InfoCommandTest
         final MBeanInfo beanInfo = context.mock( MBeanInfo.class );
         final MBeanAttributeInfo attributeInfo = context.mock( MBeanAttributeInfo.class );
         Session session = new MockSession( output, con );
+        session.setAbbreviated( true );
         context.checking( new Expectations()
         {
             {
@@ -85,7 +84,7 @@ public class InfoCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "# attributes\nb\n", output.toString() );
+        assertEquals( "# attributes\n  %0   - b (int, r)\n", output.toString() );
     }
 
     /**
@@ -94,7 +93,6 @@ public class InfoCommandTest
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testExecuteWithShowingOperations()
         throws Exception
     {
@@ -131,6 +129,6 @@ public class InfoCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "# operations\nx\n", output.toString() );
+        assertEquals( "# operations\n  %0   - int x(java.lang.String a)\n", output.toString() );
     }
 }

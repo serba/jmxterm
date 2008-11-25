@@ -70,31 +70,6 @@ public class BeansCommandTest
     }
 
     /**
-     * Test execution with an domain option
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testExecuteWithDomainOption()
-        throws Exception
-    {
-        command.setDomain( "b" );
-        context.checking( new Expectations()
-        {
-            {
-                allowing( conn ).getDomains();
-                will( returnValue( new String[] { "a", "b" } ) );
-                atLeast( 1 ).of( conn ).queryNames( new ObjectName( "b:*" ), null );
-                will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
-            }
-        } );
-        command.setSession( new MockSession( output, conn ) );
-        command.execute();
-        context.assertIsSatisfied();
-        assertEquals( "b:type=1\n", output.toString() );
-    }
-
-    /**
      * Test execution where domain is set in session
      * 
      * @throws Exception
@@ -115,6 +90,31 @@ public class BeansCommandTest
         MockSession session = new MockSession( output, conn );
         session.setDomain( "b" );
         command.setSession( session );
+        command.execute();
+        context.assertIsSatisfied();
+        assertEquals( "b:type=1\n", output.toString() );
+    }
+
+    /**
+     * Test execution with an domain option
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteWithDomainOption()
+        throws Exception
+    {
+        command.setDomain( "b" );
+        context.checking( new Expectations()
+        {
+            {
+                allowing( conn ).getDomains();
+                will( returnValue( new String[] { "a", "b" } ) );
+                atLeast( 1 ).of( conn ).queryNames( new ObjectName( "b:*" ), null );
+                will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
+            }
+        } );
+        command.setSession( new MockSession( output, conn ) );
         command.execute();
         context.assertIsSatisfied();
         assertEquals( "b:type=1\n", output.toString() );

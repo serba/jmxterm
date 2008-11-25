@@ -13,11 +13,11 @@ import org.cyclopsgroup.jmxterm.JavaProcess;
 class Jdk5JavaProcess
     implements JavaProcess
 {
-    private final int processId;
+    private final String command;
 
     private final ConnectorAddressLink connectorAddressLink;
 
-    private final String command;
+    private final int processId;
 
     private String url;
 

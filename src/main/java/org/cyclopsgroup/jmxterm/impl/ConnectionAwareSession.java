@@ -35,9 +35,34 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public boolean isConnected()
+    public void connect( JMXServiceURL url, Map<String, Object> env )
+        throws IOException
     {
-        return connection != null;
+        Validate.isTrue( connection == null, "Session is already opened" );
+        Validate.notNull( url, "URL can't be NULL" );
+        JMXConnector connector = doConnect( url, env );
+        connection = new ConnectionImpl( connector, url );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void disconnect()
+        throws IOException
+    {
+        if ( connection == null )
+        {
+            return;
+        }
+        connection.close();
+        connection = null;
+    }
+
+    protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
+        throws IOException
+    {
+        return JMXConnectorFactory.connect( url, env );
     }
 
     /**
@@ -57,33 +82,8 @@ class ConnectionAwareSession
      * @inheritDoc
      */
     @Override
-    public void connect( JMXServiceURL url, Map<String, Object> env )
-        throws IOException
+    public boolean isConnected()
     {
-        Validate.isTrue( connection == null, "Session is already opened" );
-        Validate.notNull( url, "URL can't be NULL" );
-        JMXConnector connector = doConnect( url, env );
-        connection = new ConnectionImpl( connector, url );
-    }
-
-    protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
-        throws IOException
-    {
-        return JMXConnectorFactory.connect( url, env );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disconnect()
-        throws IOException
-    {
-        if ( connection == null )
-        {
-            return;
-        }
-        connection.close();
-        connection = null;
+        return connection != null;
     }
 }

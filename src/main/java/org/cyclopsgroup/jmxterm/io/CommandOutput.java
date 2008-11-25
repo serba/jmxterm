@@ -12,6 +12,13 @@ import org.apache.commons.lang.SystemUtils;
 public abstract class CommandOutput
 {
     /**
+     * Close the output;
+     */
+    public void close()
+    {
+    }
+
+    /**
      * @return PrintWriter of output for more flexible usage
      */
     public abstract PrintWriter getMessageWriter();
@@ -40,11 +47,4 @@ public abstract class CommandOutput
      * @param message Message to print out.
      */
     public abstract void printMessage( String message );
-
-    /**
-     * Close the output;
-     */
-    public void close()
-    {
-    }
 }

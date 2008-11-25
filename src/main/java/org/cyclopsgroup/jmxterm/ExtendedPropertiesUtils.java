@@ -15,10 +15,6 @@ import org.apache.commons.lang.Validate;
  */
 public class ExtendedPropertiesUtils
 {
-    private ExtendedPropertiesUtils()
-    {
-    }
-
     /**
      * @param resourcePath Path of overlapping properties files
      * @param classLoader Class loader where the resources are loaded
@@ -45,5 +41,9 @@ public class ExtendedPropertiesUtils
             }
         }
         return props;
+    }
+
+    private ExtendedPropertiesUtils()
+    {
     }
 }

@@ -1,10 +1,18 @@
 package org.cyclopsgroup.jmxterm.io;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 
 import org.junit.Test;
 
+/**
+ * Test case for {@link ValueOutputFormat}
+ * 
+ * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
+ */
 public class ValueOutputFormatTest
 {
     /**
@@ -17,6 +25,8 @@ public class ValueOutputFormatTest
         throws IOException
     {
         ValueOutputFormat f = new ValueOutputFormat();
-        f.printValue( new PrintStreamCommandOutput(), Arrays.asList( "abc", 123, "xyz" ) );
+        StringWriter out = new StringWriter();
+        f.printValue( new WriterCommandOutput( out ), Arrays.asList( "abc", "xyz" ) );
+        assertEquals( "( \"abc\", \"xyz\" )", out.toString() );
     }
 }

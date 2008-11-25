@@ -25,9 +25,9 @@ public class SetCommandTest
 {
     private SetCommand command;
 
-    private StringWriter output;
-
     private Mockery context;
+
+    private StringWriter output;
 
     /**
      * Set up objects to test

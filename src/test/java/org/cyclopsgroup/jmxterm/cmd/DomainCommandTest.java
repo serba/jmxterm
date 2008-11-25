@@ -64,6 +64,30 @@ public class DomainCommandTest
     }
 
     /**
+     * Test the case where invalid value is declined
+     * 
+     * @throws Exception
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testExecuteWithSettingSomethingInvalid()
+        throws Exception
+    {
+        Mockery context = new Mockery();
+        final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
+        command.setDomain( "invalid" );
+        MockSession session = new MockSession( output, con );
+        context.checking( new Expectations()
+        {
+            {
+                one( con ).getDomains();
+                will( returnValue( new String[] { "something" } ) );
+            }
+        } );
+        command.setSession( session );
+        command.execute();
+    }
+
+    /**
      * Test execution and set valid value
      * 
      * @throws Exception
@@ -87,29 +111,5 @@ public class DomainCommandTest
         command.execute();
         assertEquals( "something", session.getDomain() );
         context.assertIsSatisfied();
-    }
-
-    /**
-     * Test the case where invalid value is declined
-     * 
-     * @throws Exception
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testExecuteWithSettingSomethingInvalid()
-        throws Exception
-    {
-        Mockery context = new Mockery();
-        final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
-        command.setDomain( "invalid" );
-        MockSession session = new MockSession( output, con );
-        context.checking( new Expectations()
-        {
-            {
-                one( con ).getDomains();
-                will( returnValue( new String[] { "something" } ) );
-            }
-        } );
-        command.setSession( session );
-        command.execute();
     }
 }

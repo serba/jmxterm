@@ -35,20 +35,20 @@ public class FileCommandInput
      * @inheritDoc
      */
     @Override
-    public String readLine()
+    public void close()
         throws IOException
     {
-        return in.readLine();
+        in.close();
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void close()
+    public String readLine()
         throws IOException
     {
-        in.close();
+        return in.readLine();
     }
 
     /**

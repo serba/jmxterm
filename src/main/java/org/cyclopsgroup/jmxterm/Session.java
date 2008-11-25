@@ -30,14 +30,14 @@ public abstract class Session
     private String domain;
 
     /**
-     * Public output field
-     */
-    public final CommandOutput output;
-
-    /**
      * Public input field
      */
     public final CommandInput input;
+
+    /**
+     * Public output field
+     */
+    public final CommandOutput output;
 
     private boolean verbose;
 

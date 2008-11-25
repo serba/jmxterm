@@ -39,9 +39,9 @@ public class RunCommand
 
     private boolean measure;
 
-    private boolean showQuotationMarks;
-
     private List<String> parameters = Collections.emptyList();
+
+    private boolean showQuotationMarks;
 
     /**
      * @inheritDoc

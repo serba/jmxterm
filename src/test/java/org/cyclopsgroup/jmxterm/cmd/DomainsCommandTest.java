@@ -19,9 +19,9 @@ import org.junit.Test;
  */
 public class DomainsCommandTest
 {
-    private Mockery context;
-
     private DomainsCommand command;
+
+    private Mockery context;
 
     /**
      * Set up objects to test

@@ -15,9 +15,9 @@ import org.apache.commons.lang.Validate;
 public class FileCommandOutput
     extends CommandOutput
 {
-    private final WriterCommandOutput output;
-
     private final PrintWriter fileWriter;
+
+    private final WriterCommandOutput output;
 
     /**
      * @param file File where the result is written to
@@ -37,6 +37,16 @@ public class FileCommandOutput
         }
         fileWriter = new PrintWriter( new FileWriter( af ) );
         output = new WriterCommandOutput( fileWriter, new PrintWriter( System.err, true ) );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void close()
+    {
+        fileWriter.flush();
+        fileWriter.close();
     }
 
     /**
@@ -64,15 +74,5 @@ public class FileCommandOutput
     public void printMessage( String message )
     {
         output.printMessage( message );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void close()
-    {
-        fileWriter.flush();
-        fileWriter.close();
     }
 }
