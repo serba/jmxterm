@@ -19,3 +19,10 @@ print JMX "domains\n";
 print JMX "close\n";
 close JMX;
 +-----------------------------------+
+
+  Following example is to call JMXTERM from shell. This particular command is useful when you want to get the PID of JVM process that listens to a known JMX port.
+
++-----------------------------------+
+$ echo get -s -b java.lang:type=Runtime Name | java -jar target/jmxterm-1.0-alpha-3-uber.jar -l localhost:9991 -v silent -n
+11383@happycow
++-----------------------------------+

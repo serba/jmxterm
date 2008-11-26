@@ -11,17 +11,15 @@ Features
 *----------------------+-----------+-------------+
 |                      | <<Since>> | <<Explain>> |
 *----------------------+-----------+-------------+
-| <<Standalone>>       | 0.1       | jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} package. You don't need to worry about how to setup dependencies. |
+| <<Standalone>>       | 0.1       | jmxterm only depends on JDK 1.5+ at runtime. Internally it depends on other third party libraries but those libraries are nicely wrapped with the ready-to-run {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} package. User doesn't need to worry about how to setup dependencies. |
 *----------------------+-----------+-------------+
-| <<Platform neutral>> | 0.1       | Similar to most Java applications, jmxterm is platform independent |
+| <<Platform neutral>> | 0.1       | Same as most Java applications, jmxterm is platform independent. The user interation feature relies on {{{http://jline.sourceforge.net}JLine}} which has implementation on most OS. |
 *----------------------+-----------+-------------+
-| <<Download and run>> | 0.1       | The executable jmxterm is wrapped with {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} file, which runs out of box with <<<java -jar jmxterm-#-uber.jar>>> command once it's downloaded. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details. |
+| <<Download and run>> | 0.1       | The executable jmxterm is wrapped with {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} file, which runs out of box with <<<java -jar jmxterm-#-uber.jar>>> command. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details. |
 *----------------------+-----------+-------------+
 | <<Interactive>>      | 0.1       | Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is called interactive. User can do complicated series of small operations in interactive console.|
 *----------------------+-----------+-------------+
-| <<Self documented>>  | 0.1       | In jmxterm, every command is explained with usage page and examples. <<<-h>>> and <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}. |
-*----------------------+-----------+-------------+
-| <<Shebang>>          | 0.1       | jmxterm can be used as a script interpreter under unix environment. Take a look at {{{manual.html}Manual}} for more details. |
+| <<Self documented>>  | 0.1       | In jmxterm, every command is explained with usage page and examples. <<<-h>>> or <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}. |
 *----------------------+-----------+-------------+
 | <<Local processes>>  | 0.2       | jmxterm is aware of all local JVM processes running on localhost and is able to connect to them even if the process isn't started with JMX arguments. For now, this feature only works when jmxterm is called with jdk6 and the process to monitor runs from jdk6. |
 *----------------------+-----------+-------------+
@@ -42,6 +40,6 @@ Features
 
 Q & A
 
-  * Which version is recommended? Answer: 0.2 is latest stable version which is recommended.
+  * Which version is recommended? Answer: 1.0-alpha-3 is latest stable version which is recommended.
 
-  * Why does this website look ugly? Answer: It's because you are browsing it with internet explorer. Use firefox!
+  * Why does this website look so ugly? Answer: It's because you are browsing it with internet explorer. Use firefox!
