@@ -50,21 +50,11 @@ public class DomainsCommand
         throws IOException
     {
         Session session = getSession();
-        if ( !session.isAbbreviated() )
-        {
-            session.output.printMessage( "following domains are available" );
-        }
-        int i = 0;
+
+        session.output.printMessage( "following domains are available" );
         for ( String domain : getCandidateDomains( session ) )
         {
-            if ( session.isAbbreviated() )
-            {
-                session.output.println( domain );
-            }
-            else
-            {
-                session.output.println( String.format( "%%%-3d - %s", i++, domain ) );
-            }
+            session.output.println( domain );
         }
     }
 }

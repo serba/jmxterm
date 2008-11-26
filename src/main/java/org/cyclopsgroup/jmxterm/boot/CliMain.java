@@ -21,6 +21,7 @@ import org.cyclopsgroup.jmxterm.io.FileCommandInput;
 import org.cyclopsgroup.jmxterm.io.FileCommandOutput;
 import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 import org.cyclopsgroup.jmxterm.io.PrintStreamCommandOutput;
+import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 
 /**
@@ -57,6 +58,17 @@ public class CliMain
             parser.printUsage( CliMainOptions.class, STDOUT_WRITER );
             return 0;
         }
+
+        VerboseLevel verboseLevel;
+        if ( options.getVerboseLevel() != null )
+        {
+            verboseLevel = VerboseLevel.valueOf( options.getVerboseLevel().toUpperCase() );
+        }
+        else
+        {
+            verboseLevel = null;
+        }
+
         CommandOutput output;
         if ( StringUtils.equals( options.getOutput(), CliMainOptions.STDOUT ) )
         {
@@ -91,7 +103,6 @@ public class CliMain
                 {
                     ( (JlineCommandInput) input ).getConsole().addCompletor( new ConsoleCompletor( commandCenter ) );
                 }
-                commandCenter.setAbbreviated( options.isAbbreviated() );
                 if ( options.getUrl() != null )
                 {
                     Map<String, Object> env;
@@ -112,7 +123,14 @@ public class CliMain
                     }
                     commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), env );
                 }
-
+                if ( verboseLevel != null )
+                {
+                    commandCenter.setVerboseLevel( verboseLevel );
+                }
+                if ( verboseLevel != VerboseLevel.SILENT )
+                {
+                    output.printMessage( "Welcome to JMX terminal. Type \"help\" for available commands." );
+                }
                 String line;
                 int exitCode = 0;
                 int lineNumber = 0;

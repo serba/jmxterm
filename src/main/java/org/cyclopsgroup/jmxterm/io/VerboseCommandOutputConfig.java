@@ -8,7 +8,7 @@ package org.cyclopsgroup.jmxterm.io;
 public interface VerboseCommandOutputConfig
 {
     /**
-     * @return True if detail message is expected to be printed out
+     * @return Dynamic value of verbose level
      */
-    boolean isVerbose();
+    VerboseLevel getVerboseLevel();
 }

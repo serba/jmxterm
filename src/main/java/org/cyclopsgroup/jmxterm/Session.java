@@ -11,6 +11,7 @@ import org.cyclopsgroup.jmxterm.io.CommandOutput;
 import org.cyclopsgroup.jmxterm.io.UnimplementedCommandInput;
 import org.cyclopsgroup.jmxterm.io.VerboseCommandOutput;
 import org.cyclopsgroup.jmxterm.io.VerboseCommandOutputConfig;
+import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 
 /**
  * JMX communication context. This class exists for the whole lifecycle of a command execution. It is NOT thread safe.
@@ -21,8 +22,6 @@ import org.cyclopsgroup.jmxterm.io.VerboseCommandOutputConfig;
 public abstract class Session
     implements VerboseCommandOutputConfig
 {
-    private boolean abbreviated;
-
     private String bean;
 
     private boolean closed;
@@ -39,7 +38,7 @@ public abstract class Session
      */
     public final CommandOutput output;
 
-    private boolean verbose;
+    private VerboseLevel verboseLevel = VerboseLevel.BRIEF;
 
     /**
      * @param output Output destination
@@ -103,11 +102,11 @@ public abstract class Session
     }
 
     /**
-     * @return True if output is abbreviated
+     * @inheritDoc
      */
-    public final boolean isAbbreviated()
+    public final VerboseLevel getVerboseLevel()
     {
-        return abbreviated;
+        return verboseLevel;
     }
 
     /**
@@ -122,22 +121,6 @@ public abstract class Session
      * @return True if there's a open connection to JMX server
      */
     public abstract boolean isConnected();
-
-    /**
-     * @return True if <code>verbose</code> option is turned on
-     */
-    public final boolean isVerbose()
-    {
-        return verbose;
-    }
-
-    /**
-     * @param abbreviated True if <code>abbreviated</code> option is to be turned on
-     */
-    public final void setAbbreviated( boolean abbreviated )
-    {
-        this.abbreviated = abbreviated;
-    }
 
     /**
      * Set current selected bean
@@ -161,13 +144,12 @@ public abstract class Session
     }
 
     /**
-     * Set verbose option
-     * 
-     * @param verbose Verbose option
+     * @param verboseLevel Level of verbose
      */
-    public final void setVerbose( boolean verbose )
+    public final void setVerboseLevel( VerboseLevel verboseLevel )
     {
-        this.verbose = verbose;
+        Validate.notNull( verboseLevel, "Verbose level can't be NULL" );
+        this.verboseLevel = verboseLevel;
     }
 
     /**

@@ -29,8 +29,6 @@ public class CliMainOptions
      */
     public static final String STDOUT = "stdout";
 
-    private boolean abbreviated;
-
     private boolean exitOnFailure;
 
     private boolean help;
@@ -44,6 +42,8 @@ public class CliMainOptions
     private String url;
 
     private String user;
+
+    private String verboseLevel;
 
     /**
      * @return #setInput(String)
@@ -86,11 +86,11 @@ public class CliMainOptions
     }
 
     /**
-     * @return {@link #setAbbreviated(boolean)}
+     * @return Verbose option
      */
-    public final boolean isAbbreviated()
+    public final String getVerboseLevel()
     {
-        return abbreviated;
+        return verboseLevel;
     }
 
     /**
@@ -107,15 +107,6 @@ public class CliMainOptions
     public final boolean isHelp()
     {
         return help;
-    }
-
-    /**
-     * @param abbreviated True to turn on <code>abbreviated</code> flag
-     */
-    @Option( name = "a", longName = "abbreviated", description = "Flag for printing abbreviated version" )
-    public final void setAbbreviated( boolean abbreviated )
-    {
-        this.abbreviated = abbreviated;
     }
 
     /**
@@ -185,5 +176,14 @@ public class CliMainOptions
     {
         Validate.notNull( user, "User can't be NULL" );
         this.user = user;
+    }
+
+    /**
+     * @param verboseLevel Verbose level
+     */
+    @Option( name = "v", longName = "verbose", description = "Verbose level, could be silent|brief|verbose. Default value is brief" )
+    public final void setVerboseLevel( String verboseLevel )
+    {
+        this.verboseLevel = verboseLevel;
     }
 }

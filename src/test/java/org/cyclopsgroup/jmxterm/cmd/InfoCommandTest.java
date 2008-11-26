@@ -59,7 +59,6 @@ public class InfoCommandTest
         final MBeanInfo beanInfo = context.mock( MBeanInfo.class );
         final MBeanAttributeInfo attributeInfo = context.mock( MBeanAttributeInfo.class );
         Session session = new MockSession( output, con );
-        session.setAbbreviated( true );
         context.checking( new Expectations()
         {
             {

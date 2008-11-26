@@ -1,6 +1,6 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.cyclopsgroup.jcli.annotation.MalformedArgException;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 
 /**
  * Command to change/display console options
@@ -21,39 +22,27 @@ public class OptionCommand
     extends Command
     implements AutoCompletable
 {
-    private static final List<String> BOOLEAN_VALUES =
-        Collections.unmodifiableList( Arrays.asList( Boolean.TRUE.toString(), Boolean.FALSE.toString() ) );
-
-    private static Boolean toBoolean( String value )
+    private static final List<String> VERBOSE_LEVEL_VALUES;
+    static
     {
-        if ( value == null )
+        List<String> verboseLevelValues = new ArrayList<String>();
+        verboseLevelValues.addAll( VerboseLevel.STRING_NAMES );
+        for ( String v : VerboseLevel.STRING_NAMES )
         {
-            return null;
+            verboseLevelValues.add( v.toLowerCase() );
         }
-        if ( value.equalsIgnoreCase( Boolean.toString( true ) ) )
-        {
-            return Boolean.TRUE;
-        }
-        else if ( value.equalsIgnoreCase( Boolean.toString( false ) ) )
-        {
-            return Boolean.FALSE;
-        }
-        else
-        {
-            throw new MalformedArgException( "Boolean option value has to be true|false, " + value + " is invalid" );
-        }
+        VERBOSE_LEVEL_VALUES = Collections.unmodifiableList( verboseLevelValues );
     }
 
-    private String abbreviated;
-
-    private String verbose;
+    private String verboseLevel;
 
     /**
      * @inheritDoc
      */
+    @Override
     public List<String> doSuggestOption( String name )
     {
-        return BOOLEAN_VALUES;
+        return VERBOSE_LEVEL_VALUES;
     }
 
     /**
@@ -63,44 +52,32 @@ public class OptionCommand
     public void execute()
     {
         Session session = getSession();
-        Boolean v = toBoolean( verbose );
-        if ( v != null )
+        if ( verboseLevel == null )
         {
-            session.setVerbose( v );
-            session.output.printMessage( "verbose option is turned " + ( v ? "on" : "off" ) );
+            session.output.printMessage( "no change for verbose, verbose = " + session.getVerboseLevel() );
         }
         else
         {
-            session.output.printMessage( "no change for verbose, verbose = " + session.isVerbose() );
+            VerboseLevel v;
+            try
+            {
+                v = VerboseLevel.valueOf( verboseLevel.toUpperCase() );
+            }
+            catch ( IllegalArgumentException e )
+            {
+                throw new MalformedArgException( "Invalid verbose level value " + verboseLevel, e );
+            }
+            session.setVerboseLevel( v );
+            session.output.printMessage( "verbose option is turned to " + v );
         }
-
-        Boolean a = toBoolean( abbreviated );
-        if ( a != null )
-        {
-            session.setAbbreviated( a );
-            session.output.printMessage( "abbreviated option is turned " + ( a ? "on" : "off" ) );
-        }
-        else
-        {
-            session.output.printMessage( "no change for abbreviated, abbreviated = " + session.isAbbreviated() );
-        }
-    }
-
-    /**
-     * @param abbreviated Option <code>abbreviated</code>
-     */
-    @Option( name = "a", longName = "abbreviated", description = "true|false" )
-    public final void setAbbreviated( String abbreviated )
-    {
-        this.abbreviated = abbreviated;
     }
 
     /**
      * @param verbose Verbose level of session
      */
-    @Option( name = "v", longName = "verbose", description = "true|false" )
-    public final void setVerbose( String verbose )
+    @Option( name = "v", longName = "verbose", description = "Verbose level: SILENT|BRIEF|VERBOSE" )
+    public final void setVerboseLevel( String verbose )
     {
-        this.verbose = verbose;
+        this.verboseLevel = verbose;
     }
 }

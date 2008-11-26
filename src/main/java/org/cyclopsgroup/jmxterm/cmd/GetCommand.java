@@ -41,6 +41,8 @@ public class GetCommand
 
     private boolean showQuotationMarks;
 
+    private boolean simpleFormat;
+
     @SuppressWarnings( "unchecked" )
     private void displayAttributes()
         throws IOException, JMException
@@ -82,7 +84,7 @@ public class GetCommand
             if ( i.isReadable() )
             {
                 Object result = con.getAttribute( name, attributeName );
-                if ( session.isAbbreviated() )
+                if ( simpleFormat )
                 {
                     format.printValue( session.output, result );
                 }
@@ -199,4 +201,14 @@ public class GetCommand
     {
         this.showQuotationMarks = noQuotationMarks;
     }
+
+    /**
+     * @param simpleFormat True if value is printed out in a simple format without full expression
+     */
+    @Option( name = "s", longName = "simple", description = "Print simple expression of value without full expression" )
+    public final void setSimpleFormat( boolean simpleFormat )
+    {
+        this.simpleFormat = simpleFormat;
+    }
+
 }

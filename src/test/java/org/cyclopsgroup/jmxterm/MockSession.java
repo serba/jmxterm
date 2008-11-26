@@ -31,7 +31,6 @@ public class MockSession
         throws Exception
     {
         super( new WriterCommandOutput( output, null ), null );
-        setAbbreviated( true );
         connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
     }
 

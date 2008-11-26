@@ -41,7 +41,7 @@ public class OpenCommandTest
         Session session = new MockSession( output, null );
         command.setSession( session );
         command.execute();
-        assertEquals( "service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
+        assertEquals( "id,service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi\n", output.toString() );
     }
 
     /**

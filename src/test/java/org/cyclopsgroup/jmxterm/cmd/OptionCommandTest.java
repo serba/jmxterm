@@ -1,9 +1,5 @@
 package org.cyclopsgroup.jmxterm.cmd;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.StringWriter;
 
 import org.cyclopsgroup.jcli.annotation.MalformedArgException;
@@ -36,35 +32,13 @@ public class OptionCommandTest
     /**
      * @throws Exception
      */
-    @Test
-    public void testExecuteNormally()
-        throws Exception
-    {
-        Session session = new MockSession( output, null );
-        command.setAbbreviated( "false" );
-        command.setVerbose( "true" );
-        command.setSession( session );
-        command.execute();
-        assertFalse( session.isAbbreviated() );
-        assertTrue( session.isVerbose() );
-        command.setAbbreviated( "true" );
-        command.setVerbose( "false" );
-        command.execute();
-        assertTrue( session.isAbbreviated() );
-        assertFalse( session.isVerbose() );
-    }
-
-    /**
-     * @throws Exception
-     */
     @Test( expected = MalformedArgException.class )
     public void testExecuteWithInvalidVerbose()
         throws Exception
     {
         Session session = new MockSession( output, null );
-        command.setVerbose( "xyz" );
+        command.setVerboseLevel( "xyz" );
         command.setSession( session );
         command.execute();
-        assertEquals( "ok\n", output.toString() );
     }
 }

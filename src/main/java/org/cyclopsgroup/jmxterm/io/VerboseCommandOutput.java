@@ -51,13 +51,17 @@ public class VerboseCommandOutput
     @Override
     public void printError( Throwable e )
     {
-        if ( config.isVerbose() )
+        switch ( config.getVerboseLevel() )
         {
-            output.printError( e );
-        }
-        else
-        {
-            output.printMessage( ExceptionUtils.getMessage( e ) );
+            case VERBOSE:
+                output.printError( e );
+                break;
+            case SILENT:
+                break;
+            case BRIEF:
+            default:
+                output.printMessage( "#" + ExceptionUtils.getMessage( e ) );
+                break;
         }
     }
 
@@ -67,6 +71,9 @@ public class VerboseCommandOutput
     @Override
     public void printMessage( String message )
     {
-        output.printMessage( message );
+        if ( config.getVerboseLevel() != VerboseLevel.SILENT )
+        {
+            output.printMessage( "#" + message );
+        }
     }
 }

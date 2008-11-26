@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.management.JMException;
 
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
@@ -19,6 +20,8 @@ import org.cyclopsgroup.jmxterm.Session;
 public class JvmsCommand
     extends Command
 {
+    private boolean pidOnly;
+
     /**
      * @inheritDoc
      */
@@ -30,7 +33,7 @@ public class JvmsCommand
         JavaProcessManager jpm = JavaProcessManager.getInstance();
         for ( JavaProcess p : jpm.list() )
         {
-            if ( session.isAbbreviated() )
+            if ( pidOnly )
             {
                 session.output.println( String.valueOf( p.getProcessId() ) );
             }
@@ -41,5 +44,14 @@ public class JvmsCommand
                                                        p.isManageable() ? "m" : " ", p.getDisplayName() ) );
             }
         }
+    }
+
+    /**
+     * @param pidOnly Flag to notify command to only print out PID instead of more details
+     */
+    @Option( name = "p", longName = "pidonly", description = "Only print out PID" )
+    public final void setPidOnly( boolean pidOnly )
+    {
+        this.pidOnly = pidOnly;
     }
 }

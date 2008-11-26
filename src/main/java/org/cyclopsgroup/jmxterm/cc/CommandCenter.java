@@ -25,6 +25,7 @@ import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.CommandInput;
 import org.cyclopsgroup.jmxterm.io.CommandOutput;
 import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
+import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 
 /**
  * Facade class where commands are maintained and executed
@@ -74,7 +75,6 @@ public class CommandCenter
         Validate.notNull( commandFactory, "Command factory can't be NULL" );
         this.session = new ConnectionAwareSession( output, input );
         this.commandFactory = commandFactory;
-        session.output.printMessage( "Welcome to JMX terminal. Type \"help\" for available commands." );
     }
 
     /**
@@ -239,13 +239,10 @@ public class CommandCenter
     }
 
     /**
-     * Set <code>abbreviated</code> option
-     * 
-     * @param abbreviated Value of <code>abbreviated</code> option
+     * @param verboseLevel New verbose level value
      */
-    public void setAbbreviated( boolean abbreviated )
+    public void setVerboseLevel( VerboseLevel verboseLevel )
     {
-        session.setAbbreviated( abbreviated );
+        session.setVerboseLevel( verboseLevel );
     }
-
 }

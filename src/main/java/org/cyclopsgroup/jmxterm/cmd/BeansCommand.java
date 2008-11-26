@@ -34,7 +34,7 @@ public class BeansCommand
      * @throws MalformedObjectNameException
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {
@@ -86,20 +86,12 @@ public class BeansCommand
         {
             domains.add( domainName );
         }
-        int i = 0;
         for ( String d : domains )
         {
             session.output.printMessage( "domain = " + d + ":" );
             for ( String bean : getBeans( session, d ) )
             {
-                if ( session.isAbbreviated() )
-                {
-                    session.output.println( bean );
-                }
-                else
-                {
-                    session.output.println( String.format( "  %%%-3d - %s", i++, bean ) );
-                }
+                session.output.println( bean );
             }
         }
     }

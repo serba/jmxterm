@@ -92,6 +92,14 @@ public class ConsoleCompletor
             }
             return position;
         }
+        catch ( RuntimeException e )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Couldn't complete input", e );
+            }
+            return position;
+        }
     }
 
     private int completeCommandName( String buf, List<String> candidates )

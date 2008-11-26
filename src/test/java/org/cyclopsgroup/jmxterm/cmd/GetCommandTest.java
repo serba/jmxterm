@@ -54,6 +54,7 @@ public class GetCommandTest
         command.setDomain( "a" );
         command.setBean( "type=x" );
         command.setAttributes( Arrays.asList( "a" ) );
+        command.setSimpleFormat( true );
 
         final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
         final MBeanInfo beanInfo = context.mock( MBeanInfo.class );

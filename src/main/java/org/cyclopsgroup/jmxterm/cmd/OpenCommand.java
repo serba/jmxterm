@@ -48,15 +48,7 @@ public class OpenCommand
             }
             else
             {
-                if ( session.isAbbreviated() )
-                {
-                    session.output.println( con.getUrl().toString() );
-                }
-                else
-                {
-                    session.output.println( String.format( session.isAbbreviated() ? "%s,%s"
-                                    : "connected to: id=%s, url=%s", con.getConnectorId(), con.getUrl() ) );
-                }
+                session.output.println( String.format( "%s,%s", con.getConnectorId(), con.getUrl() ) );
             }
             return;
         }
