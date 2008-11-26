@@ -8,28 +8,25 @@
     <body>
         <section name="Download">
             <p>
-                Download latest released jmxterm from
                 <a
-                    href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
-                    SourceForge.net download page
-                </a>
-                . The jar file with name
-                <b>UBER</b>
-                is the one that runs out of box.
-            </p>
-            <p>
-                <a
-                    href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">
-                    <img src="images/down.png" alt="Download the jar file now" />
+                    href="http://downloads.sourceforge.net/cyclops-group/jmxterm-1.0-alpha-3-uber.jar">
+                    <big>Download UBER JAR file that runs out of
+                        box</big>
                 </a>
             </p>
             <p>
-                Alternatively, you can
+                <a
+                    href="http://sourceforge.net/project/showfiles.php?group_id=91358&amp;package_id=284164">Check out more downloadable files of
+                    latest JMXTERM project
+                </a>
+            </p>
+            <p>
+                Alternatively,
                 <a href="./jmxterm-1.0-SNAPSHOT-uber.jar">download the latest
                     dev version</a>
                 built by CI engine. This version has all the
                 latest
-                unreleased change but it might not be well
+                unreleased changes but it might not be well
                 tested.
             </p>
         </section>
