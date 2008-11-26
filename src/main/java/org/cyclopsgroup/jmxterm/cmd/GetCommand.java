@@ -90,6 +90,7 @@ public class GetCommand
                 {
                     format.printExpression( session.output, attributeName, result, i.getDescription() );
                 }
+                session.output.println( "" );
             }
             else
             {

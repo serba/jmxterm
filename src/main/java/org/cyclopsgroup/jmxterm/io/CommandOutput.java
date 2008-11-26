@@ -1,7 +1,5 @@
 package org.cyclopsgroup.jmxterm.io;
 
-import java.io.PrintWriter;
-
 import org.apache.commons.lang.SystemUtils;
 
 /**
@@ -19,16 +17,16 @@ public abstract class CommandOutput
     }
 
     /**
-     * @return PrintWriter of output for more flexible usage
-     */
-    public abstract PrintWriter getMessageWriter();
-
-    /**
      * Print out value to output without line break
      * 
      * @param output Value to print out
      */
     public abstract void print( String output );
+
+    /**
+     * @param e Error to print out
+     */
+    public abstract void printError( Throwable e );
 
     /**
      * Print out value to output as standalone line

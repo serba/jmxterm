@@ -55,7 +55,7 @@ public class FileCommandInput
      * @inheritDoc
      */
     @Override
-    public String readMaskedString()
+    public String readMaskedString( String prompt )
         throws IOException
     {
         throw new UnsupportedOperationException( "Reading password from a file is not supported" );

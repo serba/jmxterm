@@ -53,18 +53,18 @@ public class FileCommandOutput
      * @inheritDoc
      */
     @Override
-    public PrintWriter getMessageWriter()
+    public void print( String value )
     {
-        return output.getMessageWriter();
+        output.print( value );
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void print( String value )
+    public void printError( Throwable e )
     {
-        output.print( value );
+        output.printError( e );
     }
 
     /**

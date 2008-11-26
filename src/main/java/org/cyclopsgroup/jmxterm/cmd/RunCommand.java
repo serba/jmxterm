@@ -131,6 +131,7 @@ public class RunCommand
         }
         session.output.printMessage( "operation returns: " );
         new ValueOutputFormat( 2, false, showQuotationMarks ).printValue( session.output, result );
+        session.output.println( "" );
     }
 
     /**

@@ -52,7 +52,7 @@ public class JlineCommandInput
      * @inheritDoc
      */
     @Override
-    public String readMaskedString()
+    public String readMaskedString( String prompt )
         throws IOException
     {
         return console.readLine( prompt, '*' );

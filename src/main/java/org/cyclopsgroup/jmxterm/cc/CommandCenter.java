@@ -196,12 +196,12 @@ public class CommandCenter
         }
         catch ( JMException e )
         {
-            e.printStackTrace( session.output.getMessageWriter() );
+            session.output.printError( e );
             return false;
         }
         catch ( RuntimeException e )
         {
-            e.printStackTrace( session.output.getMessageWriter() );
+            session.output.printError( e );
             return false;
         }
     }
@@ -234,7 +234,8 @@ public class CommandCenter
     void printUsage( Class<? extends Command> commandType )
         throws IntrospectionException
     {
-        cliParser.printUsage( commandType, session.output.getMessageWriter() );
+        // Help usage is always printed out to stdout
+        cliParser.printUsage( commandType, new PrintWriter( System.out, true ) );
     }
 
     /**

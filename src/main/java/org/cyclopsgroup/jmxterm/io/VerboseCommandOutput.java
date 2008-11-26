@@ -1,9 +1,7 @@
 package org.cyclopsgroup.jmxterm.io;
 
-import java.io.PrintWriter;
-
-import org.apache.commons.io.output.NullWriter;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * Command output implementation where detail message can be turned on and off dynamically
@@ -42,22 +40,6 @@ public class VerboseCommandOutput
      * @inheritDoc
      */
     @Override
-    public PrintWriter getMessageWriter()
-    {
-        if ( config.isVerbose() )
-        {
-            return output.getMessageWriter();
-        }
-        else
-        {
-            return new PrintWriter( new NullWriter() );
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void print( String value )
     {
         output.print( value );
@@ -67,11 +49,24 @@ public class VerboseCommandOutput
      * @inheritDoc
      */
     @Override
-    public void printMessage( String message )
+    public void printError( Throwable e )
     {
         if ( config.isVerbose() )
         {
-            output.printMessage( message );
+            output.printError( e );
         }
+        else
+        {
+            output.printMessage( ExceptionUtils.getMessage( e ) );
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void printMessage( String message )
+    {
+        output.printMessage( message );
     }
 }

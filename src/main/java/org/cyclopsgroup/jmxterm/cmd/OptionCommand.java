@@ -21,7 +21,8 @@ public class OptionCommand
     extends Command
     implements AutoCompletable
 {
-    private static final List<String> BOOLEAN_VALUES = Collections.unmodifiableList( Arrays.asList( "true", "false" ) );
+    private static final List<String> BOOLEAN_VALUES =
+        Collections.unmodifiableList( Arrays.asList( Boolean.TRUE.toString(), Boolean.FALSE.toString() ) );
 
     private static Boolean toBoolean( String value )
     {
@@ -39,7 +40,7 @@ public class OptionCommand
         }
         else
         {
-            throw new MalformedArgException( "Boolean option value has to be yes|no, " + value + " is invalid" );
+            throw new MalformedArgException( "Boolean option value has to be true|false, " + value + " is invalid" );
         }
     }
 
@@ -70,7 +71,7 @@ public class OptionCommand
         }
         else
         {
-            session.output.printMessage( "no change for verbose, verbose = " + ( session.isVerbose() ? "yes" : "no" ) );
+            session.output.printMessage( "no change for verbose, verbose = " + session.isVerbose() );
         }
 
         Boolean a = toBoolean( abbreviated );
@@ -81,8 +82,7 @@ public class OptionCommand
         }
         else
         {
-            session.output.printMessage( "no change for abbreviated, abbreviated = "
-                + ( session.isAbbreviated() ? "yes" : "no" ) );
+            session.output.printMessage( "no change for abbreviated, abbreviated = " + session.isAbbreviated() );
         }
     }
 

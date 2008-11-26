@@ -55,7 +55,7 @@ public class OpenCommand
                 else
                 {
                     session.output.println( String.format( session.isAbbreviated() ? "%s,%s"
-                                    : "connected to: id=%s, url=%s", con.getConnectorId() ) );
+                                    : "connected to: id=%s, url=%s", con.getConnectorId(), con.getUrl() ) );
                 }
             }
             return;
@@ -65,7 +65,7 @@ public class OpenCommand
         {
             if ( password == null )
             {
-                // FIXME Call console reader and ask for password interactively
+                password = session.input.readMaskedString( "Credential password: " );
             }
             env = new HashMap<String, Object>( 1 );
             String[] credentials = { user, password };

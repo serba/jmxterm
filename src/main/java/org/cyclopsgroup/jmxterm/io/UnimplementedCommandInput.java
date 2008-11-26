@@ -24,7 +24,7 @@ public class UnimplementedCommandInput
      * @inheritDoc
      */
     @Override
-    public String readMaskedString()
+    public String readMaskedString( String prompt )
         throws IOException
     {
         throw new UnsupportedOperationException();

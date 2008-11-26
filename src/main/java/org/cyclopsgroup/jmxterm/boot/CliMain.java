@@ -1,6 +1,7 @@
 package org.cyclopsgroup.jmxterm.boot;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class CliMain
 {
     private static final PrintWriter STDOUT_WRITER = new PrintWriter( System.out, true );
 
+    private static final String COMMAND_PROMPT = "$> ";
+
     /**
      * Main entry
      * 
@@ -54,11 +57,10 @@ public class CliMain
             parser.printUsage( CliMainOptions.class, STDOUT_WRITER );
             return 0;
         }
-
         CommandOutput output;
         if ( StringUtils.equals( options.getOutput(), CliMainOptions.STDOUT ) )
         {
-            output = new PrintStreamCommandOutput();
+            output = new PrintStreamCommandOutput( System.out, System.err );
         }
         else
         {
@@ -71,10 +73,15 @@ public class CliMain
             if ( options.getInput().equals( CliMainOptions.STDIN ) )
             {
                 ConsoleReader consoleReader = new ConsoleReader( System.in, new PrintWriter( System.err, true ) );
-                input = new JlineCommandInput( consoleReader, "$>" );
+                input = new JlineCommandInput( consoleReader, COMMAND_PROMPT );
             }
             else
             {
+                File inputFile = new File( options.getInput() );
+                if ( !inputFile.isFile() )
+                {
+                    throw new FileNotFoundException( "File " + inputFile + " is not a valid file" );
+                }
                 input = new FileCommandInput( new File( options.getInput() ) );
             }
             try
@@ -94,7 +101,7 @@ public class CliMain
                         String password = options.getPassword();
                         if ( password == null )
                         {
-                            password = input.readMaskedString();
+                            password = input.readMaskedString( "Authentication password: " );
                         }
                         String[] credentials = { options.getUser(), password };
                         env.put( JMXConnector.CREDENTIALS, credentials );

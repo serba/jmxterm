@@ -42,22 +42,6 @@ public class WriterCommandOutput
      * @inheritDoc
      */
     @Override
-    public PrintWriter getMessageWriter()
-    {
-        if ( messageOutput instanceof PrintWriter )
-        {
-            return (PrintWriter) messageOutput;
-        }
-        else
-        {
-            return new PrintWriter( messageOutput, true );
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void print( String output )
     {
         if ( output == null )
@@ -72,6 +56,15 @@ public class WriterCommandOutput
         {
             throw new RuntimeIOException( "Can't print out result", e );
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void printError( Throwable e )
+    {
+        e.printStackTrace( new PrintWriter( messageOutput, true ) );
     }
 
     /**

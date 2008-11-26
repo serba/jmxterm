@@ -29,9 +29,10 @@ public abstract class CommandInput
     /**
      * Read input without echo'ing back keyboard input
      * 
+     * @param prompt Message before the input
      * @return A line of input
      * @throws IOException
      */
-    public abstract String readMaskedString()
+    public abstract String readMaskedString( String prompt )
         throws IOException;
 }

@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.io;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 import org.apache.commons.lang.Validate;
 
@@ -22,15 +21,17 @@ public class PrintStreamCommandOutput
      */
     public PrintStreamCommandOutput()
     {
-        this( System.out, System.err );
+        this( System.out );
     }
 
     /**
-     * @param output Output for both result and message
+     * Constructor with given result output and system error as message output
+     * 
+     * @param output Output for result
      */
     public PrintStreamCommandOutput( PrintStream output )
     {
-        this( output, output );
+        this( output, System.err );
     }
 
     /**
@@ -49,18 +50,18 @@ public class PrintStreamCommandOutput
      * @inheritDoc
      */
     @Override
-    public PrintWriter getMessageWriter()
+    public void print( String output )
     {
-        return new PrintWriter( messageOutput, true );
+        resultOutput.print( output );
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void print( String output )
+    public void printError( Throwable e )
     {
-        resultOutput.print( output );
+        e.printStackTrace( messageOutput );
     }
 
     /**
