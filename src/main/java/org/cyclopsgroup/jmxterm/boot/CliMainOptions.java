@@ -35,6 +35,8 @@ public class CliMainOptions
 
     private String input = STDIN;
 
+    private boolean nonInteractive;
+
     private String output = STDOUT;
 
     private String password;
@@ -110,6 +112,14 @@ public class CliMainOptions
     }
 
     /**
+     * @return True if CLI runs without user interaction, such as piped input
+     */
+    public final boolean isNonInteractive()
+    {
+        return nonInteractive;
+    }
+
+    /**
      * @param exitOnFailure True if terminal exits on any failure
      */
     @Option( name = "e", longName = "exitonfailure", description = "With this flag, terminal exits for any Exception" )
@@ -136,6 +146,15 @@ public class CliMainOptions
         Validate.notNull( file, "Input file can't be NULL" );
         Validate.isTrue( new File( file ).isFile(), "File " + file + " doesn't exist" );
         this.input = file;
+    }
+
+    /**
+     * @param nonInteractive True if CLI runs without user interaction, such as piped input
+     */
+    @Option( name = "n", longName = "noninteract", description = "Non interactive mode. Use this mode if input doesn't come from human or jmxterm is embedded" )
+    public final void setNonInteractive( boolean nonInteractive )
+    {
+        this.nonInteractive = nonInteractive;
     }
 
     /**

@@ -1,11 +1,13 @@
 package org.cyclopsgroup.jmxterm.utils;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.regex.Pattern;
 
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -19,6 +21,11 @@ import org.cyclopsgroup.jmxterm.JavaProcessManager;
  */
 public final class SyntaxUtils
 {
+    /**
+     * Null print stream to redirect std streams
+     */
+    public static final PrintStream NULL_PRINT_STREAM = new PrintStream( new NullOutputStream(), true );
+
     /**
      * String <code>null</code> that identifies empty value
      */
@@ -41,21 +48,34 @@ public final class SyntaxUtils
         else if ( NumberUtils.isDigits( url ) )
         {
             Integer pid = Integer.parseInt( url );
-            JavaProcess p = JavaProcessManager.getInstance().get( pid );
-            if ( p == null )
+            JavaProcess p;
+
+            // classworlds has some hard coded stdout printing. Therefore stdout needs to be redirected temporarily to
+            // avoid meaningless console output
+            PrintStream stdOut = System.out;
+            System.setOut( NULL_PRINT_STREAM );
+            try
             {
-                throw new NullPointerException( "No such PID " + pid );
-            }
-            if ( !p.isManageable() )
-            {
-                p.startManagementAgent();
+                p = JavaProcessManager.getInstance().get( pid );
+                if ( p == null )
+                {
+                    throw new NullPointerException( "No such PID " + pid );
+                }
                 if ( !p.isManageable() )
                 {
-                    throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
-                        + " is not manageable" );
+                    p.startManagementAgent();
+                    if ( !p.isManageable() )
+                    {
+                        throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
+                            + " is not manageable" );
+                    }
                 }
+                return new JMXServiceURL( p.toUrl() );
             }
-            return new JMXServiceURL( p.toUrl() );
+            finally
+            {
+                System.setOut( stdOut );
+            }
         }
         else if ( PATTERN_HOST_PORT.matcher( url ).find() )
         {

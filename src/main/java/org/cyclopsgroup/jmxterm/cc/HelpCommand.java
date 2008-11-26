@@ -43,7 +43,7 @@ public class HelpCommand
                 try
                 {
                     cli = CliUtils.defineCli( commandType ).getCli();
-                    getSession().output.println( commandName + ":" + cli.description() );
+                    getSession().output.println( String.format( "%-8s - %s", commandName, cli.description() ) );
                 }
                 catch ( IntrospectionException e )
                 {

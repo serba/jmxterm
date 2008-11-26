@@ -8,8 +8,6 @@ import java.util.HashSet;
 
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.cyclopsgroup.jmxterm.SelfRecordingCommand;
-import org.cyclopsgroup.jmxterm.cc.CommandCenter;
-import org.cyclopsgroup.jmxterm.cc.HelpCommand;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -81,7 +79,6 @@ public class HelpCommandTest
     {
         final CommandCenter cc = context.mock( CommandCenter.class );
         command.setCommandCenter( cc );
-
         context.checking( new Expectations()
         {
             {
@@ -95,6 +92,6 @@ public class HelpCommandTest
         } );
         command.setSession( new MockSession( output, null ) );
         command.execute();
-        assertEquals( "a:desc\nb:desc\n", output.toString() );
+        assertEquals( "a        - desc\nb        - desc\n", output.toString() );
     }
 }

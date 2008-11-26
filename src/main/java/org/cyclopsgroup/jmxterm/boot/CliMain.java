@@ -19,6 +19,7 @@ import org.cyclopsgroup.jmxterm.io.CommandInput;
 import org.cyclopsgroup.jmxterm.io.CommandOutput;
 import org.cyclopsgroup.jmxterm.io.FileCommandInput;
 import org.cyclopsgroup.jmxterm.io.FileCommandOutput;
+import org.cyclopsgroup.jmxterm.io.InputStreamCommandInput;
 import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 import org.cyclopsgroup.jmxterm.io.PrintStreamCommandOutput;
 import org.cyclopsgroup.jmxterm.io.VerboseLevel;
@@ -84,8 +85,15 @@ public class CliMain
             CommandInput input;
             if ( options.getInput().equals( CliMainOptions.STDIN ) )
             {
-                ConsoleReader consoleReader = new ConsoleReader( System.in, new PrintWriter( System.err, true ) );
-                input = new JlineCommandInput( consoleReader, COMMAND_PROMPT );
+                if ( options.isNonInteractive() )
+                {
+                    input = new InputStreamCommandInput( System.in );
+                }
+                else
+                {
+                    ConsoleReader consoleReader = new ConsoleReader( System.in, new PrintWriter( System.err, true ) );
+                    input = new JlineCommandInput( consoleReader, COMMAND_PROMPT );
+                }
             }
             else
             {
