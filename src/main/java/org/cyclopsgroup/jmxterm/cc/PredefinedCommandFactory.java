@@ -25,11 +25,10 @@ class PredefinedCommandFactory
     /**
      * Default constructor
      * 
-     * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
     PredefinedCommandFactory()
-        throws ClassNotFoundException, IOException
+        throws IOException
     {
         this( "META-INF/cyclopsgroup/jmxterm.properties" );
     }
@@ -38,12 +37,11 @@ class PredefinedCommandFactory
      * Constructor which builds up command types
      * 
      * @param configPath Path of configuration file in classpath
-     * @throws ClassNotFoundException Thrown when configured command class doesn't exist
      * @throws IOException Thrown when Jar is corrupted
      */
     @SuppressWarnings( "unchecked" )
     public PredefinedCommandFactory( String configPath )
-        throws ClassNotFoundException, IOException
+        throws IOException
     {
         Validate.notNull( configPath, "configPath can't be NULL" );
         ClassLoader classLoader = getClass().getClassLoader();
@@ -62,7 +60,15 @@ class PredefinedCommandFactory
         for ( String name : props.getStringArray( "name" ) )
         {
             String type = props.getString( name + ".type" );
-            Class<? extends Command> commandType = (Class<? extends Command>) classLoader.loadClass( type );
+            Class<? extends Command> commandType;
+            try
+            {
+                commandType = (Class<? extends Command>) classLoader.loadClass( type );
+            }
+            catch ( ClassNotFoundException e )
+            {
+                throw new RuntimeException( "Couldn't load type " + type, e );
+            }
             commands.put( name, commandType );
             String[] aliases = props.getStringArray( name + ".alias" );
             if ( !ArrayUtils.isEmpty( aliases ) )

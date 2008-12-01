@@ -3,7 +3,8 @@ package org.cyclopsgroup.jmxterm.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
+import java.io.IOException;
+
 import org.junit.Test;
 
 /**
@@ -16,11 +17,11 @@ public class SyntaxUtilsTest
     /**
      * Test how getUrl() figure out MBeanServer URL based on various pattern of input
      * 
-     * @throws Exception Thrown when syntax is invalid
+     * @throws IOException Thrown when syntax is invalid
      */
     @Test
     public void testGetUrl()
-        throws Exception
+        throws IOException
     {
         assertEquals( "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
                       SyntaxUtils.getUrl( "xyz-host.cyclopsgroup.org:12345" ).getURLPath() );

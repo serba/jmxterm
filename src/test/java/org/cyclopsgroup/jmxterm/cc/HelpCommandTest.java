@@ -2,6 +2,8 @@ package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertEquals;
 
+import java.beans.IntrospectionException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,11 +44,12 @@ public class HelpCommandTest
     /**
      * Test execution with several options
      * 
-     * @throws Exception
+     * @throws IOException
+     * @throws IntrospectionException
      */
     @Test
     public void testExecuteWithOption()
-        throws Exception
+        throws IOException, IntrospectionException
     {
         command.setArgNames( new String[] { "a", "b" } );
         final CommandCenter cc = context.mock( CommandCenter.class );
@@ -71,11 +74,11 @@ public class HelpCommandTest
     /**
      * Test execution without option
      * 
-     * @throws Exception
+     * @throws IOException
      */
     @Test
     public void testExecuteWithoutOption()
-        throws Exception
+        throws IOException
     {
         final CommandCenter cc = context.mock( CommandCenter.class );
         command.setCommandCenter( cc );

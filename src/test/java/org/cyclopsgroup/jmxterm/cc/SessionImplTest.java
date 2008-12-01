@@ -10,7 +10,6 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.io.output.NullWriter;
 import org.cyclopsgroup.jmxterm.Connection;
-import org.cyclopsgroup.jmxterm.cc.ConnectionAwareSession;
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
 import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 import org.jmock.Mockery;
@@ -18,17 +17,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test case of {@link ConnectionAwareSession}
+ * Test case of {@link ConnectionImpl}
  * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
-public class ConnectionAwareSessionTest
+public class SessionImplTest
 {
     private JMXConnector con;
 
     private Mockery context;
 
-    private ConnectionAwareSession session;
+    private SessionImpl session;
 
     /**
      * Set up objects to test
@@ -38,7 +37,7 @@ public class ConnectionAwareSessionTest
     {
         context = new Mockery();
         con = context.mock( JMXConnector.class );
-        session = new ConnectionAwareSession( new WriterCommandOutput( new NullWriter() ), null )
+        session = new SessionImpl( new WriterCommandOutput( new NullWriter() ), null )
         {
             @Override
             protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
@@ -52,11 +51,11 @@ public class ConnectionAwareSessionTest
     /**
      * Verify connect() runs correctly
      * 
-     * @throws Exception
+     * @throws IOException
      */
     @Test
     public void testConnect()
-        throws Exception
+        throws IOException
     {
         session.connect( SyntaxUtils.getUrl( "localhost:9991" ), null );
         Connection con = session.getConnection();

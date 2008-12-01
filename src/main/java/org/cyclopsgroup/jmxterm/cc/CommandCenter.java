@@ -51,11 +51,10 @@ public class CommandCenter
      * 
      * @param output Message output. It can't be NULL
      * @param input Command line input
-     * @throws ClassNotFoundException Thrown when configured command can't be created
      * @throws IOException Thrown for file access failure
      */
     public CommandCenter( CommandOutput output, CommandInput input )
-        throws IOException, ClassNotFoundException
+        throws IOException
     {
         this( output, input, new PredefinedCommandFactory() );
     }
@@ -73,7 +72,7 @@ public class CommandCenter
     {
         Validate.notNull( output, "Output can't be NULL" );
         Validate.notNull( commandFactory, "Command factory can't be NULL" );
-        this.session = new ConnectionAwareSession( output, input );
+        this.session = new ConnectionImpl( output, input );
         this.commandFactory = commandFactory;
     }
 

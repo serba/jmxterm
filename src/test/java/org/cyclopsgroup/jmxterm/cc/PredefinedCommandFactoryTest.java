@@ -2,8 +2,8 @@ package org.cyclopsgroup.jmxterm.cc;
 
 import static org.junit.Assert.assertTrue;
 
-import org.cyclopsgroup.jmxterm.cc.HelpCommand;
-import org.cyclopsgroup.jmxterm.cc.PredefinedCommandFactory;
+import java.io.IOException;
+
 import org.junit.Test;
 
 /**
@@ -16,11 +16,11 @@ public class PredefinedCommandFactoryTest
     /**
      * Test that object is constructed
      * 
-     * @throws Exception
+     * @throws IOException
      */
     @Test
     public void testConstruction()
-        throws Exception
+        throws IOException
     {
         PredefinedCommandFactory f = new PredefinedCommandFactory();
         assertTrue( f.getCommandTypes().containsKey( "help" ) );

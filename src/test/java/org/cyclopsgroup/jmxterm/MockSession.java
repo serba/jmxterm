@@ -25,10 +25,10 @@ public class MockSession
     /**
      * @param output Output writer
      * @param con MBean service connection
-     * @throws Exception
+     * @throws IOException
      */
     public MockSession( Writer output, MBeanServerConnection con )
-        throws Exception
+        throws IOException
     {
         super( new WriterCommandOutput( output, null ), null );
         connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
