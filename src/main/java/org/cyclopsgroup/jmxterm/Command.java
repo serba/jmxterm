@@ -28,11 +28,12 @@ public abstract class Command
     private Session session;
 
     /**
-     * Provide a list of possible arguments for auto completion
+     * Provide a list of possible arguments for auto completion. This method returns list of arguments(not option) and
+     * is called when user presses tab key.
      * 
      * @return List of possible arguments used by auto completion or NULL
      * @throws IOException IO errors
-     * @thr
+     * @throws JMException JMX problemo
      */
     protected List<String> doSuggestArgument()
         throws IOException, JMException

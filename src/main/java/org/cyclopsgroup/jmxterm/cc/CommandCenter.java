@@ -72,7 +72,7 @@ public class CommandCenter
     {
         Validate.notNull( output, "Output can't be NULL" );
         Validate.notNull( commandFactory, "Command factory can't be NULL" );
-        this.session = new ConnectionImpl( output, input );
+        this.session = new SessionImpl( output, input );
         this.commandFactory = commandFactory;
     }
 
