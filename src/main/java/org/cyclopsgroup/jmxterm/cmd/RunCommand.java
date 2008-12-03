@@ -20,8 +20,8 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 
 /**
  * Command to run an MBean operation

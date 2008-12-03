@@ -12,7 +12,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to open JMX connection

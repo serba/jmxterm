@@ -12,7 +12,7 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to list all running local JVM processes

@@ -13,6 +13,7 @@ import jline.ConsoleReader;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.cc.CommandCenter;
 import org.cyclopsgroup.jmxterm.cc.ConsoleCompletor;
 import org.cyclopsgroup.jmxterm.io.CommandInput;
@@ -23,7 +24,6 @@ import org.cyclopsgroup.jmxterm.io.InputStreamCommandInput;
 import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 import org.cyclopsgroup.jmxterm.io.PrintStreamCommandOutput;
 import org.cyclopsgroup.jmxterm.io.VerboseLevel;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 
 /**
  * Main class invoked directly from command line

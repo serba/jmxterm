@@ -10,7 +10,7 @@ import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Get or set current selected domain

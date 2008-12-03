@@ -8,7 +8,6 @@ import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXServiceURL;
 
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
 
 /**
  * Mocked version of {@link Session} implementation for testing purpose only

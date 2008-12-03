@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.management.remote.JMXConnector;
 
-import org.cyclopsgroup.jmxterm.utils.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.utils;
+package org.cyclopsgroup.jmxterm;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

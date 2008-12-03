@@ -1,4 +1,4 @@
-package org.cyclopsgroup.jmxterm.utils;
+package org.cyclopsgroup.jmxterm;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -11,8 +11,6 @@ import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.cyclopsgroup.jmxterm.JavaProcess;
-import org.cyclopsgroup.jmxterm.JavaProcessManager;
 
 /**
  * Utility class for syntax checking
