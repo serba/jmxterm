@@ -38,8 +38,11 @@ class SessionImpl
     public void connect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {
-        Validate.isTrue( connection == null, "Session is already opened" );
         Validate.notNull( url, "URL can't be NULL" );
+        if ( connection != null )
+        {
+            throw new IllegalStateException( "Session is already opened" );
+        }
         JMXConnector connector = doConnect( url, env );
         connection = new ConnectionImpl( connector, url );
     }
@@ -55,8 +58,14 @@ class SessionImpl
         {
             return;
         }
-        connection.close();
-        connection = null;
+        try
+        {
+            connection.close();
+        }
+        finally
+        {
+            connection = null;
+        }
     }
 
     protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
