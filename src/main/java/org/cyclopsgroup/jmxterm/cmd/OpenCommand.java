@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.management.remote.JMXConnector;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -67,8 +68,20 @@ public class OpenCommand
         {
             env = null;
         }
-        session.connect( SyntaxUtils.getUrl( url ), env );
-        session.output.printMessage( "Connection to " + url + " is opened" );
+        try
+        {
+            session.connect( SyntaxUtils.getUrl( url ), env );
+            session.output.printMessage( "Connection to " + url + " is opened" );
+        }
+        catch ( IOException e )
+        {
+            if ( NumberUtils.isDigits( url ) )
+            {
+                session.output.printMessage( "Couldn't connect to PID " + url +
+                    ", it's likely that your version of JDK doesn't allow to connect to a process directly" );
+            }
+            throw e;
+        }
     }
 
     /**
