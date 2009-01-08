@@ -34,7 +34,6 @@ public class BeansCommand
      * @throws MalformedObjectNameException
      * @throws IOException
      */
-    @SuppressWarnings( "unchecked" )
     public static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {

@@ -30,8 +30,8 @@ ends after file is processed
   * <<Interactive console>> - Without any option, it opens an interactive command line console.
 
   * <<File interpreter>> - With <<<-i>>> option, it processes a given script file and exit in the end.
-
-  * <<Executable script with shebang>> - This is an experimental feature. In theory it can work as shebang in unix script. For example, <<<#!/usr/bin/env java -jar /opt/jmxterm-0.2-uber.jar -a -i>>>. Check out {{{scripting.html}scripting page} for more details.
+  
+  * <<Embedded>> - It can be called from scripting language such as SHELL or PERL. Read {{{scripting.html}scripting}} for more details.
 
 Commands and options
 
@@ -84,4 +84,5 @@ Questions and Answers
     
   * Q: How to pass a parameter containing special character such as a white space?
     
-    A: Use quots. For example: <<<bean "java.lang:name=Code Cache,type=MemoryPool">>>. Quoted string is always considerred as one parameter.
+    A: Use back slash to escape. For example: <<<bean java.lang:name=Code\ Cache,type=MemoryPool>>>. Quoted string is always considerred as one parameter.
+
