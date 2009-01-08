@@ -17,7 +17,7 @@ Features
 *----------------------+-----------+-------------+
 | <<Download and run>> | 0.1       | The executable jmxterm is wrapped with {{{http://classworlds.codehaus.org/uberjar.html}uberjar}} file, which runs out of box with <<<java -jar jmxterm-#-uber.jar>>> command. There's no configuration, directories, environment variables or file permissions that need to setup. Check out {{{download.html}Download and Run}} for more details. |
 *----------------------+-----------+-------------+
-| <<Interactive>>      | 0.1       | Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm is called interactive. User can do complicated series of small operations in interactive console.|
+| <<Interactive>>      | 0.1       | Unlike {{{http://crawler.archive.org/cmdline-jmxclient/}cmdline-jmxclient}}, jmxterm runs interactively. User can do complicated series of small operations in interactive console.|
 *----------------------+-----------+-------------+
 | <<Self documented>>  | 0.1       | In jmxterm, every command is explained with usage page and examples. <<<-h>>> or <<<--help>>> option applies to every command line command. You may also find many examples in {{{tutorial.html}One Minute Tutorial}} and {{{manual.html}User Manual}}. |
 *----------------------+-----------+-------------+
@@ -41,5 +41,7 @@ Features
 Q & A
 
   * Which version is recommended? Answer: 1.0-alpha-3 is latest stable version which is recommended.
+
+  * Why this simple software does nothing but showing ugly exceptions for me? Answer: Jmxterm is still in alpha phase and hasn't been tested on all major OS against various JDK versions. If you are encounting difficulties please post the exceptions, name of your OS and JDK version in {{{discuss.html}feedback and support}} page so that the next release would be more robust. Thanks.
 
   * Why does this website look so ugly? Answer: It's because you are browsing it with internet explorer. Use firefox!

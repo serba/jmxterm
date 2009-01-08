@@ -84,5 +84,5 @@ Questions and Answers
     
   * Q: How to pass a parameter containing special character such as a white space?
     
-    A: Use back slash to escape. For example: <<<bean java.lang:name=Code\\ Cache,type=MemoryPool>>>. Quoted string is always considerred as one parameter.
+    A: Use back slash to escape. For example: <<<bean java.lang:name=Code\\ Cache,type=MemoryPool>>>. Double back slash escapes one back slash.
 
