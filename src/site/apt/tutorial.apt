@@ -3,7 +3,7 @@ It actually takes about 20 seconds
   The downloaded UBER jar runs out of box with java -jar command. Yes, there's no dependency, installation, user configuration, file structure, permission or log directory to setup. Just {{{download.html} Download And Run}}. <<<java -jar jmxterm-##-uber.jar>>> without any option opens an interactive command line console where commands are self-explained. You will never get lost. 
 
 +--------------------------------------------------------------------------------+
-jiaqi@happycow:~$ java -jar jmxterm-0.2-uber.jar
+jiaqi@happycow:~$ java -jar jmxterm-1.0-alpha-3-uber.jar
 Welcome to JMX terminal. Type "help" for available commands.
 ?$
 +--------------------------------------------------------------------------------+
@@ -11,14 +11,17 @@ Welcome to JMX terminal. Type "help" for available commands.
   Once you are in the console, help command shows all availble commands and help with command name or command with -h option shows the usage of each command. For example
 
 +--------------------------------------------------------------------------------+
-?$ help get
-usage: get [-b <val>] [-d <val>] [-h] [-i]
+$>help get
+usage: get [-b <val>] [-d <val>] [-h] [-i] [-q] [-s]
 Get value of MBean attribute(s)
   -b,--bean <val>    MBean name where the attribute is. Optional if bean has
                    been set
   -d,--domain <val>  Domain of bean, optional
   -h,--help          Display usage
   -i,--info          Show detail information of each attribute
+  -q,--quots         Quotation marks around value
+  -s,--simple        Print simple expression of value without full expression
+* stands for all attributes. eg. get Attribute1 Attribute2 or get *
 +--------------------------------------------------------------------------------+
 
   jmxterm can do much more than this. Check out {{{manual.html}User Manual}} for more complicated usage.

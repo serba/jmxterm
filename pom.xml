@@ -247,7 +247,7 @@
         <site>
             <id>cyclopsgroup.server.sourceforge</id>
             <url>
-                sftp://web.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/projects/jmxterm
+                scpexe://shell.sourceforge.net/home/groups/c/cy/cyclops-group/htdocs/projects/jmxterm
             </url>
         </site>
     </distributionManagement>

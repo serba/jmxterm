@@ -11,6 +11,7 @@ import javax.management.MBeanParameterInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
+import org.apache.commons.lang.SystemUtils;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.cyclopsgroup.jmxterm.Session;
 import org.jmock.Expectations;
@@ -83,7 +84,7 @@ public class InfoCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "# attributes\n  %0   - b (int, r)\n", output.toString() );
+        assertEquals( "# attributes" + SystemUtils.LINE_SEPARATOR + "  %0   - b (int, r)", output.toString().trim() );
     }
 
     /**
@@ -128,6 +129,7 @@ public class InfoCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "# operations\n  %0   - int x(java.lang.String a)\n", output.toString() );
+        assertEquals( "# operations" + SystemUtils.LINE_SEPARATOR + "  %0   - int x(java.lang.String a)",
+                      output.toString().trim() );
     }
 }

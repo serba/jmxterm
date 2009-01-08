@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.apache.commons.lang.SystemUtils;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.cyclopsgroup.jmxterm.SelfRecordingCommand;
 import org.jmock.Expectations;
@@ -95,6 +96,6 @@ public class HelpCommandTest
         } );
         command.setSession( new MockSession( output, null ) );
         command.execute();
-        assertEquals( "a        - desc\nb        - desc\n", output.toString() );
+        assertEquals( "a        - desc" + SystemUtils.LINE_SEPARATOR + "b        - desc", output.toString().trim() );
     }
 }

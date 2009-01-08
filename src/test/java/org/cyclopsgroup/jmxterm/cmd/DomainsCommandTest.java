@@ -6,6 +6,7 @@ import java.io.StringWriter;
 
 import javax.management.MBeanServerConnection;
 
+import org.apache.commons.lang.SystemUtils;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -54,6 +55,6 @@ public class DomainsCommandTest
         command.setSession( new MockSession( output, con ) );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "a\nb\n", output.toString() );
+        assertEquals( "a" + SystemUtils.LINE_SEPARATOR + "b", output.toString().trim() );
     }
 }

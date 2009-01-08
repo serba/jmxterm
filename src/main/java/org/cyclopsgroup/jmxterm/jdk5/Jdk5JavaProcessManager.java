@@ -49,10 +49,16 @@ public class Jdk5JavaProcessManager
     /**
      * Default constructor
      * 
-     * @throws Exception #findLocalhost() throws a lot of exceptions, let them go
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     public Jdk5JavaProcessManager()
-        throws Exception
+        throws SecurityException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException,
+        InvocationTargetException, InstantiationException
     {
         connectorAddressLink =
             WeakCastUtils.staticCast( Class.forName( ConnectorAddressLink.ORIGINAL_CLASS_NAME ),

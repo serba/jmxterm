@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,6 +25,7 @@ public class LocalVirtualMachineTest
      * @throws ClassNotFoundException
      */
     @Test
+    @Ignore( "This test turns out to be too specific to JDK version" )
     public void testRun()
         throws SecurityException, NoSuchMethodException, ClassNotFoundException
     {

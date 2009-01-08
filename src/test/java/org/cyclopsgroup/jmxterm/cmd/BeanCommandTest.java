@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
+import org.apache.commons.lang.SystemUtils;
 import org.cyclopsgroup.jmxterm.MockSession;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -35,7 +36,7 @@ public class BeanCommandTest
     {
         command.setSession( new MockSession( output, null ) );
         command.execute();
-        assertEquals( "null\n", output.toString() );
+        assertEquals( "null" + SystemUtils.LINE_SEPARATOR, output.toString() );
     }
 
     /**
