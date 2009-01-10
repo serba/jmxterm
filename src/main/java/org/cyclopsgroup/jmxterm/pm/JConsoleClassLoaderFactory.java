@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.apache.commons.lang.SystemUtils;
 
@@ -26,7 +28,7 @@ public class JConsoleClassLoaderFactory
     public static ClassLoader getClassLoader()
     {
         File javaHome = new File( SystemUtils.JAVA_HOME ).getAbsoluteFile().getParentFile();
-        File toolsJar, jconsoleJar;
+        final File toolsJar, jconsoleJar;
         if ( SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX )
         {
             toolsJar = new File( javaHome, "Classes/classes.jar" );
@@ -45,16 +47,22 @@ public class JConsoleClassLoaderFactory
         {
             throw new RuntimeException( jconsoleJar + " file is not found" );
         }
-        try
+        // Parent class loader has to be bootstrap class loader instead of current one
+        return AccessController.doPrivileged( new PrivilegedAction<ClassLoader>()
         {
-            // Parent class loader has to be bootstrap class loader instead of current one
-            return new URLClassLoader( new URL[] { toolsJar.toURI().toURL(), jconsoleJar.toURI().toURL() },
-                                       String.class.getClassLoader() );
-        }
-        catch ( MalformedURLException e )
-        {
-            throw new RuntimeException( "Couddn't convert files to URLs " + toolsJar + ", " + jconsoleJar + ": "
-                + e.getMessage(), e );
-        }
+            public ClassLoader run()
+            {
+                try
+                {
+                    return new URLClassLoader( new URL[] { toolsJar.toURI().toURL(), jconsoleJar.toURI().toURL() },
+                                               String.class.getClassLoader() );
+                }
+                catch ( MalformedURLException e )
+                {
+                    throw new RuntimeException( "Couddn't convert files to URLs " + toolsJar + ", " + jconsoleJar
+                        + ": " + e.getMessage(), e );
+                }
+            }
+        } );
     }
 }
