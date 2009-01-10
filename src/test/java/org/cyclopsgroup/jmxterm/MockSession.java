@@ -8,6 +8,7 @@ import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXServiceURL;
 
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
+import org.cyclopsgroup.jmxterm.pm.UnsupportedJavaProcessManager;
 
 /**
  * Mocked version of {@link Session} implementation for testing purpose only
@@ -29,8 +30,8 @@ public class MockSession
     public MockSession( Writer output, MBeanServerConnection con )
         throws IOException
     {
-        super( new WriterCommandOutput( output, null ), null );
-        connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991" ), con );
+        super( new WriterCommandOutput( output, null ), null, new UnsupportedJavaProcessManager( "testing" ) );
+        connection = new MockConnection( SyntaxUtils.getUrl( "localhost:9991", null ), con );
     }
 
     /**

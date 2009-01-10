@@ -10,7 +10,6 @@ import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.JavaProcess;
-import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
@@ -41,7 +40,7 @@ public class JvmsCommand
         System.setOut( SyntaxUtils.NULL_PRINT_STREAM );
         try
         {
-            processList = JavaProcessManager.getInstance().list();
+            processList = session.processManager.list();
         }
         finally
         {

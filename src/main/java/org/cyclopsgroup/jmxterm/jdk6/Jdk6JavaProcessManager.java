@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
@@ -19,16 +20,17 @@ public class Jdk6JavaProcessManager
     private final StaticLocalVirtualMachine staticVm;
 
     /**
+     * @param classLoader ClassLoader to load JDK internal classes
      * @throws SecurityException
      * @throws NoSuchMethodException
      * @throws ClassNotFoundException
      */
-    public Jdk6JavaProcessManager()
+    public Jdk6JavaProcessManager( ClassLoader classLoader )
         throws SecurityException, NoSuchMethodException, ClassNotFoundException
     {
-        staticVm =
-            WeakCastUtils.staticCast( Class.forName( LocalVirtualMachine.ORIGINAL_CLASS_NAME ),
-                                      StaticLocalVirtualMachine.class );
+        Validate.notNull( classLoader, "ClassLoader can't be NULL" );
+        Class<?> originalClass = classLoader.loadClass( LocalVirtualMachine.ORIGINAL_CLASS_NAME );
+        staticVm = WeakCastUtils.staticCast( originalClass, StaticLocalVirtualMachine.class );
     }
 
     /**

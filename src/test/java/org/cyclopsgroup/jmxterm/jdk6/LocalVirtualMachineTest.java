@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.SystemUtils;
+import org.cyclopsgroup.jmxterm.pm.JConsoleClassLoaderFactory;
 import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,11 +26,15 @@ public class LocalVirtualMachineTest
      * @throws ClassNotFoundException
      */
     @Test
-    @Ignore( "This test turns out to be too specific to JDK version" )
     public void testRun()
         throws SecurityException, NoSuchMethodException, ClassNotFoundException
     {
-        Class<?> type = Class.forName( "sun.tools.jconsole.LocalVirtualMachine" );
+        if ( !SystemUtils.IS_JAVA_1_6 )
+        {
+            return;
+        }
+        ClassLoader cl = JConsoleClassLoaderFactory.getClassLoader();
+        Class<?> type = cl.loadClass( "sun.tools.jconsole.LocalVirtualMachine" );
         StaticLocalVirtualMachine s = WeakCastUtils.staticCast( type, StaticLocalVirtualMachine.class );
         Map<Integer, Object> vms = s.getAllVirtualMachines();
         List<LocalVirtualMachine> lvms = new ArrayList<LocalVirtualMachine>( vms.size() );

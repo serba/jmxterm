@@ -21,10 +21,6 @@
             <includes>
                 <include>*:*</include>
             </includes>
-            <excludes>
-                <exclude>classworlds:*</exclude>
-                <exclude>sun.tools:*</exclude>
-            </excludes>
         </dependencySet>
         <dependencySet>
             <outputDirectory>/</outputDirectory>

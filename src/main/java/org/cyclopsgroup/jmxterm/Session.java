@@ -38,16 +38,23 @@ public abstract class Session
      */
     public final CommandOutput output;
 
+    /**
+     * Java process manager to load processes
+     */
+    public final JavaProcessManager processManager;
+
     private VerboseLevel verboseLevel = VerboseLevel.BRIEF;
 
     /**
      * @param output Output destination
      */
-    protected Session( CommandOutput output, CommandInput input )
+    protected Session( CommandOutput output, CommandInput input, JavaProcessManager processManager )
     {
         Validate.notNull( output, "Output can't be NULL" );
+        Validate.notNull( processManager, "Process manager can't be NULL" );
         this.output = new VerboseCommandOutput( output, this );
         this.input = input == null ? new UnimplementedCommandInput() : input;
+        this.processManager = processManager;
     }
 
     /**

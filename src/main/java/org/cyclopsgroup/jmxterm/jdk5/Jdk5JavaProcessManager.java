@@ -49,33 +49,29 @@ public class Jdk5JavaProcessManager
     /**
      * Default constructor
      * 
-     * @throws ClassNotFoundException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @param classLoader ClassLoader to load JDK internal classes
+     * @throws Exception
      */
-    public Jdk5JavaProcessManager()
-        throws SecurityException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException,
-        InvocationTargetException, InstantiationException
+    public Jdk5JavaProcessManager( ClassLoader classLoader )
+        throws Exception
     {
+        Validate.notNull( classLoader, "ClassLoader can't be NULL" );
         connectorAddressLink =
-            WeakCastUtils.staticCast( Class.forName( ConnectorAddressLink.ORIGINAL_CLASS_NAME ),
+            WeakCastUtils.staticCast( classLoader.loadClass( ConnectorAddressLink.ORIGINAL_CLASS_NAME ),
                                       ConnectorAddressLink.class );
 
-        Class<?> hic = Class.forName( CLASS_HOST_IDENTIFIER );
+        Class<?> hic = classLoader.loadClass( CLASS_HOST_IDENTIFIER );
         Object hi = hic.getConstructor( String.class ).newInstance( (String) null );
 
-        Class<?> mhc = Class.forName( MonitoredHost.ORIGINAL_CLASS_NAME );
+        Class<?> mhc = classLoader.loadClass( MonitoredHost.ORIGINAL_CLASS_NAME );
         Method getInstance = mhc.getMethod( "getMonitoredHost", hic );
         localhostDelegate = getInstance.invoke( null, hi );
         localhost = WeakCastUtils.cast( localhostDelegate, MonitoredHost.class );
-        Class<?> monitoredVmUtilClass = Class.forName( CLASS_MONITORED_VM_UTIL );
-        monitoredVmType = Class.forName( CLASS_MONITORED_VM );
+        Class<?> monitoredVmUtilClass = classLoader.loadClass( CLASS_MONITORED_VM_UTIL );
+        monitoredVmType = classLoader.loadClass( CLASS_MONITORED_VM );
         toCommandLine = monitoredVmUtilClass.getMethod( "commandLine", monitoredVmType );
 
-        Class<?> vmIdentifierType = Class.forName( CLASS_VM_IDENTIFIER );
+        Class<?> vmIdentifierType = classLoader.loadClass( CLASS_VM_IDENTIFIER );
         vmIdentifierConstructor = vmIdentifierType.getConstructor( String.class );
         getMonitoredVm = mhc.getMethod( "getMonitoredVm", vmIdentifierType );
     }
@@ -92,7 +88,7 @@ public class Jdk5JavaProcessManager
         {
             vmid = vmIdentifierConstructor.newInstance( String.valueOf( pid ) );
             Object vm = getMonitoredVm.invoke( localhostDelegate, vmid );
-            String cmd = (String) toCommandLine.invoke( vm );
+            String cmd = (String) toCommandLine.invoke( null, vm );
             return new Jdk5JavaProcess( pid, cmd, connectorAddressLink );
         }
         catch ( InstantiationException e )
@@ -123,7 +119,7 @@ public class Jdk5JavaProcessManager
             {
                 result.add( get( pid ) );
             }
-            catch ( Exception e )
+            catch ( RuntimeException e )
             {
                 e.printStackTrace();
                 if ( LOG.isDebugEnabled() )

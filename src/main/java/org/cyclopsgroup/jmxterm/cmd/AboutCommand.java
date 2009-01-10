@@ -9,7 +9,6 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
-import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 import org.cyclopsgroup.jmxterm.utils.ExtendedPropertiesUtils;
@@ -54,14 +53,6 @@ public class AboutCommand
                 format.printExpression( session.output, keyName, entry.getValue(), null );
             }
         }
-
-        // output runtime JPM configurations
-        JavaProcessManager jpm = JavaProcessManager.getInstance();
-        format.printExpression( session.output, "jpm.type", jpm.getClass().getName(),
-                                "Type of JavaProcessManager implementation" );
-        format.printExpression( session.output, "jpm.name", jpm.getName(), "Name of JavaProcessManager implementation" );
-        format.printExpression( session.output, "jpm.description", jpm.getDescription(),
-                                "Description of JavaProcessManager implementation" );
     }
 
     /**

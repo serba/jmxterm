@@ -70,15 +70,15 @@ public class OpenCommand
         }
         try
         {
-            session.connect( SyntaxUtils.getUrl( url ), env );
+            session.connect( SyntaxUtils.getUrl( url, session.processManager ), env );
             session.output.printMessage( "Connection to " + url + " is opened" );
         }
         catch ( IOException e )
         {
             if ( NumberUtils.isDigits( url ) )
             {
-                session.output.printMessage( "Couldn't connect to PID " + url +
-                    ", it's likely that your version of JDK doesn't allow to connect to a process directly" );
+                session.output.printMessage( "Couldn't connect to PID " + url
+                    + ", it's likely that your version of JDK doesn't allow to connect to a process directly" );
             }
             throw e;
         }

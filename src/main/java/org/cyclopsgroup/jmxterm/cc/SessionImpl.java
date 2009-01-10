@@ -9,6 +9,7 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.Connection;
+import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.CommandInput;
 import org.cyclopsgroup.jmxterm.io.CommandOutput;
@@ -25,10 +26,12 @@ class SessionImpl
 
     /**
      * @param output Output result
+     * @param input Command line input
+     * @param jpm Java process manager
      */
-    SessionImpl( CommandOutput output, CommandInput input )
+    SessionImpl( CommandOutput output, CommandInput input, JavaProcessManager jpm )
     {
-        super( output, input );
+        super( output, input, jpm );
     }
 
     /**

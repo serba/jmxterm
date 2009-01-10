@@ -123,7 +123,7 @@ public final class WeakCastUtils
     public static Object staticCast( final Class<?> from, final Class<?>[] interfaces, ClassLoader classLoader )
         throws SecurityException, NoSuchMethodException
     {
-        Validate.notNull( from, "Invocation target can't be NULL" );
+        Validate.notNull( from, "Invocation target type can't be NULL" );
         Validate.notNull( interfaces, "Interfaces can't be NULL" );
         Validate.notNull( classLoader, "ClassLoader can't be NULL" );
         final Map<Method, Method> methodMap = new HashMap<Method, Method>();

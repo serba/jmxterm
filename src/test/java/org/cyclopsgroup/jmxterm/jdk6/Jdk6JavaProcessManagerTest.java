@@ -4,8 +4,9 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
+import org.apache.commons.lang.SystemUtils;
 import org.cyclopsgroup.jmxterm.JavaProcess;
-import org.junit.Ignore;
+import org.cyclopsgroup.jmxterm.pm.JConsoleClassLoaderFactory;
 import org.junit.Test;
 
 /**
@@ -18,16 +19,19 @@ public class Jdk6JavaProcessManagerTest
     /**
      * Test to list processes
      * 
-     * @throws ClassNotFoundException
+     * @throws Exception
      * @throws NoSuchMethodException
      * @throws SecurityException
      */
     @Test
-    @Ignore( "This test turns out to be too specific to JDK version" )
     public void testList()
-        throws SecurityException, NoSuchMethodException, ClassNotFoundException
+        throws Exception
     {
-        Jdk6JavaProcessManager m = new Jdk6JavaProcessManager();
+        if ( !SystemUtils.IS_JAVA_1_6 )
+        {
+            return;
+        }
+        Jdk6JavaProcessManager m = new Jdk6JavaProcessManager( JConsoleClassLoaderFactory.getClassLoader() );
         List<JavaProcess> ps = m.list();
         assertFalse( ps.isEmpty() );
     }

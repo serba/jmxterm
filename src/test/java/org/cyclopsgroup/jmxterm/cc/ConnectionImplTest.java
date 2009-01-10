@@ -30,7 +30,7 @@ public class ConnectionImplTest
     {
         Mockery context = new Mockery();
         final JMXConnector con = context.mock( JMXConnector.class );
-        ConnectionImpl c = new ConnectionImpl( con, SyntaxUtils.getUrl( "localhost:9991" ) );
+        ConnectionImpl c = new ConnectionImpl( con, SyntaxUtils.getUrl( "localhost:9991", null ) );
         assertSame( con, c.getConnector() );
 
         context.checking( new Expectations()

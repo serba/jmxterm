@@ -12,6 +12,7 @@ import org.apache.commons.io.output.NullWriter;
 import org.cyclopsgroup.jmxterm.Connection;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.io.WriterCommandOutput;
+import org.cyclopsgroup.jmxterm.pm.UnsupportedJavaProcessManager;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,15 +38,17 @@ public class SessionImplTest
     {
         context = new Mockery();
         con = context.mock( JMXConnector.class );
-        session = new SessionImpl( new WriterCommandOutput( new NullWriter() ), null )
-        {
-            @Override
-            protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
-                throws IOException
+        session =
+            new SessionImpl( new WriterCommandOutput( new NullWriter() ), null,
+                             new UnsupportedJavaProcessManager( "testing" ) )
             {
-                return con;
-            }
-        };
+                @Override
+                protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
+                    throws IOException
+                {
+                    return con;
+                }
+            };
     }
 
     /**
@@ -57,7 +60,7 @@ public class SessionImplTest
     public void testConnect()
         throws IOException
     {
-        session.connect( SyntaxUtils.getUrl( "localhost:9991" ), null );
+        session.connect( SyntaxUtils.getUrl( "localhost:9991", null ), null );
         Connection con = session.getConnection();
         assertEquals( "service:jmx:rmi:///jndi/rmi://localhost:9991/jmxrmi", con.getUrl().toString() );
     }

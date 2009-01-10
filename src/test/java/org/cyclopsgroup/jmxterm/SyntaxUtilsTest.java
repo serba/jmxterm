@@ -24,10 +24,10 @@ public class SyntaxUtilsTest
         throws IOException
     {
         assertEquals( "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
-                      SyntaxUtils.getUrl( "xyz-host.cyclopsgroup.org:12345" ).getURLPath() );
+                      SyntaxUtils.getUrl( "xyz-host.cyclopsgroup.org:12345", null ).getURLPath() );
         assertEquals(
                       "/jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi",
-                      SyntaxUtils.getUrl( "service:jmx:rmi:///jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi" ).getURLPath() );
+                      SyntaxUtils.getUrl( "service:jmx:rmi:///jndi/rmi://xyz-host.cyclopsgroup.org:12345/jmxrmi", null ).getURLPath() );
     }
 
     /**

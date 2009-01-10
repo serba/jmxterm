@@ -129,7 +129,8 @@ public class CliMain
                     {
                         env = null;
                     }
-                    commandCenter.connect( SyntaxUtils.getUrl( options.getUrl() ), env );
+                    commandCenter.connect( SyntaxUtils.getUrl( options.getUrl(), commandCenter.getProcessManager() ),
+                                           env );
                 }
                 if ( verboseLevel != null )
                 {

@@ -21,6 +21,7 @@ import org.cyclopsgroup.jcli.annotation.CliParser;
 import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.CommandFactory;
+import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.CommandInput;
 import org.cyclopsgroup.jmxterm.io.CommandOutput;
@@ -43,6 +44,8 @@ public class CommandCenter
     final CommandFactory commandFactory;
 
     private final Lock lock = new ReentrantLock();
+
+    private final JavaProcessManager processManager;
 
     final Session session;
 
@@ -72,8 +75,10 @@ public class CommandCenter
     {
         Validate.notNull( output, "Output can't be NULL" );
         Validate.notNull( commandFactory, "Command factory can't be NULL" );
-        this.session = new SessionImpl( output, input );
+        processManager = new JPMFactory().getProcessManager();
+        this.session = new SessionImpl( output, input, processManager );
         this.commandFactory = commandFactory;
+
     }
 
     /**
@@ -140,7 +145,7 @@ public class CommandCenter
         }
         catch ( IOException e )
         {
-            throw new RuntimeIOException( "Runtime IO exception", e );
+            throw new RuntimeIOException( "Runtime IO exception: " + e.getMessage(), e );
         }
     }
 
@@ -220,6 +225,14 @@ public class CommandCenter
     public Class<? extends Command> getCommandType( String name )
     {
         return commandFactory.getCommandTypes().get( name );
+    }
+
+    /**
+     * @return Java process manager implementation
+     */
+    public final JavaProcessManager getProcessManager()
+    {
+        return processManager;
     }
 
     /**

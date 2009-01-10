@@ -33,17 +33,18 @@ public final class SyntaxUtils
 
     /**
      * @param url String expression of MBean server URL or abbreviation like localhost:9991
+     * @param jpm Java process manager to get process URL
      * @return Parsed JMXServerURL
      * @throws IOException IO error
      */
-    public static JMXServiceURL getUrl( String url )
+    public static JMXServiceURL getUrl( String url, JavaProcessManager jpm )
         throws IOException
     {
         if ( StringUtils.isEmpty( url ) )
         {
             throw new IllegalArgumentException( "Empty URL is not allowed" );
         }
-        else if ( NumberUtils.isDigits( url ) )
+        else if ( NumberUtils.isDigits( url ) && jpm != null )
         {
             Integer pid = Integer.parseInt( url );
             JavaProcess p;
@@ -54,7 +55,7 @@ public final class SyntaxUtils
             System.setOut( NULL_PRINT_STREAM );
             try
             {
-                p = JavaProcessManager.getInstance().get( pid );
+                p = jpm.get( pid );
                 if ( p == null )
                 {
                     throw new NullPointerException( "No such PID " + pid );
