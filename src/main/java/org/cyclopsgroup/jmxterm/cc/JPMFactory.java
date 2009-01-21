@@ -9,7 +9,7 @@ import org.cyclopsgroup.jmxterm.pm.UnsupportedJavaProcessManager;
 
 /**
  * Internal factory class to create JPM instance
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class JPMFactory
@@ -54,6 +54,9 @@ public class JPMFactory
         jpm = j;
     }
 
+    /**
+     * @return Java process manager instance
+     */
     final JavaProcessManager getProcessManager()
     {
         return jpm;

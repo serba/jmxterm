@@ -25,7 +25,7 @@ import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 
 /**
  * Command to run an MBean operation
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "run", description = "Invoke an MBean operation", note = "Syntax is \n run <operationName> [parameter1] [parameter2]" )
@@ -46,6 +46,7 @@ public class RunCommand
     /**
      * @inheritDoc
      */
+    @Override
     public List<String> doSuggestArgument()
         throws IOException, JMException
     {

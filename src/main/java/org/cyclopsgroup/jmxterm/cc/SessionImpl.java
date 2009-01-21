@@ -16,7 +16,7 @@ import org.cyclopsgroup.jmxterm.io.CommandOutput;
 
 /**
  * Implementation of {@link Session} which keeps a {@link ConnectionImpl}
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 class SessionImpl
@@ -71,6 +71,14 @@ class SessionImpl
         }
     }
 
+    /**
+     * Connect to MBean server
+     *
+     * @param url MBean server URL
+     * @param env A map of environment
+     * @return Connector that holds connection to MBean server
+     * @throws IOException Network errors
+     */
     protected JMXConnector doConnect( JMXServiceURL url, Map<String, Object> env )
         throws IOException
     {

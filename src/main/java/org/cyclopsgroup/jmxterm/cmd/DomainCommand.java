@@ -14,7 +14,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Get or set current selected domain
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "domain", description = "Display or set current selected domain. ", note = "With a parameter, parameter defined domain is selected, otherwise it displays current selected domain."
@@ -25,7 +25,7 @@ public class DomainCommand
 {
     /**
      * Get domain name from given domain expression
-     * 
+     *
      * @param domain Domain expression, which can be a name or NULL
      * @param session Current JMX session
      * @return String name of domain coming from given parameter or current session
@@ -57,6 +57,7 @@ public class DomainCommand
     /**
      * @inheritDoc
      */
+    @Override
     public List<String> doSuggestArgument()
         throws IOException
     {

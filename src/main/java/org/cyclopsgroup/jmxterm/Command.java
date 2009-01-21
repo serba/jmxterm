@@ -15,7 +15,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
  * Base class of all commands. Command is executed in single thread. Extending classes don't need to worry about
  * concurrency. Command is transient, every command in console creates a new instance of Command object which is
  * disposed after execution finishes.
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public abstract class Command
@@ -30,7 +30,7 @@ public abstract class Command
     /**
      * Provide a list of possible arguments for auto completion. This method returns list of arguments(not option) and
      * is called when user presses tab key.
-     * 
+     *
      * @return List of possible arguments used by auto completion or NULL
      * @throws IOException IO errors
      * @throws JMException JMX problemo
@@ -43,10 +43,11 @@ public abstract class Command
 
     /**
      * Provide a list of possible option values for auto completion
-     * 
+     *
      * @param optionName Name of option
      * @return List of possible arguments used by auto completion or NULL
-     * @throws Exception Any exception is handle'able
+     * @throws IOException Network communication errors
+     * @throws JMException JMX errors
      */
     protected List<String> doSuggestOption( String optionName )
         throws IOException, JMException
@@ -56,7 +57,7 @@ public abstract class Command
 
     /**
      * Execute command
-     * 
+     *
      * @throws IOException IO errors
      * @throws JMException JMX errors
      */

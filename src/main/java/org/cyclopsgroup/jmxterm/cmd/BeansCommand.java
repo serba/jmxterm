@@ -17,7 +17,7 @@ import org.cyclopsgroup.jmxterm.Session;
 
 /**
  * Command that shows list of beans
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "beans", description = "List available beans under a domain or all domains", note = "Without -d option, current select domain is applied. If there's no domain specified, all beans are listed. Example:\n beans\n beans -d java.lang" )
@@ -27,13 +27,14 @@ public class BeansCommand
 {
     /**
      * Get list of bean names under current domain
-     * 
+     *
      * @param session Current JMX session
      * @param domainName Full domain name
      * @return List of bean names
      * @throws MalformedObjectNameException
      * @throws IOException
      */
+    @SuppressWarnings("unchecked")
     public static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {
@@ -57,6 +58,7 @@ public class BeansCommand
     /**
      * @inheritDoc
      */
+    @Override
     public List<String> doSuggestOption( String optionName )
         throws IOException
     {

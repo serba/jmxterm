@@ -11,7 +11,7 @@ import org.cyclopsgroup.jmxterm.Connection;
 
 /**
  * Identifies a JMX connection
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 class ConnectionImpl
@@ -34,6 +34,11 @@ class ConnectionImpl
         this.url = url;
     }
 
+    /**
+     * Close current connection
+     *
+     * @throws IOException Communication error
+     */
     void close()
         throws IOException
     {

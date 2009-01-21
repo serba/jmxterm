@@ -7,7 +7,7 @@ import org.cyclopsgroup.jmxterm.JavaProcess;
 
 /**
  * JDK5 specific implementation of {@link JavaProcess}
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 class Jdk5JavaProcess
@@ -21,6 +21,11 @@ class Jdk5JavaProcess
 
     private String url;
 
+    /**
+     * @param processId Platform PID of process
+     * @param command Original command
+     * @param connectorAddressLink A connector link
+     */
     Jdk5JavaProcess( int processId, String command, ConnectorAddressLink connectorAddressLink )
     {
         Validate.isTrue( processId > 0, "Invalid process ID " + processId );

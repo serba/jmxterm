@@ -27,7 +27,7 @@ import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 
 /**
  * Main class invoked directly from command line
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class CliMain
@@ -38,7 +38,7 @@ public class CliMain
 
     /**
      * Main entry
-     * 
+     *
      * @param args Main command
      * @throws Exception
      */
@@ -48,6 +48,13 @@ public class CliMain
         System.exit( new CliMain().execute( args ) );
     }
 
+    /**
+     * Execute main class
+     *
+     * @param args Command line arguments
+     * @return Exit code
+     * @throws Exception Allow any exceptions
+     */
     int execute( String[] args )
         throws Exception
     {

@@ -22,7 +22,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to set an attribute
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "set", description = "Set value of an MBean attribute" )
@@ -58,6 +58,9 @@ public class SetCommand
         return null;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected List<String> doSuggestOption( String optionName )
         throws JMException

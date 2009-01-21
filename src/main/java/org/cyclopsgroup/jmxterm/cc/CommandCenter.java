@@ -30,28 +30,37 @@ import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 
 /**
  * Facade class where commands are maintained and executed
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class CommandCenter
 {
     private static final String COMMAND_DELIMITER = "&&";
 
+    /**
+     * Argument tokenizer that parses arguments
+     */
     final StringTokenizer argTokenizer = new EscapedStringTokenizer();
 
     private final CliParser cliParser = new JakartaCommonsCliParser( new GnuParser() );
 
+    /**
+     * Command factory that creates commands
+     */
     final CommandFactory commandFactory;
 
     private final Lock lock = new ReentrantLock();
 
     private final JavaProcessManager processManager;
 
+    /**
+     * A handler to session
+     */
     final Session session;
 
     /**
      * Constructor with given output {@link PrintWriter}
-     * 
+     *
      * @param output Message output. It can't be NULL
      * @param input Command line input
      * @throws IOException Thrown for file access failure
@@ -64,7 +73,7 @@ public class CommandCenter
 
     /**
      * This constructor is for testing purpose only
-     * 
+     *
      * @param output Output result
      * @param input Command input
      * @param commandFactory Given command factory
@@ -187,7 +196,7 @@ public class CommandCenter
 
     /**
      * Execute a command. Command can be a valid full command, a comment, command followed by comment or empty
-     * 
+     *
      * @param command String command to execute
      * @return True if successful
      */
@@ -243,6 +252,10 @@ public class CommandCenter
         return session.isClosed();
     }
 
+    /**
+     * @param commandType Type of command
+     * @throws IntrospectionException Allow this error
+     */
     void printUsage( Class<? extends Command> commandType )
         throws IntrospectionException
     {

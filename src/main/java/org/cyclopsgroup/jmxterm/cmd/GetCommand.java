@@ -23,7 +23,7 @@ import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 
 /**
  * Get value of MBean attribute(s)
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "get", description = "Get value of MBean attribute(s)", note = "* stands for all attributes. eg. get Attribute1 Attribute2 or get *" )
@@ -104,6 +104,7 @@ public class GetCommand
     /**
      * @inheritDoc
      */
+    @Override
     public List<String> doSuggestArgument()
         throws IOException, JMException
     {

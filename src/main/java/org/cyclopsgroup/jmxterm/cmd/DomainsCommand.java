@@ -13,7 +13,7 @@ import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * List domains for JMX connection
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "domains", description = "List all available domain names" )
@@ -22,7 +22,7 @@ public class DomainsCommand
 {
     /**
      * Get list of domains for current JMX connection
-     * 
+     *
      * @param session Current session
      * @return Sorted list of domain names
      * @throws IOException
@@ -46,6 +46,7 @@ public class DomainsCommand
     /**
      * @inheritDoc
      */
+    @Override
     public void execute()
         throws IOException
     {
