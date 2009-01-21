@@ -21,12 +21,16 @@
             <includes>
                 <include>*:*</include>
             </includes>
+            <excludes>
+                <exclude>jline:jline</exclude>
+            </excludes>
         </dependencySet>
         <dependencySet>
             <outputDirectory>/</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>classworlds:classworlds-boot</include>
+                <include>jline:jline</include>
             </includes>
         </dependencySet>
         <dependencySet>
