@@ -11,23 +11,23 @@ import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Utility class for syntax checking
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public final class SyntaxUtils
 {
     /**
+     * NULL string identifier
+     */
+    public static final String NULL = ValueFormat.NULL;
+    /**
      * Null print stream to redirect std streams
      */
     public static final PrintStream NULL_PRINT_STREAM = new PrintStream( new NullOutputStream(), true );
-
-    /**
-     * String <code>null</code> that identifies empty value
-     */
-    public static final String NULL = "null";
 
     private static final Pattern PATTERN_HOST_PORT = Pattern.compile( "^(\\w|\\.|\\-)+\\:\\d+$" );
 
@@ -88,7 +88,7 @@ public final class SyntaxUtils
 
     /**
      * Check if string value is <code>null</code>
-     * 
+     *
      * @param s String value
      * @return True if value is <code>null</code>
      */
@@ -99,7 +99,7 @@ public final class SyntaxUtils
 
     /**
      * Parse given string expression to expected type of value
-     * 
+     *
      * @param expression String expression
      * @param type Target type
      * @return Object of value

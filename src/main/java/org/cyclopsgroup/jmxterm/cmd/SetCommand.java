@@ -19,6 +19,7 @@ import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
+import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Command to set an attribute
@@ -112,9 +113,14 @@ public class SetCommand
         {
             throw new IllegalArgumentException( "Attribute " + attributeName + " is not writable" );
         }
-        Object value = SyntaxUtils.parse( arguments.get( 1 ), attributeInfo.getType() );
+        String inputValue = arguments.get( 1 );
+        Object value = SyntaxUtils.parse( inputValue, attributeInfo.getType() );
+        if(value != null && value instanceof String)
+        {
+            value = ValueFormat.parseValue( (String) value );
+        }
         con.setAttribute( name, new Attribute( attributeName, value ) );
-        session.output.printMessage( "Value of attribute " + attributeName + " is set to " + value );
+        session.output.printMessage( "Value of attribute " + attributeName + " is set to " + inputValue );
     }
 
     /**

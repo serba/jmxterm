@@ -22,6 +22,7 @@ import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
+import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Command to run an MBean operation
@@ -108,7 +109,12 @@ public class RunCommand
         for ( int i = 0; i < paramInfos.length; i++ )
         {
             MBeanParameterInfo paramInfo = paramInfos[i];
-            params[i] = SyntaxUtils.parse( parameters.get( i + 1 ), paramInfo.getType() );
+            Object paramValue = SyntaxUtils.parse( parameters.get( i + 1 ), paramInfo.getType() );
+            if( paramValue != null && paramValue instanceof String )
+            {
+                paramValue = ValueFormat.parseValue( (String)paramValue );
+            }
+            params[i] = paramValue;
             signatures[i] = paramInfo.getType();
         }
         session.output.printMessage( String.format( "calling operation %s of mbean %s", operationName, beanName ) );
