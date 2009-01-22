@@ -23,29 +23,13 @@
             </script>
         </head>
         <links>
+            <item name="wiki" href="http://wiki.cyclopsgroup.org/jmxterm" />
             <item name="cyclopsgroup.org" href="http://www.cyclopsgroup.org/" />
-            <item name="wiki" href="http://wiki.cyclopsgroup.org" />
             <item name="sf.net/cyclops-group"
                 href="http://sourceforge.net/projects/cyclops-group" />
         </links>
         <menu name="JMXTERM">
-            <item name="Introduction" href="index.html" />
-            <item name="Download and Run" href="download.html" />
-            <item name="1 Minute Tutorial" href="tutorial.html" />
-            <item name="User Manual" href="manual.html" />
-            <item name="Scripting" href="scripting.html" />
-            <item name="Feedback and Support" href="discuss.html" />
-            <item name="Source Code" href="sourcecode.html"
-                collapse="true">
-                <item name="Browse Fisheye"
-                    href="http://fisheye3.atlassian.com/browse/cyclops-group/jmxterm" />
-                <item name="Search Fisheye"
-                    href="http://fisheye3.atlassian.com/search/cyclops-group/jmxterm" />
-                <item name="Change Log"
-                    href="http://fisheye3.atlassian.com/changelog/cyclops-group/jmxterm" />
-                <item name="Activity Chart"
-                    href="http://fisheye3.atlassian.com/chart/cyclops-group/jmxterm" />
-            </item>
+            <item name="Home page" href="index.html" />
             <item name="Release note" href="release/index.html"
                 collapse="true">
                 <item name="0.2" href="release/0.2.html" />
@@ -55,5 +39,15 @@
             </item>
         </menu>
         <menu ref="reports" />
+        <menu name="Source code">
+            <item name="Browse Fisheye"
+                href="http://fisheye3.atlassian.com/browse/cyclops-group/jmxterm" />
+            <item name="Search Fisheye"
+                href="http://fisheye3.atlassian.com/search/cyclops-group/jmxterm" />
+            <item name="Change Log"
+                href="http://fisheye3.atlassian.com/changelog/cyclops-group/jmxterm" />
+            <item name="Activity Chart"
+                href="http://fisheye3.atlassian.com/chart/cyclops-group/jmxterm" />
+        </menu>
     </body>
 </project>

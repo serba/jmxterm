@@ -1,4 +1,5 @@
 package org.cyclopsgroup.jmxterm.cmd;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -25,7 +26,7 @@ import org.junit.Test;
 
 /**
  * Test case of {@link SetCommand}
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class SetCommandTest
@@ -48,37 +49,43 @@ public class SetCommandTest
         context.setImposteriser( ClassImposteriser.INSTANCE );
     }
 
+    /**
+     * Test setting an integer 
+     */
     @Test
     public void testExecuteNormally()
-        throws IOException, JMException
     {
-        setValueAndVerify("33", "int", 33);
+        setValueAndVerify( "33", "int", 33 );
     }
 
+    /**
+     * Test setting an empty string 
+     */
     @Test
     public void testExecuteWithAnEmptyString()
-        throws IOException, JMException
     {
-        setValueAndVerify("\"\"", String.class.getName(), "");
+        setValueAndVerify( "\"\"", String.class.getName(), "" );
     }
 
+    /**
+     * Test setting NULL string 
+     */
     @Test
     public void testExecuteWithNullString()
-        throws IOException, JMException
     {
-        setValueAndVerify("null", String.class.getName(), null);
+        setValueAndVerify( "null", String.class.getName(), null );
     }
 
+    /**
+     * Test setting string with control character 
+     */
     @Test
-    public void testExecuteWithControlCharacters()
-        throws IOException, JMException
+    public void testExecuteWithControlCharacter()
     {
-        setValueAndVerify("hello\\n", String.class.getName(), "hello\n");
+        setValueAndVerify( "hello\\n", String.class.getName(), "hello\n" );
     }
 
-
-    private void setValueAndVerify(String expr, final String type, final Object expected)
-        throws IOException, JMException
+    private void setValueAndVerify( String expr, final String type, final Object expected )
     {
         command.setBean( "a:type=x" );
         command.setArguments( Arrays.asList( "var", expr ) );
@@ -87,37 +94,51 @@ public class SetCommandTest
         final MBeanInfo beanInfo = context.mock( MBeanInfo.class );
         final MBeanAttributeInfo attributeInfo = context.mock( MBeanAttributeInfo.class );
         final AtomicReference<Attribute> setAttribute = new AtomicReference<Attribute>();
-        context.checking( new Expectations()
+        try
         {
+            context.checking( new Expectations()
             {
-                atLeast( 1 ).of( con ).getMBeanInfo( new ObjectName( "a:type=x" ) );
-                will( returnValue( beanInfo ) );
-                atLeast( 1 ).of( beanInfo ).getAttributes();
-                will( returnValue( new MBeanAttributeInfo[] { attributeInfo } ) );
-                atLeast( 1 ).of( attributeInfo ).getName();
-                will( returnValue( "var" ) );
-                atLeast( 1 ).of( attributeInfo ).getType();
-                will( returnValue( type ) );
-                atLeast( 1 ).of( attributeInfo ).isWritable();
-                will( returnValue( true ) );
-                one( con ).setAttribute( (ObjectName) with(equal(new ObjectName( "a:type=x" ))), (Attribute) with(a(Attribute.class)) );
-                will(doAll(new CustomAction("SetAttribute"){
-
-                    public Object invoke(Invocation invocation) throws Throwable
+                {
+                    atLeast( 1 ).of( con ).getMBeanInfo( new ObjectName( "a:type=x" ) );
+                    will( returnValue( beanInfo ) );
+                    atLeast( 1 ).of( beanInfo ).getAttributes();
+                    will( returnValue( new MBeanAttributeInfo[] { attributeInfo } ) );
+                    atLeast( 1 ).of( attributeInfo ).getName();
+                    will( returnValue( "var" ) );
+                    atLeast( 1 ).of( attributeInfo ).getType();
+                    will( returnValue( type ) );
+                    atLeast( 1 ).of( attributeInfo ).isWritable();
+                    will( returnValue( true ) );
+                    one( con ).setAttribute( (ObjectName) with( equal( new ObjectName( "a:type=x" ) ) ),
+                                             (Attribute) with( a( Attribute.class ) ) );
+                    will( doAll( new CustomAction( "SetAttribute" )
                     {
-                        setAttribute.set((Attribute)invocation.getParameter(1));
-                        return null;
-                    }
-                }));
-            }
-        } );
 
-        command.setSession( new MockSession( output, con ) );
-        command.execute();
+                        public Object invoke( Invocation invocation )
+                            throws Throwable
+                        {
+                            setAttribute.set( (Attribute) invocation.getParameter( 1 ) );
+                            return null;
+                        }
+                    } ) );
+                }
+            } );
+
+            command.setSession( new MockSession( output, con ) );
+            command.execute();
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException(e);
+        }
+        catch ( JMException e )
+        {
+            throw new RuntimeException(e);
+        }
         context.assertIsSatisfied();
 
-        assertNotNull(setAttribute.get());
-        assertEquals("var", setAttribute.get().getName());
-        assertEquals(expected, setAttribute.get().getValue());
+        assertNotNull( setAttribute.get() );
+        assertEquals( "var", setAttribute.get().getName() );
+        assertEquals( expected, setAttribute.get().getValue() );
     }
 }

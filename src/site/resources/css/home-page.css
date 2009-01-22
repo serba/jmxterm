@@ -1,0 +1,12 @@
+#main-content-wrap {
+    background: white;
+}
+
+#main-content-header {
+    height: 320px;
+    background: url(../images/content-header-bg.jpg) no-repeat;
+}
+
+#main-content-body {
+    padding: 10px;
+}

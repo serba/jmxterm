@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.pm;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -23,7 +22,6 @@ public class JConsoleClassLoaderFactory
 
     /**
      * @return ClassLoader that understands tools.jar and jconsole.jar
-     * @throws IOException
      */
     public static ClassLoader getClassLoader()
     {
