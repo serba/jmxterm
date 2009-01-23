@@ -7,7 +7,7 @@
     </bannerLeft>
     <bannerRight>
         <src>
-            http://cyclops-group.sourceforge.net/images/cyclopsgroup_logo.png
+            http://cyclops-group.sourceforge.net/wiki/images/cyclopsgroup-logo.png
         </src>
     </bannerRight>
     <body>
@@ -23,7 +23,7 @@
             </script>
         </head>
         <links>
-            <item name="wiki" href="http://wiki.cyclopsgroup.org/jmxterm" />
+            <item name="wiki site" href="http://wiki.cyclopsgroup.org/jmxterm" />
             <item name="cyclopsgroup.org" href="http://www.cyclopsgroup.org/" />
             <item name="sf.net/cyclops-group"
                 href="http://sourceforge.net/projects/cyclops-group" />
