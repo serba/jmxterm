@@ -49,42 +49,6 @@ public class SetCommandTest
         context.setImposteriser( ClassImposteriser.INSTANCE );
     }
 
-    /**
-     * Test setting an integer 
-     */
-    @Test
-    public void testExecuteNormally()
-    {
-        setValueAndVerify( "33", "int", 33 );
-    }
-
-    /**
-     * Test setting an empty string 
-     */
-    @Test
-    public void testExecuteWithAnEmptyString()
-    {
-        setValueAndVerify( "\"\"", String.class.getName(), "" );
-    }
-
-    /**
-     * Test setting NULL string 
-     */
-    @Test
-    public void testExecuteWithNullString()
-    {
-        setValueAndVerify( "null", String.class.getName(), null );
-    }
-
-    /**
-     * Test setting string with control character 
-     */
-    @Test
-    public void testExecuteWithControlCharacter()
-    {
-        setValueAndVerify( "hello\\n", String.class.getName(), "hello\n" );
-    }
-
     private void setValueAndVerify( String expr, final String type, final Object expected )
     {
         command.setBean( "a:type=x" );
@@ -129,16 +93,61 @@ public class SetCommandTest
         }
         catch ( IOException e )
         {
-            throw new RuntimeException(e);
+            throw new RuntimeException( e );
         }
         catch ( JMException e )
         {
-            throw new RuntimeException(e);
+            throw new RuntimeException( e );
         }
         context.assertIsSatisfied();
 
         assertNotNull( setAttribute.get() );
         assertEquals( "var", setAttribute.get().getName() );
         assertEquals( expected, setAttribute.get().getValue() );
+    }
+
+    /**
+     * Test setting an integer
+     */
+    @Test
+    public void testExecuteNormally()
+    {
+        setValueAndVerify( "33", "int", 33 );
+    }
+
+    /**
+     * Test setting an empty string
+     */
+    @Test
+    public void testExecuteWithAnEmptyString()
+    {
+        setValueAndVerify( "\"\"", String.class.getName(), "" );
+    }
+
+    /**
+     * Test setting string with control character
+     */
+    @Test
+    public void testExecuteWithControlCharacter()
+    {
+        setValueAndVerify( "hello\\n", String.class.getName(), "hello\n" );
+    }
+
+    /**
+     * Test with negative number 
+     */
+    @Test
+    public void testExecuteWithNegativeNumber()
+    {
+        setValueAndVerify( "-2", "int", -2 );
+    }
+
+    /**
+     * Test setting NULL string
+     */
+    @Test
+    public void testExecuteWithNullString()
+    {
+        setValueAndVerify( "null", String.class.getName(), null );
     }
 }
