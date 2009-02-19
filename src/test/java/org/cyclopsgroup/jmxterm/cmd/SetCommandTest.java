@@ -141,7 +141,7 @@ public class SetCommandTest
     {
         setValueAndVerify( "-2", "int", -2 );
     }
-
+    
     /**
      * Test setting NULL string
      */
@@ -149,5 +149,14 @@ public class SetCommandTest
     public void testExecuteWithNullString()
     {
         setValueAndVerify( "null", String.class.getName(), null );
+    }
+
+    /**
+     * Test with quoted negative number 
+     */
+    @Test
+    public void testExecuteWithQuotedNegativeNumber()
+    {
+        setValueAndVerify( "\"-2\"", "int", -2 );
     }
 }

@@ -23,7 +23,7 @@ import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Command to set an attribute
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "set", description = "Set value of an MBean attribute" )
@@ -114,11 +114,11 @@ public class SetCommand
             throw new IllegalArgumentException( "Attribute " + attributeName + " is not writable" );
         }
         String inputValue = arguments.get( 1 );
-        Object value = SyntaxUtils.parse( inputValue, attributeInfo.getType() );
-        if(value != null && value instanceof String)
+        if ( inputValue != null )
         {
-            value = ValueFormat.parseValue( (String) value );
+            inputValue = ValueFormat.parseValue( inputValue );
         }
+        Object value = SyntaxUtils.parse( inputValue, attributeInfo.getType() );
         con.setAttribute( name, new Attribute( attributeName, value ) );
         session.output.printMessage( "Value of attribute " + attributeName + " is set to " + inputValue );
     }

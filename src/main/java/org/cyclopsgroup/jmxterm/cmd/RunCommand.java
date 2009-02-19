@@ -26,7 +26,7 @@ import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Command to run an MBean operation
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "run", description = "Invoke an MBean operation", note = "Syntax is \n run <operationName> [parameter1] [parameter2]" )
@@ -97,8 +97,8 @@ public class RunCommand
         }
         if ( operationInfo == null )
         {
-            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 )
-                + " parameters doesn't exist in bean " + beanName );
+            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 ) +
+                " parameters doesn't exist in bean " + beanName );
         }
         Object[] params = new Object[parameters.size() - 1];
         MBeanParameterInfo[] paramInfos = operationInfo.getSignature();
@@ -109,11 +109,12 @@ public class RunCommand
         for ( int i = 0; i < paramInfos.length; i++ )
         {
             MBeanParameterInfo paramInfo = paramInfos[i];
-            Object paramValue = SyntaxUtils.parse( parameters.get( i + 1 ), paramInfo.getType() );
-            if( paramValue != null && paramValue instanceof String )
+            String expression = parameters.get( i + 1 );
+            if ( expression != null )
             {
-                paramValue = ValueFormat.parseValue( (String)paramValue );
+                expression = ValueFormat.parseValue( expression );
             }
+            Object paramValue = SyntaxUtils.parse( expression, paramInfo.getType() );
             params[i] = paramValue;
             signatures[i] = paramInfo.getType();
         }

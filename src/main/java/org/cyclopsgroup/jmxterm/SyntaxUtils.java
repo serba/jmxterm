@@ -15,7 +15,7 @@ import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Utility class for syntax checking
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public final class SyntaxUtils
@@ -24,6 +24,7 @@ public final class SyntaxUtils
      * NULL string identifier
      */
     public static final String NULL = ValueFormat.NULL;
+
     /**
      * Null print stream to redirect std streams
      */
@@ -65,8 +66,8 @@ public final class SyntaxUtils
                     p.startManagementAgent();
                     if ( !p.isManageable() )
                     {
-                        throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " + pid
-                            + " is not manageable" );
+                        throw new IllegalStateException( "Managed agent for PID " + pid + " couldn't start. PID " +
+                            pid + " is not manageable" );
                     }
                 }
                 return new JMXServiceURL( p.toUrl() );
@@ -88,7 +89,7 @@ public final class SyntaxUtils
 
     /**
      * Check if string value is <code>null</code>
-     *
+     * 
      * @param s String value
      * @return True if value is <code>null</code>
      */
@@ -99,14 +100,14 @@ public final class SyntaxUtils
 
     /**
      * Parse given string expression to expected type of value
-     *
+     * 
      * @param expression String expression
      * @param type Target type
      * @return Object of value
      */
     public static Object parse( String expression, String type )
     {
-        if ( StringUtils.isEmpty( expression ) || isNull( expression ) )
+        if ( expression == null || StringUtils.equalsIgnoreCase( NULL, expression ) )
         {
             return null;
         }
@@ -118,6 +119,14 @@ public final class SyntaxUtils
         catch ( ClassNotFoundException e )
         {
             throw new IllegalArgumentException( "Type " + type + " isn't valid", e );
+        }
+        if ( c == String.class )
+        {
+            return expression;
+        }
+        if ( StringUtils.isEmpty( expression ) )
+        {
+            return null;
         }
         return ConvertUtils.convert( expression, c );
     }

@@ -39,6 +39,7 @@ public class SyntaxUtilsTest
         assertEquals( "x", SyntaxUtils.parse( "x", "java.lang.String" ) );
         assertEquals( 3, SyntaxUtils.parse( "3", "int" ) );
         assertEquals( 3L, SyntaxUtils.parse( "3", "long" ) );
+        assertEquals( "", SyntaxUtils.parse( "", "java.lang.String" ) );
         assertNull( SyntaxUtils.parse( "", "java.util.Date" ) );
         assertNull( SyntaxUtils.parse( "null", "java.lang.String" ) );
     }
