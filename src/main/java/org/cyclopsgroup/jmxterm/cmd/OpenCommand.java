@@ -58,7 +58,7 @@ public class OpenCommand
         {
             if ( password == null )
             {
-                password = session.input.readMaskedString( "Credential password: " );
+                password = session.getInput().readMaskedString( "Credential password: " );
             }
             env = new HashMap<String, Object>( 1 );
             String[] credentials = { user, password };
@@ -70,7 +70,7 @@ public class OpenCommand
         }
         try
         {
-            session.connect( SyntaxUtils.getUrl( url, session.processManager ), env );
+            session.connect( SyntaxUtils.getUrl( url, session.getProcessManager() ), env );
             session.output.printMessage( "Connection to " + url + " is opened" );
         }
         catch ( IOException e )

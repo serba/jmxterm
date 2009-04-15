@@ -40,7 +40,7 @@ public class JvmsCommand
         System.setOut( SyntaxUtils.NULL_PRINT_STREAM );
         try
         {
-            processList = session.processManager.list();
+            processList = session.getProcessManager().list();
         }
         finally
         {
