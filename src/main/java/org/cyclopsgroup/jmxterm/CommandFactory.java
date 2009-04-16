@@ -14,7 +14,6 @@ public interface CommandFactory
      * 
      * @param name Command name
      * @return New instance of command object
-     * @throws Exception Allow any Exception
      */
     Command createCommand( String name );
 

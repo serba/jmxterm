@@ -53,8 +53,8 @@ public final class WeakCastUtils
                 Method toMethod = methodMap.get( method );
                 if ( toMethod == null )
                 {
-                    throw new OperationNotSupportedException( "Method " + method + " isn't implemented in "
-                        + from.getClass() );
+                    throw new OperationNotSupportedException( "Method " + method + " isn't implemented in " +
+                        from.getClass() );
                 }
                 try
                 {
@@ -62,10 +62,7 @@ public final class WeakCastUtils
                     {
                         return toMethod.invoke( from, args );
                     }
-                    else
-                    {
-                        return toMethod.invoke( null, args );
-                    }
+                    return toMethod.invoke( null, args );
                 }
                 catch ( InvocationTargetException e )
                 {
@@ -148,8 +145,8 @@ public final class WeakCastUtils
                 Method toMethod = methodMap.get( method );
                 if ( toMethod == null )
                 {
-                    throw new OperationNotSupportedException( "Method " + method + " isn't implemented in "
-                        + from.getClass() );
+                    throw new OperationNotSupportedException( "Method " + method + " isn't implemented in " +
+                        from.getClass() );
                 }
                 try
                 {

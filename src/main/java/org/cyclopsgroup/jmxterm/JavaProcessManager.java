@@ -14,7 +14,6 @@ public abstract class JavaProcessManager
      * 
      * @param pid Process ID
      * @return Process or NULL
-     * @throws Exception All any exception
      */
     public abstract JavaProcess get( int pid );
 

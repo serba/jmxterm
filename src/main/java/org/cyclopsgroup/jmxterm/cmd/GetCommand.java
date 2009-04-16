@@ -13,7 +13,6 @@ import javax.management.ObjectName;
 
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -29,7 +28,6 @@ import org.cyclopsgroup.jmxterm.io.ValueOutputFormat;
 @Cli( name = "get", description = "Get value of MBean attribute(s)", note = "* stands for all attributes. eg. get Attribute1 Attribute2 or get *" )
 public class GetCommand
     extends Command
-    implements AutoCompletable
 {
     private List<String> attributes = new ArrayList<String>();
 
@@ -54,7 +52,7 @@ public class GetCommand
         MBeanServerConnection con = session.getConnection().getServerConnection();
         MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
         Map<String, MBeanAttributeInfo> attributeNames =
-            (Map<String, MBeanAttributeInfo>) ListOrderedMap.decorate( new HashMap<String, MBeanAttributeInfo>() );
+            ListOrderedMap.decorate( new HashMap<String, MBeanAttributeInfo>() );
         if ( attributes.contains( "*" ) )
         {
             for ( MBeanAttributeInfo ai : ais )

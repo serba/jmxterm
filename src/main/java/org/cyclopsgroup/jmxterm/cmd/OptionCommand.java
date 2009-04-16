@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.MalformedArgException;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -20,7 +19,6 @@ import org.cyclopsgroup.jmxterm.io.VerboseLevel;
 @Cli( name = "option", description = "Set options for command session" )
 public class OptionCommand
     extends Command
-    implements AutoCompletable
 {
     private static final List<String> VERBOSE_LEVEL_VALUES;
     static

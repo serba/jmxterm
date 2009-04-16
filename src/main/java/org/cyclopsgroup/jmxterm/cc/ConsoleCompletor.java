@@ -1,7 +1,6 @@
 package org.cyclopsgroup.jmxterm.cc;
 
 import java.beans.IntrospectionException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,36 +54,25 @@ public class ConsoleCompletor
             {
                 return completeCommandName( buffer, candidates );
             }
-            else
-            {
-                int separatorPos = buffer.indexOf( ' ' );
-                String commandName = buffer.substring( 0, separatorPos );
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( "Command name is [" + commandName + "]" );
-                }
-                String commandArguments = buffer.substring( separatorPos + 1 );
-                commandArguments.replaceFirst( "^\\s*", "" );
-                if ( LOG.isDebugEnabled() )
-                {
-                    LOG.debug( "Analyzing commmand arguments [" + commandArguments + "]" );
-                }
-                Command cmd = commandCenter.commandFactory.createCommand( commandName );
-                cmd.setSession( commandCenter.session );
-                CliCompletor commandCompletor = new CliCompletor( cmd, commandCenter.argTokenizer );
-                return commandCompletor.complete( commandArguments, position - separatorPos, candidates )
-                    + separatorPos + 1;
-            }
-        }
-        catch ( IntrospectionException e )
-        {
+            int separatorPos = buffer.indexOf( ' ' );
+            String commandName = buffer.substring( 0, separatorPos );
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Couldn't complete input", e );
+                LOG.debug( "Command name is [" + commandName + "]" );
             }
-            return position;
+            String commandArguments = buffer.substring( separatorPos + 1 );
+            commandArguments.replaceFirst( "^\\s*", "" );
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( "Analyzing commmand arguments [" + commandArguments + "]" );
+            }
+            Command cmd = commandCenter.commandFactory.createCommand( commandName );
+            cmd.setSession( commandCenter.session );
+            CliCompletor commandCompletor = new CliCompletor( cmd, commandCenter.argTokenizer );
+            return commandCompletor.complete( commandArguments, position - separatorPos, candidates ) + separatorPos +
+                1;
         }
-        catch ( IOException e )
+        catch ( IntrospectionException e )
         {
             if ( LOG.isDebugEnabled() )
             {
@@ -103,7 +91,6 @@ public class ConsoleCompletor
     }
 
     private int completeCommandName( String buf, List<String> candidates )
-        throws IOException
     {
         if ( buf == null )
         {

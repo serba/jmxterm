@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jmxterm.Command;
@@ -21,7 +20,6 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
     + " eg. domain java.lang" )
 public class DomainCommand
     extends Command
-    implements AutoCompletable
 {
     /**
      * Get domain name from given domain expression

@@ -21,7 +21,7 @@ import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * Command to display or set current bean
- *
+ * 
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "bean", description = "Display or set current selected MBean. ", note = "Without any parameter, it displays current selected bean, "
@@ -38,7 +38,7 @@ public class BeanCommand
 
     /**
      * Get full MBean name with given bean name, domain and session
-     *
+     * 
      * @param bean Name of bean. It can be NULL so that session#getBean() is returned
      * @param domain Domain for bean
      * @param session Current session
@@ -79,7 +79,7 @@ public class BeanCommand
 
     /**
      * Get list of candidate beans
-     *
+     * 
      * @param session Session
      * @return List of bean names
      * @throws MalformedObjectNameException
@@ -134,10 +134,7 @@ public class BeanCommand
         {
             return DomainsCommand.getCandidateDomains( getSession() );
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -176,7 +173,7 @@ public class BeanCommand
 
     /**
      * Set bean option
-     *
+     * 
      * @param bean Bean to set
      */
     @Argument
@@ -187,7 +184,7 @@ public class BeanCommand
 
     /**
      * Set domain option
-     *
+     * 
      * @param domain Domain option to set
      */
     @Option( name = "d", longName = "domain", description = "Domain name" )

@@ -14,7 +14,6 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.AutoCompletable;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
@@ -32,7 +31,6 @@ import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 @Cli( name = "run", description = "Invoke an MBean operation", note = "Syntax is \n run <operationName> [parameter1] [parameter2]" )
 public class RunCommand
     extends Command
-    implements AutoCompletable
 {
     private String bean;
 
