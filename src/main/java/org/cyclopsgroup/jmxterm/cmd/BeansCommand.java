@@ -32,6 +32,7 @@ public class BeansCommand
      * @throws MalformedObjectNameException Input domain name is malformed
      * @throws IOException Communication error
      */
+    @SuppressWarnings("unchecked")
     public static List<String> getBeans( Session session, String domainName )
         throws MalformedObjectNameException, IOException
     {
