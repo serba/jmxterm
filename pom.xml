@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.cyclopsgroup</groupId>
     <artifactId>jmxterm</artifactId>
-    <name>JMXTerm</name>
+    <name>Jmxterm</name>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <description>Command line based interactive JMX client</description>
@@ -185,7 +185,10 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>rpm-maven-plugin</artifactId>
                 <configuration>
+                    <copyright>Apache Software License v2.0</copyright>
+                    <distribution>CyclopsGroup.org</distribution>
                     <group>Development/Languages/Java</group>
+                    <packager>Jiaqi Guo</packager>
                     <mappings>
                         <mapping>
                             <directory>/usr/share/jmxterm</directory>
@@ -210,7 +213,7 @@
                         <mapping>
                             <directory>/usr/share/doc/jmxterm</directory>
                             <documentation>true</documentation>
-                            <filemode>444</filemode>
+                            <filemode>644</filemode>
                             <sources>
                                 <source>
                                     <location>target/site</location>
