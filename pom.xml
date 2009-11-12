@@ -181,6 +181,48 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <configuration>
+                    <copyright>Apache Software License v2.0</copyright>
+                    <distribution>CyclopsGroup.org</distribution>
+                    <group>Development/Languages/Java</group>
+                    <packager>Jiaqi Guo</packager>
+                    <mappings>
+                        <mapping>
+                            <directory>/usr/share/jmxterm</directory>
+                            <filemode>644</filemode>
+                            <sources>
+                                <source>
+                                    <location>target/jmxterm-${pom.version}-uber.jar</location>
+                                    <destination>jmxterm-uber.jar</destination>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/usr/bin</directory>
+                            <filemode>755</filemode>
+                            <sources>
+                                <source>
+                                    <location>src/main/script/jmxterm.sh</location>
+                                    <destination>jmxterm</destination>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/usr/share/doc/jmxterm</directory>
+                            <documentation>true</documentation>
+                            <filemode>644</filemode>
+                            <sources>
+                                <source>
+                                    <location>target/site</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <developers>
