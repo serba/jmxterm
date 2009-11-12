@@ -45,7 +45,7 @@ public class WatchCommand
     /**
      * @param outputFormat Pattern used in {@link MessageFormat}
      */
-    @Option( name = "f", longName = "format", description = "Java MessageFormat pattern to print attribute values" )
+    @Option( name = "f", longName = "format", description = "Java pattern(java.text.MessageFormat) to print attribute values" )
     public final void setOutputFormat( String outputFormat )
     {
         this.outputFormat = outputFormat;
@@ -75,7 +75,6 @@ public class WatchCommand
     /**
      * @inheritDoc
      */
-    @SuppressWarnings( "unchecked" )
     @Override
     public void execute()
         throws IOException, JMException
