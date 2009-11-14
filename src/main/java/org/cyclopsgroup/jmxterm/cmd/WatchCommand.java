@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,9 +25,7 @@ import org.cyclopsgroup.jmxterm.Session;
 import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 
 /**
- * Command to watch an MBean attribute
- *
- * TODO Consider the use case for CSV file backend generation
+ * Command to watch an MBean attribute TODO Consider the use case for CSV file backend generation
  *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
@@ -35,6 +34,8 @@ public class WatchCommand
     extends Command
 {
     private static final int DEFAULT_REFRESH_INTERVAL = 1;
+
+    private static final String BUILDING_ATTRIBUTE_NOW = "%now";
 
     private List<String> attributes = new ArrayList<String>();
 
@@ -67,6 +68,7 @@ public class WatchCommand
             {
                 results.add( ai.getName() );
             }
+            results.add( BUILDING_ATTRIBUTE_NOW );
             return results;
         }
         return null;
@@ -98,30 +100,16 @@ public class WatchCommand
 
         final ObjectName name = new ObjectName( beanName );
         final MBeanServerConnection con = session.getConnection().getServerConnection();
-        MBeanAttributeInfo[] ais = con.getMBeanInfo( name ).getAttributes();
-        final List<String> attributeNames = new ArrayList<String>();
-
-        for ( String arg : attributes )
-        {
-            for ( MBeanAttributeInfo ai : ais )
-            {
-                if ( ai.getName().equals( arg ) )
-                {
-                    attributeNames.add( arg );
-                    break;
-                }
-            }
-        }
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        getSession().output.printMessage( "press any key to stop" );
+        getSession().output.printMessage( "press any key to stop. DO NOT press Ctrl+C !!!" );
         executor.scheduleWithFixedDelay( new Runnable()
         {
             public void run()
             {
                 try
                 {
-                    printValues( name, attributeNames, con, input.getConsole() );
+                    printValues( name, con, input.getConsole() );
                 }
                 catch ( IOException e )
                 {
@@ -140,8 +128,7 @@ public class WatchCommand
         input.getConsole().printNewline();
     }
 
-    private void printValues( ObjectName beanName, List<String> attributeNames, MBeanServerConnection connection,
-                              ConsoleReader console )
+    private void printValues( ObjectName beanName, MBeanServerConnection connection, ConsoleReader console )
         throws IOException, JMException
     {
         console.redrawLine();
@@ -149,7 +136,7 @@ public class WatchCommand
         if ( outputFormat == null )
         {
             boolean first = true;
-            for ( String attributeName : attributeNames )
+            for ( String attributeName : attributes )
             {
                 if ( first )
                 {
@@ -159,16 +146,16 @@ public class WatchCommand
                 {
                     result.append( ", " );
                 }
-                result.append( connection.getAttribute( beanName, attributeName ) );
+                result.append( getAttributeValue( beanName, attributeName, connection ) );
             }
         }
         else
         {
-            Object[] values = new Object[attributeNames.size()];
+            Object[] values = new Object[attributes.size()];
             int i = 0;
-            for ( String attributeNamne : attributeNames )
+            for ( String attributeNamne : attributes )
             {
-                values[i++] = connection.getAttribute( beanName, attributeNamne );
+                values[i++] = getAttributeValue( beanName, attributeNamne, connection );
             }
             MessageFormat format = new MessageFormat( outputFormat );
             format.format( values, result, new FieldPosition( 0 ) );
@@ -176,10 +163,21 @@ public class WatchCommand
         console.printString( result.toString() );
     }
 
+    private Object getAttributeValue( ObjectName beanName, String attributeName, MBeanServerConnection connection )
+        throws JMException, IOException
+    {
+        // $now is a reserved keyword for current java.util.Date
+        if ( attributeName.equals( BUILDING_ATTRIBUTE_NOW ) )
+        {
+            return new Date();
+        }
+        return connection.getAttribute( beanName, attributeName );
+    }
+
     /**
      * @param attributes Name of attributes to watch
      */
-    @Argument( description = "Name of attributes to watch" )
+    @Argument( description = "Name of attributes to watch", requires = 1 )
     public final void setAttributes( List<String> attributes )
     {
         this.attributes = attributes;
