@@ -17,11 +17,13 @@ import javax.management.ObjectName;
 
 import jline.ConsoleReader;
 
+import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
+import org.cyclopsgroup.jmxterm.io.CommandOutput;
 import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 
 /**
@@ -33,24 +35,65 @@ import org.cyclopsgroup.jmxterm.io.JlineCommandInput;
 public class WatchCommand
     extends Command
 {
-    private static final int DEFAULT_REFRESH_INTERVAL = 1;
+    private static class ConsoleOutput
+        extends Output
+    {
+        private final ConsoleReader console;
+
+        private ConsoleOutput( Session session )
+        {
+            if ( !( session.getInput() instanceof JlineCommandInput ) )
+            {
+                throw new IllegalStateException( "Under current context, watch command can't execute." );
+            }
+            this.console = ( (JlineCommandInput) session.getInput() ).getConsole();
+        }
+
+        protected void printLine( String line )
+            throws IOException
+        {
+            console.redrawLine();
+            console.printString( line );
+        }
+    }
+
+    private static abstract class Output
+    {
+        protected abstract void printLine( String line )
+            throws IOException;
+    }
+
+    private static class ReportOutput
+        extends Output
+    {
+        private final CommandOutput out;
+
+        private ReportOutput( Session session )
+        {
+            this.out = session.output;
+        }
+
+        @Override
+        protected void printLine( String line )
+        {
+            out.println( line );
+        }
+
+    }
 
     private static final String BUILDING_ATTRIBUTE_NOW = "%now";
 
-    private List<String> attributes = new ArrayList<String>();
+    private static final int DEFAULT_REFRESH_INTERVAL = 1;
 
-    private int refreshInterval = DEFAULT_REFRESH_INTERVAL;
+    private List<String> attributes = new ArrayList<String>();
 
     private String outputFormat;
 
-    /**
-     * @param outputFormat Pattern used in {@link MessageFormat}
-     */
-    @Option( name = "f", longName = "format", description = "Java pattern(java.text.MessageFormat) to print attribute values" )
-    public final void setOutputFormat( String outputFormat )
-    {
-        this.outputFormat = outputFormat;
-    }
+    private int refreshInterval = DEFAULT_REFRESH_INTERVAL;
+
+    private boolean report;
+
+    private int stopAfter;
 
     /**
      * @inheritDoc
@@ -81,12 +124,11 @@ public class WatchCommand
     public void execute()
         throws IOException, JMException
     {
-        Session session = getSession();
-        if ( !( session.getInput() instanceof JlineCommandInput ) )
+        if ( report && stopAfter == 0 )
         {
-            throw new IllegalStateException( "Under current context, watch command can't execute." );
+            throw new IllegalArgumentException( "When --report is sepcified, --stopafter(-s) must be specificed" );
         }
-        final JlineCommandInput input = (JlineCommandInput) session.getInput();
+        Session session = getSession();
         String domain = DomainCommand.getDomainName( null, session );
         if ( domain == null )
         {
@@ -100,38 +142,73 @@ public class WatchCommand
 
         final ObjectName name = new ObjectName( beanName );
         final MBeanServerConnection con = session.getConnection().getServerConnection();
+        final Output output;
+        if ( report )
+        {
+            output = new ReportOutput( session );
+        }
+        else
+        {
+            output = new ConsoleOutput( session );
+            getSession().output.printMessage( "press any key to stop. DO NOT press Ctrl+C !!!" );
+        }
 
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        getSession().output.printMessage( "press any key to stop. DO NOT press Ctrl+C !!!" );
+        final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleWithFixedDelay( new Runnable()
         {
             public void run()
             {
                 try
                 {
-                    printValues( name, con, input.getConsole() );
+                    printValues( name, con, output );
                 }
                 catch ( IOException e )
                 {
-                    // TODO Haven't found a decent approach to handle this exception yet
-                    e.printStackTrace();
-                }
-                catch ( JMException e )
-                {
-                    // TODO Haven't found a decent approach to handle this exception yet
-                    e.printStackTrace();
+                    getSession().output.printError( e );
                 }
             }
         }, 0, refreshInterval, TimeUnit.SECONDS );
-        System.in.read();
-        executor.shutdownNow();
-        input.getConsole().printNewline();
+        if ( stopAfter > 0 )
+        {
+            executor.schedule( new Runnable()
+            {
+                public void run()
+                {
+                    executor.shutdownNow();
+                }
+            }, stopAfter, TimeUnit.SECONDS );
+        }
+        if ( !report )
+        {
+            System.in.read();
+            System.out.println();
+            executor.shutdownNow();
+        }
+
+        session.output.println( "" );
     }
 
-    private void printValues( ObjectName beanName, MBeanServerConnection connection, ConsoleReader console )
-        throws IOException, JMException
+    private Object getAttributeValue( ObjectName beanName, String attributeName, MBeanServerConnection connection )
+        throws IOException
     {
-        console.redrawLine();
+        // $now is a reserved keyword for current java.util.Date
+        if ( attributeName.equals( BUILDING_ATTRIBUTE_NOW ) )
+        {
+            return new Date();
+        }
+        try
+        {
+            return connection.getAttribute( beanName, attributeName );
+        }
+        catch ( JMException e )
+        {
+            return e.getClass().getSimpleName();
+        }
+    }
+
+    private void printValues( ObjectName beanName, MBeanServerConnection connection, Output output )
+        throws IOException
+    {
         StringBuffer result = new StringBuffer();
         if ( outputFormat == null )
         {
@@ -160,18 +237,7 @@ public class WatchCommand
             MessageFormat format = new MessageFormat( outputFormat );
             format.format( values, result, new FieldPosition( 0 ) );
         }
-        console.printString( result.toString() );
-    }
-
-    private Object getAttributeValue( ObjectName beanName, String attributeName, MBeanServerConnection connection )
-        throws JMException, IOException
-    {
-        // $now is a reserved keyword for current java.util.Date
-        if ( attributeName.equals( BUILDING_ATTRIBUTE_NOW ) )
-        {
-            return new Date();
-        }
-        return connection.getAttribute( beanName, attributeName );
+        output.printLine( result.toString() );
     }
 
     /**
@@ -184,11 +250,40 @@ public class WatchCommand
     }
 
     /**
+     * @param outputFormat Pattern used in {@link MessageFormat}
+     */
+    @Option( name = "f", longName = "format", description = "Java pattern(java.text.MessageFormat) to print attribute values" )
+    public final void setOutputFormat( String outputFormat )
+    {
+        this.outputFormat = outputFormat;
+    }
+
+    /**
      * @param refreshInterval Refreshing interval in seconds
      */
     @Option( name = "i", longName = "interval", description = "Optional number of seconds between consecutive poll, default is 1 second", defaultValue = "1" )
     public final void setRefreshInterval( int refreshInterval )
     {
+        Validate.isTrue( refreshInterval > 0, "Invalid interval value " + refreshInterval );
         this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     * @param report True to output result line by line as report
+     */
+    @Option( name = "r", longName = "report", description = "Output result line by line as report" )
+    public final void setReport( boolean report )
+    {
+        this.report = report;
+    }
+
+    /**
+     * @param stopAfter After this number of seconds, stop watching
+     */
+    @Option( name = "s", longName = "stopafter", description = "Stop after watching a number of seconds" )
+    public final void setStopAfter( int stopAfter )
+    {
+        Validate.isTrue( stopAfter >= 0, "Invalid stop after argument " + stopAfter );
+        this.stopAfter = stopAfter;
     }
 }
