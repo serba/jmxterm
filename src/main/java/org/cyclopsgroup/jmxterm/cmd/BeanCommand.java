@@ -21,7 +21,7 @@ import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * Command to display or set current bean
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "bean", description = "Display or set current selected MBean. ", note = "Without any parameter, it displays current selected bean, "
@@ -29,16 +29,19 @@ import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 public class BeanCommand
     extends Command
 {
-    private static final String PARTIAL_PATTERN_PROPERTIES = "\\w+\\=.+(\\,\\w+\\=.+)*";
+    private static final String PARTIAL_PATTERN_NAME_VALUE = "(\\w|\\.|\\-)+\\=.+";
+
+    private static final String PARTIAL_PATTERN_PROPERTIES =
+        PARTIAL_PATTERN_NAME_VALUE + "(\\," + PARTIAL_PATTERN_NAME_VALUE + ")*";
 
     private static final Pattern PATTERN_BEAN_NAME =
-        Pattern.compile( "^(\\w|\\.)+\\:" + PARTIAL_PATTERN_PROPERTIES + "$" );
+        Pattern.compile( "^(\\w|\\.|\\-)+\\:" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
     private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
     /**
      * Get full MBean name with given bean name, domain and session
-     * 
+     *
      * @param bean Name of bean. It can be NULL so that session#getBean() is returned
      * @param domain Domain for bean
      * @param session Current session
@@ -79,7 +82,7 @@ public class BeanCommand
 
     /**
      * Get list of candidate beans
-     * 
+     *
      * @param session Session
      * @return List of bean names
      * @throws MalformedObjectNameException
@@ -173,7 +176,7 @@ public class BeanCommand
 
     /**
      * Set bean option
-     * 
+     *
      * @param bean Bean to set
      */
     @Argument
@@ -184,7 +187,7 @@ public class BeanCommand
 
     /**
      * Set domain option
-     * 
+     *
      * @param domain Domain option to set
      */
     @Option( name = "d", longName = "domain", description = "Domain name" )

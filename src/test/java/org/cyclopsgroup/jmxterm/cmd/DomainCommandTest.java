@@ -2,8 +2,10 @@ package org.cyclopsgroup.jmxterm.cmd;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.io.StringWriter;
 
+import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
 import org.cyclopsgroup.jmxterm.MockSession;
@@ -14,7 +16,7 @@ import org.junit.Test;
 
 /**
  * Test of {@link DomainCommand}
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class DomainCommandTest
@@ -22,6 +24,26 @@ public class DomainCommandTest
     private DomainCommand command;
 
     private StringWriter output;
+
+    private void setDomainAndVerify( String domainName, final String[] knownDomains )
+        throws IOException, JMException
+    {
+        Mockery context = new Mockery();
+        final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
+        command.setDomain( domainName );
+        MockSession session = new MockSession( output, con );
+        context.checking( new Expectations()
+        {
+            {
+                one( con ).getDomains();
+                will( returnValue( knownDomains ) );
+            }
+        } );
+        command.setSession( session );
+        command.execute();
+        assertEquals( domainName, session.getDomain() );
+        context.assertIsSatisfied();
+    }
 
     /**
      * Set up command to test
@@ -35,81 +57,72 @@ public class DomainCommandTest
 
     /**
      * Test execution and get empty result
-     * 
-     * @throws Exception
+     *
+     * @throws IOException Allows network IO errors
+     * @throws JMException Allows JMX errors
      */
     @Test
     public void testExecuteWithGettingNull()
-        throws Exception
+        throws IOException, JMException
     {
         command.setSession( new MockSession( output, null ) );
         command.execute();
-        assertEquals( "null\n", output.toString() );
+        assertEquals( "null", output.toString().trim() );
     }
 
     /**
      * Test execution and get valid result
-     * 
-     * @throws Exception
+     *
+     * @throws IOException Allows network IO errors
+     * @throws JMException Allows JMX errors
      */
     @Test
     public void testExecuteWithGettingSomething()
-        throws Exception
+        throws IOException, JMException
     {
         MockSession session = new MockSession( output, null );
         session.setDomain( "something" );
         command.setSession( session );
         command.execute();
-        assertEquals( "something\n", output.toString() );
+        assertEquals( "something", output.toString().trim() );
     }
 
     /**
      * Test the case where invalid value is declined
-     * 
-     * @throws Exception
+     *
+     * @throws IOException Allows network IO errors
+     * @throws JMException Allows JMX errors
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testExecuteWithSettingSomethingInvalid()
-        throws Exception
+    public void testSettingWithInvalidDomain()
+        throws IOException, JMException
     {
-        Mockery context = new Mockery();
-        final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
-        command.setDomain( "invalid" );
-        MockSession session = new MockSession( output, con );
-        context.checking( new Expectations()
-        {
-            {
-                one( con ).getDomains();
-                will( returnValue( new String[] { "something" } ) );
-            }
-        } );
-        command.setSession( session );
-        command.execute();
+        setDomainAndVerify( "invalid", new String[] { "something" } );
+    }
+
+    /**
+     * Test execution and set value with special characters
+     *
+     * @throws IOException Allows network IO errors
+     * @throws JMException Allows JMX errors
+     */
+    @Test
+    public void testSettingWithSpecialCharacters()
+        throws IOException, JMException
+    {
+        setDomainAndVerify( "my_domain.1-1", new String[] { "my_domain.1-1", "something" } );
     }
 
     /**
      * Test execution and set valid value
-     * 
-     * @throws Exception
+     *
+     * @throws IOException Allows network IO errors
+     * @throws JMException Allows JMX errors
      */
     @Test
-    public void testExecuteWithSettingSomethingValid()
-        throws Exception
+    public void testSettingWithValidDomain()
+        throws IOException, JMException
     {
-        Mockery context = new Mockery();
-        final MBeanServerConnection con = context.mock( MBeanServerConnection.class );
-        command.setDomain( "something" );
-        MockSession session = new MockSession( output, con );
-        context.checking( new Expectations()
-        {
-            {
-                one( con ).getDomains();
-                will( returnValue( new String[] { "something" } ) );
-            }
-        } );
-        command.setSession( session );
-        command.execute();
-        assertEquals( "something", session.getDomain() );
-        context.assertIsSatisfied();
+        setDomainAndVerify( "something", new String[] { "something" } );
     }
 }
