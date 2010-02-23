@@ -29,13 +29,13 @@ import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 public class BeanCommand
     extends Command
 {
-    private static final String PARTIAL_PATTERN_NAME_VALUE = "(\\w|\\.|\\-)+\\=.+";
+    private static final String PARTIAL_PATTERN_NAME_VALUE = "(\\w|\\.|-)+=.+";
 
     private static final String PARTIAL_PATTERN_PROPERTIES =
-        PARTIAL_PATTERN_NAME_VALUE + "(\\," + PARTIAL_PATTERN_NAME_VALUE + ")*";
+        PARTIAL_PATTERN_NAME_VALUE + "(," + PARTIAL_PATTERN_NAME_VALUE + ")*";
 
     private static final Pattern PATTERN_BEAN_NAME =
-        Pattern.compile( "^(\\w|\\.|\\-)+\\:" + PARTIAL_PATTERN_PROPERTIES + "$" );
+        Pattern.compile( "^(\\w|\\.|-)+:" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
     private static final Pattern PATTERN_PROPERTIES = Pattern.compile( "^" + PARTIAL_PATTERN_PROPERTIES + "$" );
 
