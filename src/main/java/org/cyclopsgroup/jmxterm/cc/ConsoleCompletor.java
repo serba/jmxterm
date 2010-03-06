@@ -1,6 +1,5 @@
 package org.cyclopsgroup.jmxterm.cc;
 
-import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,7 @@ import org.cyclopsgroup.jmxterm.Command;
 
 /**
  * JLine completor that handles tab key
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class ConsoleCompletor
@@ -30,7 +29,7 @@ public class ConsoleCompletor
 
     /**
      * Constructor using a command center
-     * 
+     *
      * @param commandCenter
      */
     public ConsoleCompletor( CommandCenter commandCenter )
@@ -69,16 +68,8 @@ public class ConsoleCompletor
             Command cmd = commandCenter.commandFactory.createCommand( commandName );
             cmd.setSession( commandCenter.session );
             CliCompletor commandCompletor = new CliCompletor( cmd, commandCenter.argTokenizer );
-            return commandCompletor.complete( commandArguments, position - separatorPos, candidates ) + separatorPos +
-                1;
-        }
-        catch ( IntrospectionException e )
-        {
-            if ( LOG.isDebugEnabled() )
-            {
-                LOG.debug( "Couldn't complete input", e );
-            }
-            return position;
+            return commandCompletor.complete( commandArguments, position - separatorPos, candidates ) + separatorPos
+                + 1;
         }
         catch ( RuntimeException e )
         {

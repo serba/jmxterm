@@ -179,7 +179,7 @@ public class BeanCommand
      *
      * @param bean Bean to set
      */
-    @Argument
+    @Argument( displayName = "bean", description = "MBean name with or without domain" )
     public final void setBean( String bean )
     {
         this.bean = bean;

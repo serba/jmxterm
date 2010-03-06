@@ -5,17 +5,18 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.MultiValue;
 
 /**
  * A command for testing that records parameters passed in
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "test", description = "desc" )
 public class SelfRecordingCommand
     extends Command
 {
-    private String[] arguments;
+    private List<String> arguments;
 
     private final List<Command> records;
 
@@ -47,7 +48,7 @@ public class SelfRecordingCommand
     /**
      * @return Array of arguments
      */
-    public String[] getArguments()
+    public List<String> getArguments()
     {
         return arguments;
     }
@@ -55,8 +56,9 @@ public class SelfRecordingCommand
     /**
      * @param arguments Arguments
      */
+    @MultiValue
     @Argument
-    public void setArguments( String[] arguments )
+    public void setArguments( List<String> arguments )
     {
         this.arguments = arguments;
     }

@@ -20,6 +20,7 @@ import jline.ConsoleReader;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.MultiValue;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -243,7 +244,8 @@ public class WatchCommand
     /**
      * @param attributes Name of attributes to watch
      */
-    @Argument( description = "Name of attributes to watch", requires = 1 )
+    @MultiValue( listType = ArrayList.class, minValues = 1 )
+    @Argument( displayName = "attr", description = "Name of attributes to watch" )
     public final void setAttributes( List<String> attributes )
     {
         this.attributes = attributes;
@@ -252,7 +254,7 @@ public class WatchCommand
     /**
      * @param outputFormat Pattern used in {@link MessageFormat}
      */
-    @Option( name = "f", longName = "format", description = "Java pattern(java.text.MessageFormat) to print attribute values" )
+    @Option( name = "f", longName = "format", displayName = "expr", description = "Java pattern(java.text.MessageFormat) to print attribute values" )
     public final void setOutputFormat( String outputFormat )
     {
         this.outputFormat = outputFormat;
@@ -261,7 +263,7 @@ public class WatchCommand
     /**
      * @param refreshInterval Refreshing interval in seconds
      */
-    @Option( name = "i", longName = "interval", description = "Optional number of seconds between consecutive poll, default is 1 second", defaultValue = "1" )
+    @Option( name = "i", longName = "interval", displayName = "sec", description = "Optional number of seconds between consecutive poll, default is 1 second", defaultValue = "1" )
     public final void setRefreshInterval( int refreshInterval )
     {
         Validate.isTrue( refreshInterval > 0, "Invalid interval value " + refreshInterval );
@@ -280,7 +282,7 @@ public class WatchCommand
     /**
      * @param stopAfter After this number of seconds, stop watching
      */
-    @Option( name = "s", longName = "stopafter", description = "Stop after watching a number of seconds" )
+    @Option( name = "s", longName = "stopafter", displayName = "sec", description = "Stop after watching a number of seconds" )
     public final void setStopAfter( int stopAfter )
     {
         Validate.isTrue( stopAfter >= 0, "Invalid stop after argument " + stopAfter );

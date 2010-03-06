@@ -1,8 +1,9 @@
 package org.cyclopsgroup.jmxterm.cc;
 
-import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
@@ -11,14 +12,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.management.JMException;
 import javax.management.remote.JMXServiceURL;
 
-import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.cyclopsgroup.jcli.EscapedStringTokenizer;
-import org.cyclopsgroup.jcli.StringTokenizer;
-import org.cyclopsgroup.jcli.annotation.CliParser;
-import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
+import org.cyclopsgroup.caff.token.EscapingValueTokenizer;
+import org.cyclopsgroup.caff.token.TokenEvent;
+import org.cyclopsgroup.caff.token.TokenEventHandler;
+import org.cyclopsgroup.caff.token.ValueTokenizer;
+import org.cyclopsgroup.jcli.ArgumentProcessor;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.CommandFactory;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
@@ -40,9 +41,7 @@ public class CommandCenter
     /**
      * Argument tokenizer that parses arguments
      */
-    final StringTokenizer argTokenizer = new EscapedStringTokenizer();
-
-    private final CliParser cliParser = new JakartaCommonsCliParser( new GnuParser() );
+    final ValueTokenizer argTokenizer = new EscapingValueTokenizer();
 
     /**
      * Command factory that creates commands
@@ -142,11 +141,17 @@ public class CommandCenter
         }
 
         // Take the first argument out since it's command name
-        String[] args = argTokenizer.parse( command ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
-        String commandName = args[0];
+        final List<String> args = new ArrayList<String>();
+        argTokenizer.parse( command, new TokenEventHandler()
+        {
+            public void handleEvent( TokenEvent event )
+            {
+                args.add( event.getToken() );
+            }
+        } );
+        String commandName = args.remove( 0 );
         // Leave the rest of arguments for command
-        String[] commandArgs = new String[args.length - 1];
-        System.arraycopy( args, 1, commandArgs, 0, args.length - 1 );
+        String[] commandArgs = args.toArray( ArrayUtils.EMPTY_STRING_ARRAY );
         // Call command with parsed command name and arguments
         try
         {
@@ -158,6 +163,7 @@ public class CommandCenter
         }
     }
 
+    @SuppressWarnings( "unchecked" )
     private void doExecute( String commandName, String[] commandArgs, String originalCommand )
         throws JMException, IOException
     {
@@ -166,20 +172,14 @@ public class CommandCenter
         {
             ( (HelpCommand) cmd ).setCommandCenter( this );
         }
-        try
-        {
-            cliParser.parse( commandArgs, cmd );
+        ArgumentProcessor<Command> ap = (ArgumentProcessor<Command>) ArgumentProcessor.newInstance( cmd.getClass() );
 
-            // Print out usage if help option is specified
-            if ( cmd.isHelp() )
-            {
-                printUsage( cmd.getClass() );
-                return;
-            }
-        }
-        catch ( IntrospectionException e )
+        ap.process( commandArgs, cmd );
+        // Print out usage if help option is specified
+        if ( cmd.isHelp() )
         {
-            throw new RuntimeException( "Couldn't parse or print usage", e );
+            ap.printHelp( new PrintWriter( System.out, true ) );
+            return;
         }
         cmd.setSession( session );
         // Make sure concurrency and run command
@@ -250,17 +250,6 @@ public class CommandCenter
     public boolean isClosed()
     {
         return session.isClosed();
-    }
-
-    /**
-     * @param commandType Type of command
-     * @throws IntrospectionException Allow this error
-     */
-    void printUsage( Class<? extends Command> commandType )
-        throws IntrospectionException
-    {
-        // Help usage is always printed out to stdout
-        cliParser.printUsage( commandType, new PrintWriter( System.out, true ) );
     }
 
     /**

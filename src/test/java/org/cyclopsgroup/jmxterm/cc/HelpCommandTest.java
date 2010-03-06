@@ -19,7 +19,7 @@ import org.junit.Test;
 
 /**
  * Test case for {@link HelpCommand}
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class HelpCommandTest
@@ -44,7 +44,7 @@ public class HelpCommandTest
 
     /**
      * Test execution with several options
-     * 
+     *
      * @throws IOException
      * @throws IntrospectionException
      */
@@ -52,7 +52,7 @@ public class HelpCommandTest
     public void testExecuteWithOption()
         throws IOException, IntrospectionException
     {
-        command.setArgNames( new String[] { "a", "b" } );
+        command.setArgNames( Arrays.asList( "a", "b" ) );
         final CommandCenter cc = context.mock( CommandCenter.class );
         command.setCommandCenter( cc );
 
@@ -61,10 +61,8 @@ public class HelpCommandTest
             {
                 one( cc ).getCommandType( "a" );
                 will( returnValue( SelfRecordingCommand.class ) );
-                one( cc ).printUsage( SelfRecordingCommand.class );
                 one( cc ).getCommandType( "b" );
                 will( returnValue( SelfRecordingCommand.class ) );
-                one( cc ).printUsage( SelfRecordingCommand.class );
             }
         } );
         command.setSession( new MockSession( output, null ) );
@@ -74,7 +72,7 @@ public class HelpCommandTest
 
     /**
      * Test execution without option
-     * 
+     *
      * @throws IOException
      */
     @Test

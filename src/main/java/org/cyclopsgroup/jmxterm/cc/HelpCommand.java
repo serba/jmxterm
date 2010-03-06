@@ -1,26 +1,29 @@
 package org.cyclopsgroup.jmxterm.cc;
 
-import java.beans.IntrospectionException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.cyclopsgroup.jcli.ArgumentProcessor;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
-import org.cyclopsgroup.jcli.spi.CliUtils;
+import org.cyclopsgroup.jcli.annotation.MultiValue;
 import org.cyclopsgroup.jmxterm.Command;
+import org.cyclopsgroup.jmxterm.io.RuntimeIOException;
 
 /**
  * Command that display a help message
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "help", description = "Display available commands or usage of a command", note = "Run \"help [command1] [command2] ...\" to display usage or certain command(s). Help without argument shows list of available commands" )
 public class HelpCommand
     extends Command
 {
-    private String[] argNames = {};
+    private List<String> argNames = Collections.emptyList();
 
     private CommandCenter commandCenter = null;
 
@@ -31,7 +34,7 @@ public class HelpCommand
     public void execute()
     {
         Validate.notNull( commandCenter, "Command center hasn't been set yet" );
-        if ( argNames.length == 0 )
+        if ( argNames.isEmpty() )
         {
             List<String> commandNames = new ArrayList<String>( commandCenter.getCommandNames() );
             Collections.sort( commandNames );
@@ -39,16 +42,9 @@ public class HelpCommand
             for ( String commandName : commandNames )
             {
                 Class<? extends Command> commandType = commandCenter.getCommandType( commandName );
-                Cli cli;
-                try
-                {
-                    cli = CliUtils.defineCli( commandType ).getCli();
-                    getSession().output.println( String.format( "%-8s - %s", commandName, cli.description() ) );
-                }
-                catch ( IntrospectionException e )
-                {
-                    throw new RuntimeException( "Command type " + commandType + " has some problem", e );
-                }
+                org.cyclopsgroup.jcli.spi.Cli cli =
+                    ArgumentProcessor.newInstance( commandType ).createParsingContext().cli();
+                getSession().output.println( String.format( "%-8s - %s", commandName, cli.getDescription() ) );
             }
         }
         else
@@ -60,13 +56,14 @@ public class HelpCommand
                 {
                     throw new IllegalArgumentException( "Command " + argName + " is not found" );
                 }
+                ArgumentProcessor<?> ap = ArgumentProcessor.newInstance( commandType );
                 try
                 {
-                    commandCenter.printUsage( commandType );
+                    ap.printHelp( new PrintWriter( System.out, true ) );
                 }
-                catch ( IntrospectionException e )
+                catch ( IOException e )
                 {
-                    throw new RuntimeException( "Command type " + commandType + " has some problem", e );
+                    throw new RuntimeIOException( "Can't print help message", e );
                 }
             }
         }
@@ -75,8 +72,9 @@ public class HelpCommand
     /**
      * @param argNames Array of arguments
      */
+    @MultiValue( listType = ArrayList.class )
     @Argument
-    public final void setArgNames( String[] argNames )
+    public final void setArgNames( List<String> argNames )
     {
         Validate.notNull( argNames, "argNames can't be NULL" );
         this.argNames = argNames;

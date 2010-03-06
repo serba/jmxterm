@@ -15,6 +15,7 @@ import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.MultiValue;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -158,7 +159,8 @@ public class GetCommand
     /**
      * @param attributes List of attribute names
      */
-    @Argument( description = "Name of attributes to select" )
+    @MultiValue( listType = ArrayList.class, minValues = 1 )
+    @Argument( displayName = "attr", description = "Name of attributes to select" )
     public final void setAttributes( List<String> attributes )
     {
         Validate.notNull( attributes, "Attributes can't be NULL" );

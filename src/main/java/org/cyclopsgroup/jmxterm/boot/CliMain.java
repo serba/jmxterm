@@ -10,9 +10,9 @@ import javax.management.remote.JMXConnector;
 
 import jline.ConsoleReader;
 
-import org.apache.commons.cli.GnuParser;
 import org.apache.commons.lang.StringUtils;
-import org.cyclopsgroup.jcli.jccli.JakartaCommonsCliParser;
+import org.cyclopsgroup.jcli.ArgumentProcessor;
+import org.cyclopsgroup.jcli.GnuParser;
 import org.cyclopsgroup.jmxterm.SyntaxUtils;
 import org.cyclopsgroup.jmxterm.cc.CommandCenter;
 import org.cyclopsgroup.jmxterm.cc.ConsoleCompletor;
@@ -58,12 +58,12 @@ public class CliMain
     int execute( String[] args )
         throws Exception
     {
+        ArgumentProcessor<CliMainOptions> ap = ArgumentProcessor.newInstance( CliMainOptions.class, new GnuParser() );
         CliMainOptions options = new CliMainOptions();
-        JakartaCommonsCliParser parser = new JakartaCommonsCliParser( new GnuParser() );
-        parser.parse( args, options );
+        ap.process( args, options );
         if ( options.isHelp() )
         {
-            parser.printUsage( CliMainOptions.class, STDOUT_WRITER );
+            ap.printHelp( STDOUT_WRITER );
             return 0;
         }
 

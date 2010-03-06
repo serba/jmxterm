@@ -17,7 +17,7 @@ import org.cyclopsgroup.jmxterm.SyntaxUtils;
 
 /**
  * Command to open JMX connection
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "open", description = "Open JMX session or display current connection", note = "Without argument this command display current connection. "
@@ -96,7 +96,7 @@ public class OpenCommand
     /**
      * @param url URL of MBean service to open
      */
-    @Argument( )
+    @Argument( displayName = "url", description = "URL, <host>:<port>, or a PID to connect to" )
     public final void setUrl( String url )
     {
         this.url = url;

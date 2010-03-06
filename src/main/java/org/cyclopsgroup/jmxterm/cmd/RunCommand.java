@@ -16,6 +16,7 @@ import javax.management.ObjectName;
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jcli.annotation.Argument;
 import org.cyclopsgroup.jcli.annotation.Cli;
+import org.cyclopsgroup.jcli.annotation.MultiValue;
 import org.cyclopsgroup.jcli.annotation.Option;
 import org.cyclopsgroup.jmxterm.Command;
 import org.cyclopsgroup.jmxterm.Session;
@@ -25,7 +26,7 @@ import org.cyclopsgroup.jmxterm.utils.ValueFormat;
 
 /**
  * Command to run an MBean operation
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 @Cli( name = "run", description = "Invoke an MBean operation", note = "Syntax is \n run <operationName> [parameter1] [parameter2]" )
@@ -95,8 +96,8 @@ public class RunCommand
         }
         if ( operationInfo == null )
         {
-            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 ) +
-                " parameters doesn't exist in bean " + beanName );
+            throw new IllegalArgumentException( "Operation " + operationName + " with " + ( parameters.size() - 1 )
+                + " parameters doesn't exist in bean " + beanName );
         }
         Object[] params = new Object[parameters.size() - 1];
         MBeanParameterInfo[] paramInfos = operationInfo.getSignature();
@@ -170,6 +171,7 @@ public class RunCommand
     /**
      * @param parameters List of parameters. The first parameter is operation name
      */
+    @MultiValue( listType = ArrayList.class, minValues = 1 )
     @Argument( description = "The first parameter is operation name, which is followed by list of arguments" )
     public final void setParameters( List<String> parameters )
     {

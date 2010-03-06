@@ -100,7 +100,7 @@ public class DomainCommand
     /**
      * @param domain Domain to select
      */
-    @Argument
+    @Argument( displayName = "domain", description = "Name of domain to set" )
     public final void setDomain( String domain )
     {
         this.domain = domain;

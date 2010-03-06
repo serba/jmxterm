@@ -97,7 +97,7 @@ public class BeansCommand
     /**
      * @param domain Domain under which beans are listed
      */
-    @Option( name = "d", longName = "domain", description = "Name of domain under which beans are listed" )
+    @Option( name = "d", longName = "domain", displayName = "domain", description = "Name of domain under which beans are listed" )
     public final void setDomain( String domain )
     {
         this.domain = domain;
