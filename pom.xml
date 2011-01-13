@@ -16,6 +16,10 @@
     <description>Command line based interactive JMX client</description>
     <url>http://www.cyclopsgroup.org/projects/jmxterm</url>
     <inceptionYear>2008</inceptionYear>
+    <issueManagement>
+        <system>launchpad</system>
+        <url>https://launchpad.net/jmxterm</url>
+    </issueManagement>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
